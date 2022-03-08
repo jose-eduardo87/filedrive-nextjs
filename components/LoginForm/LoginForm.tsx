@@ -72,10 +72,7 @@ const LoginForm: FC = () => {
         {errorMessage}
       </p>
 
-      <Button
-        style={{ width: "100%", backgroundColor: "#8800C7" }}
-        isDisabled={!isFormValid}
-      >
+      <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
         Login
       </Button>
     </form>

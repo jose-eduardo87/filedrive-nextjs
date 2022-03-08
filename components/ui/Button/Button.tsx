@@ -22,10 +22,15 @@ const buttonStyle = (
     outline: "none",
     fontSize: "inherit",
     padding: ".35em 1.2em",
-    transition: ".5s all",
-    backgroundColor: hoverState ? "#FFFFFF" : "#00564D",
-    color: hoverState ? "#000000" : "#FFFFFF",
-    border: hoverState ? "none" : "1px solid #FFFFFF",
+    transition: ".2s all",
+    backgroundColor: isDisabled
+      ? "#DCDCDC"
+      : hoverState
+      ? "#FFFFFF"
+      : "#000000",
+    color: isDisabled ? "#000000" : hoverState ? "#000000" : "#FFFFFF",
+    border: isDisabled ? "none" : "1px solid #000000",
+
     ...style,
   };
 };

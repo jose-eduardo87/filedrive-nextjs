@@ -35,9 +35,20 @@ const SignUpForm: FC = () => {
     isValid: isPasswordValid,
     hasError: passwordHasError,
   } = useInput(passwordValidator);
+  const {
+    value: passwordConfirmValue,
+    onBlur: onPasswordConfirmBlur,
+    onChange: onPasswordConfirmChange,
+    reset: resetPasswordConfirm,
+    isValid: isPasswordConfirmValid,
+    hasError: passwordConfirmHasError,
+  } = useInput(passwordValidator);
 
-  const isFormValid = isNameValid && isEmailValid && isPasswordValid;
-  const errorMessage = "Required field.";
+  const errorMessage = "Invalid field.";
+  const passwordConfirmIsValid =
+    !passwordConfirmHasError && passwordValue === passwordConfirmValue;
+  const isFormValid =
+    isNameValid && isEmailValid && isPasswordValid && passwordConfirmIsValid;
   const setVisibility = (hasError: boolean) =>
     hasError ? "visible" : "hidden";
   const onSubmitHandler = (e: FormEvent) => {
@@ -99,11 +110,25 @@ const SignUpForm: FC = () => {
       >
         {errorMessage}
       </p>
-
-      <Button
-        style={{ width: "100%", backgroundColor: "#8800C7" }}
-        isDisabled={!isFormValid}
+      <Input
+        type="password"
+        placeholder="Confirm Password"
+        value={passwordConfirmValue}
+        onBlur={onPasswordConfirmBlur}
+        onChange={onPasswordConfirmChange}
+        required
+      />
+      <p
+        className={styles.errorMessage}
+        style={{
+          visibility: setVisibility(!passwordConfirmIsValid),
+          color: "red",
+        }}
       >
+        {errorMessage}
+      </p>
+
+      <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
         Login
       </Button>
     </form>

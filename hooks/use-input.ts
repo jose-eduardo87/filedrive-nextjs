@@ -1,14 +1,30 @@
-import { useReducer, useCallback } from "react";
+import { useReducer, useCallback, ChangeEvent } from "react";
+
+enum ActionKind {
+  Input = "INPUT",
+  Blur = "BLUR",
+  Reset = "RESET",
+}
+
+type State = {
+  value: string;
+  isTouched: boolean;
+};
+
+type Action = {
+  type: ActionKind;
+  value?: string;
+};
 
 const initialValue = { value: "", isTouched: false };
 
-const inputReducer = (state, action) => {
+const inputReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "INPUT":
-      return { value: action.value, isTouched: state.isTouched };
-    case "BLUR":
-      return { isTouched: true, value: state.value };
-    case "RESET":
+    case ActionKind.Input:
+      return { value: action.value as string, isTouched: state.isTouched };
+    case ActionKind.Blur:
+      return { value: state.value, isTouched: true };
+    case ActionKind.Reset:
       return { value: "", isTouched: false };
 
     default:
@@ -16,18 +32,22 @@ const inputReducer = (state, action) => {
   }
 };
 
-const useInput = (validateField) => {
+const useInput = (validateField: (arg: string) => {}) => {
   const [input, dispatch] = useReducer(inputReducer, initialValue);
 
   const isValid = validateField(input.value);
   const hasError = !isValid && input.isTouched;
 
-  const onBlurChangeHandler = useCallback(() => dispatch({ type: "BLUR" }), []);
-  const onChangeHandler = useCallback(
-    (event) => dispatch({ type: "INPUT", value: event.target.value }),
+  const onBlurChangeHandler = useCallback(
+    () => dispatch({ type: ActionKind.Blur }),
     []
   );
-  const reset = () => dispatch({ type: "RESET" });
+  const onChangeHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      dispatch({ type: ActionKind.Input, value: event.target.value }),
+    []
+  );
+  const reset = () => dispatch({ type: ActionKind.Reset });
 
   return {
     value: input.value,

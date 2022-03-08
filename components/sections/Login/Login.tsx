@@ -15,7 +15,6 @@ const Login: FC = () => {
           <a>
             <Button
               style={{
-                backgroundColor: "#8800C7",
                 width: "100%",
                 fontSize: "1rem",
                 verticalAlign: "middle",
