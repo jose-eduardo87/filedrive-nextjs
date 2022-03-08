@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* font-size: 0.7rem; */
+}
+
+.root h1 {
+  font-size: 1.2rem;
+}
+
+.root p {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.loginOptionsBox {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 30%;
+  border-top: 1px solid #cecece;
+  border-bottom: 1px solid #cecece;
+}
+
+.accountOptions {
+  margin-top: 2rem;
+}

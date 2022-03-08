@@ -1,0 +1,12 @@
+.footer {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f6f9fc;
+}
+
+.footer h1 {
+  font-size: 1rem;
+  font-weight: 600;
+}

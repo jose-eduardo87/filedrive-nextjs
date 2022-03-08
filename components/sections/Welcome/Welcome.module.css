@@ -1,0 +1,54 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: #ff4f5b;
+}
+
+.infoContainer {
+  height: 700px;
+  margin-top: 4rem;
+}
+
+.infoContainer div {
+  text-align: center;
+}
+
+.rowItems {
+  max-width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+  display: flex;
+}
+
+.leftPanel {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  word-spacing: 1px;
+}
+
+.leftPanel h2 {
+  font-size: 2.4rem;
+  font-weight: 900;
+}
+
+.leftPanel p {
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.rightPanel {
+  width: 70%;
+}
+
+.buttonsGroup {
+  margin-top: 1rem;
+  padding: 0 !important;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
