@@ -1,4 +1,3 @@
-import { useDropzone } from "react-dropzone";
 import { FileSharingIllustration } from "@/components/Icons";
 import { Button } from "@/components/ui";
 

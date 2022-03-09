@@ -7,12 +7,14 @@ const Noop: FC = ({ children }) => <>{children}</>;
 function MyApp({
   Component,
   pageProps,
-}: AppProps & { Component: { Layout: FC } }) {
-  const Layout = Component.Layout ?? Noop;
+}: AppProps & {
+  Component: { Layout?: FC; LayoutDrive?: FC };
+}) {
+  const Layout = Component.Layout ?? Component.LayoutDrive ?? Noop;
 
   return (
     <Layout>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </Layout>
   );
 }

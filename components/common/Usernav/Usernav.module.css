@@ -1,0 +1,58 @@
+.usernav {
+  height: 860px;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-right: 1px solid #ebebeb;
+  background-color: #ffffff;
+}
+
+.upperGroup {
+  margin-top: 1rem;
+  height: 65%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upperGroup nav {
+  width: 90%;
+}
+
+.profileImg {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 2rem;
+  background-color: antiquewhite;
+  border-radius: 100%;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 1rem;
+  border-top: 1px solid #cecece;
+}
+
+.navLinks li {
+  list-style-type: none;
+  /* margin-bottom: 1rem; */
+  line-height: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 1rem;
+}
+
+.logout {
+  padding-right: 1rem;
+  color: red;
+  font-size: 0.7rem;
+  margin: 0;
+  cursor: pointer;
+}
