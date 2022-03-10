@@ -20,7 +20,7 @@ const Login: FC = () => {
                 verticalAlign: "middle",
               }}
             >
-              <GoogleLogo /> Continue with Google
+              <GoogleLogo width={24} /> Continue with Google
             </Button>
           </a>
         </Link>

@@ -1,19 +1,31 @@
 import { FC } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 
-import styles from "./DriveStorageInfo.module.css";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface StorageInfoProps {
-  totalSpace: number;
+  freeSpace: number;
   usedSpace: number;
 }
 
-const DriveStorageInfo: FC<StorageInfoProps> = ({ totalSpace, usedSpace }) => {
+const DriveStorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace }) => {
+  const DATA = {
+    labels: ["Free", "Used"],
+    datasets: [
+      {
+        data: [freeSpace, usedSpace],
+        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+      },
+    ],
+  };
   return (
-    <section className={styles.root}>
-      <p>
-        You have used {usedSpace} from {totalSpace}.
-      </p>
-    </section>
+    <>
+      <small style={{ textAlign: "center", marginBottom: "1rem" }}>
+        Storage information
+      </small>
+      <Pie data={DATA} />
+    </>
   );
 };
 

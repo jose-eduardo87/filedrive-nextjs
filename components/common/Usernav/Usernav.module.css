@@ -23,8 +23,8 @@
 }
 
 .profileImg {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   margin-bottom: 2rem;
   background-color: antiquewhite;
   border-radius: 100%;
@@ -36,17 +36,26 @@
   justify-content: space-between;
   padding-left: 1rem;
   border-top: 1px solid #cecece;
+  padding-top: 2rem;
+}
+
+.icon {
+  margin-right: 1rem;
+  vertical-align: middle;
 }
 
 .navLinks li {
   list-style-type: none;
-  /* margin-bottom: 1rem; */
   line-height: 1.6rem;
-  font-weight: 900;
-  letter-spacing: 1px;
-  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 1.5px;
   cursor: pointer;
   margin: 1rem;
+  transition: 0.4s all;
+}
+
+.navLinks li:hover {
+  /* font-weight: 700; */
 }
 
 .logout {
