@@ -99,6 +99,7 @@ const SignUpForm: FC = () => {
         value={passwordValue}
         onBlur={onPasswordBlur}
         onChange={onPasswordChange}
+        autoComplete="off"
         required
       />
       <p
@@ -116,6 +117,7 @@ const SignUpForm: FC = () => {
         value={passwordConfirmValue}
         onBlur={onPasswordConfirmBlur}
         onChange={onPasswordConfirmChange}
+        autoComplete="off"
         required
       />
       <p

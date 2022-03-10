@@ -1,12 +1,18 @@
 .footer {
   height: 60px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-color: #f6f9fc;
 }
 
 .footer h1 {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 200;
+}
+
+.footer a {
+  font-size: 0.8rem;
+  font-weight: 100;
+  color: #0a85ff;
 }

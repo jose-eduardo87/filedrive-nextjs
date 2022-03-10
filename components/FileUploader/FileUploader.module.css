@@ -1,0 +1,52 @@
+.filesContainer {
+  height: 200px;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  overflow: auto;
+  background-color: #e7ffff;
+}
+
+.filesContainer ul {
+  margin: 0;
+}
+
+.errorMessage {
+  text-align: center;
+  font-size: 0.7rem;
+  color: red;
+}
+
+.filesTitle {
+  font-weight: 100;
+  letter-spacing: 1.5px;
+}
+
+.filesContainer ul {
+  padding: 0;
+}
+
+.filesContainer li {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  cursor: pointer;
+  margin-bottom: 4px;
+  padding: 0.2rem 0.6rem 0.2rem 0.6rem;
+  color: #999999;
+}
+
+.trashIcon {
+  display: none;
+}
+
+.filesContainer li:hover {
+  background-color: #fdfddf;
+}
+
+.filesContainer li:hover .fileSize {
+  display: none;
+}
+
+.filesContainer li:hover .trashIcon {
+  display: block;
+}

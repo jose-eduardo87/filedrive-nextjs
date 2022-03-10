@@ -60,6 +60,7 @@ const LoginForm: FC = () => {
         value={passwordValue}
         onBlur={onPasswordBlur}
         onChange={onPasswordChange}
+        autoComplete="off"
         required
       />
       <p

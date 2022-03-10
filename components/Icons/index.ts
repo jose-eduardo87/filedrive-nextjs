@@ -1,3 +1,5 @@
+export { default as Coffee } from "./Coffee";
+export { default as Dashboard } from "./Dashboard";
 export { default as DragAndDrop } from "./DragAndDrop";
 export { default as File } from "./File";
 export { default as FileSharingIllustration } from "./FileSharingIllustration";

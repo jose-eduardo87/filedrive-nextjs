@@ -5,6 +5,7 @@ interface ButtonProps {
   title?: string;
   isDisabled?: boolean;
   style?: CSSProperties;
+  onClick?: () => void;
 }
 
 const buttonStyle = (
@@ -35,7 +36,13 @@ const buttonStyle = (
   };
 };
 
-const Button = ({ children, title, isDisabled, style }: ButtonProps) => {
+const Button = ({
+  children,
+  title,
+  isDisabled,
+  style,
+  onClick,
+}: ButtonProps) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const hoverButtonHandler = (type?: "enter") =>
@@ -43,6 +50,7 @@ const Button = ({ children, title, isDisabled, style }: ButtonProps) => {
 
   return (
     <button
+      onClick={onClick}
       onMouseEnter={() => hoverButtonHandler("enter")}
       onMouseLeave={() => hoverButtonHandler()}
       style={buttonStyle(isHovering, isDisabled, style)}

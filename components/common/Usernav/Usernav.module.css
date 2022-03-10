@@ -59,6 +59,7 @@
 }
 
 .logout {
+  align-self: flex-end;
   padding-right: 1rem;
   color: red;
   font-size: 0.7rem;

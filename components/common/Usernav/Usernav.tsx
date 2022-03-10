@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import { Home, File, Trash, Gear, Logout } from "@/components/Icons";
+import { Home, Dashboard, File, Trash, Gear, Logout } from "@/components/Icons";
 
 import styles from "./Usernav.module.css";
 
@@ -11,6 +11,7 @@ const Usernav: FC = () => {
     <div className={styles.usernav}>
       <div className={styles.upperGroup}>
         <div className={styles.profileImg}></div>
+        <small>José Eduardo</small>
         <nav>
           <ul className={styles.navLinks}>
             <Link passHref href="/">
@@ -21,7 +22,15 @@ const Usernav: FC = () => {
                 Homepage
               </li>
             </Link>
-            <Link passHref href="/">
+            <Link passHref href="/drive">
+              <li>
+                <span className={styles.icon}>
+                  <Dashboard {...iconStyles} />
+                </span>
+                Dashboard
+              </li>
+            </Link>
+            <Link passHref href="/drive/files">
               <li>
                 <span className={styles.icon}>
                   <File {...iconStyles} />
@@ -29,7 +38,7 @@ const Usernav: FC = () => {
                 Files
               </li>
             </Link>
-            <Link passHref href="/">
+            <Link passHref href="/drive/trash">
               <li>
                 <span className={styles.icon}>
                   <Trash {...iconStyles} />
@@ -37,7 +46,7 @@ const Usernav: FC = () => {
                 Trash
               </li>
             </Link>
-            <Link passHref href="/">
+            <Link passHref href="/drive/settings">
               <li>
                 <span className={styles.icon}>
                   <Gear {...iconStyles} />
@@ -54,7 +63,7 @@ const Usernav: FC = () => {
           <span style={{ marginRight: ".5rem", verticalAlign: "middle" }}>
             <Logout width={16} fill="red" />
           </span>
-          LOGOUT
+          Logout
         </p>
       </Link>
     </div>

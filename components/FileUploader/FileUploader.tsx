@@ -1,46 +1,30 @@
-import { FC, ReactNode, CSSProperties, useMemo } from "react";
+import { FC, ReactNode, useState, useMemo, CSSProperties } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
+import { Button } from "../ui";
 import { DragAndDrop } from "@/components/Icons";
+import { Trash } from "@/components/Icons";
+import {
+  baseStyle,
+  focusedStyle,
+  acceptStyle,
+  rejectStyle,
+} from "helpers/constants";
 
-const baseStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "20px",
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-};
-
-const focusedStyle = {
-  borderColor: "#2196f3",
-};
-
-const acceptStyle = {
-  borderColor: "#00e676",
-};
-
-const rejectStyle = {
-  borderColor: "#ff1744",
-};
+import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
+  const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const {
+    fileRejections,
     acceptedFiles,
     getRootProps,
     getInputProps,
     isFocused,
     isDragAccept,
     isDragReject,
-  } = useDropzone();
+  } = useDropzone({ maxSize: 10000000 });
   const style = useMemo(
-    () => ({
+    (): CSSProperties => ({
       ...baseStyle,
       ...(isFocused ? focusedStyle : {}),
       ...(isDragAccept ? acceptStyle : {}),
@@ -49,13 +33,26 @@ const FileUploader: FC = () => {
     [isFocused, isDragAccept, isDragReject]
   );
 
-  const files = acceptedFiles.map(
-    (file: FileWithPath): ReactNode => (
+  let totalSize: number = 0;
+  const files = acceptedFiles.map((file: FileWithPath): ReactNode => {
+    totalSize += file.size;
+
+    return (
       <li key={file.path}>
-        {file.path} - {file.size} bytes
+        <span>{file.path}</span> -{" "}
+        <span className={styles.fileSize}>{file.size} bytes</span>
+        <span className={styles.trashIcon}>
+          <Trash
+            width={16}
+            fill={"#999999"}
+            onClick={() => console.log(file.name)}
+          />
+        </span>
       </li>
-    )
-  );
+    );
+  });
+  const hasFiles = !(files.length === 0);
+  const hasRejections = !(fileRejections.length === 0);
 
   return (
     <section className="container">
@@ -68,10 +65,28 @@ const FileUploader: FC = () => {
           Drag and drop your files here, or click to select files.
         </p>
       </div>
-      <aside>
-        <h4>Files</h4>
+      {hasRejections && (
+        <p className={styles.errorMessage}>
+          * 10 Mb is the maximum file size allowed.
+        </p>
+      )}
+      <p className={styles.filesTitle}>{hasFiles ? "Add more:" : "Files:"}</p>
+      {hasFiles && (
+        <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
+          Total {files.length} files * {totalSize} bytes
+        </small>
+      )}
+      <aside className={styles.filesContainer}>
         <ul>{files}</ul>
       </aside>
+      <Button
+        style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
+        title="Select some files to upload them to your drive."
+        isDisabled={!hasFiles}
+        onClick={() => alert("Clicked!")}
+      >
+        Send
+      </Button>
     </section>
   );
 };
