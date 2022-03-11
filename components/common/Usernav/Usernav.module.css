@@ -55,14 +55,18 @@
 }
 
 .navLinks li:hover {
-  /* font-weight: 700; */
+  color: #2093c3;
 }
 
 .logout {
   align-self: flex-end;
   padding-right: 1rem;
-  color: red;
+  color: #ff0000;
   font-size: 0.7rem;
   margin: 0;
   cursor: pointer;
+}
+
+.logout:hover {
+  color: #cc0000;
 }

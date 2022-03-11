@@ -29,7 +29,7 @@
   display: flex;
   justify-content: space-between;
   list-style-type: none;
-  cursor: pointer;
+  /* cursor: pointer; */
   margin-bottom: 4px;
   padding: 0.2rem 0.6rem 0.2rem 0.6rem;
   color: #999999;

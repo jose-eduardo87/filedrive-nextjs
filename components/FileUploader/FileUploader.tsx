@@ -1,4 +1,11 @@
-import { FC, ReactNode, useState, useMemo, CSSProperties } from "react";
+import {
+  FC,
+  ReactNode,
+  CSSProperties,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "../ui";
 import { DragAndDrop } from "@/components/Icons";
@@ -9,11 +16,19 @@ import {
   acceptStyle,
   rejectStyle,
 } from "helpers/constants";
+import { roundFileSizeToCorrectUnit } from "helpers/functions";
 
 import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
+  const onDropAccepted = (acceptedFiles: FileWithPath[]) =>
+    setUploadedFiles((currentState) => {
+      // NOT WORKING!!!
+      const fileSet = new Set([...currentState, ...acceptedFiles]);
+
+      return Array.from(fileSet);
+    });
   const {
     fileRejections,
     acceptedFiles,
@@ -22,7 +37,7 @@ const FileUploader: FC = () => {
     isFocused,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ maxSize: 10000000 });
+  } = useDropzone({ maxSize: 10000000, onDropAccepted });
   const style = useMemo(
     (): CSSProperties => ({
       ...baseStyle,
@@ -32,26 +47,32 @@ const FileUploader: FC = () => {
     }),
     [isFocused, isDragAccept, isDragReject]
   );
-
   let totalSize: number = 0;
-  const files = acceptedFiles.map((file: FileWithPath): ReactNode => {
+  const renderFiles = uploadedFiles.map((file: FileWithPath): ReactNode => {
     totalSize += file.size;
 
     return (
       <li key={file.path}>
         <span>{file.path}</span> -{" "}
-        <span className={styles.fileSize}>{file.size} bytes</span>
+        <span className={styles.fileSize}>
+          {roundFileSizeToCorrectUnit(file.size)}
+        </span>
         <span className={styles.trashIcon}>
           <Trash
             width={16}
-            fill={"#999999"}
-            onClick={() => console.log(file.name)}
+            fill="#999999"
+            cursor="pointer"
+            onClick={() => onRemoveFileHandler(file.name)}
           />
         </span>
       </li>
     );
   });
-  const hasFiles = !(files.length === 0);
+  const onRemoveFileHandler = (name: string) =>
+    setUploadedFiles((currentState) =>
+      currentState.filter((file) => file.name !== name)
+    );
+  const hasFiles = !(acceptedFiles.length === 0);
   const hasRejections = !(fileRejections.length === 0);
 
   return (
@@ -73,17 +94,21 @@ const FileUploader: FC = () => {
       <p className={styles.filesTitle}>{hasFiles ? "Add more:" : "Files:"}</p>
       {hasFiles && (
         <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
-          Total {files.length} files * {totalSize} bytes
+          Total{" "}
+          {uploadedFiles.length === 1
+            ? `${uploadedFiles.length} file`
+            : `${uploadedFiles.length} files`}{" "}
+          * {roundFileSizeToCorrectUnit(totalSize)}
         </small>
       )}
       <aside className={styles.filesContainer}>
-        <ul>{files}</ul>
+        <ul>{renderFiles}</ul>
       </aside>
       <Button
         style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
         title="Select some files to upload them to your drive."
         isDisabled={!hasFiles}
-        onClick={() => alert("Clicked!")}
+        onClick={() => alert("hello")}
       >
         Send
       </Button>

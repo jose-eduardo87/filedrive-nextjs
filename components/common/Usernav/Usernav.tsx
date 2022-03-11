@@ -1,17 +1,29 @@
 import { FC } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Home, Dashboard, File, Trash, Gear, Logout } from "@/components/Icons";
+import { useUserInfo } from "store/user-context";
 
 import styles from "./Usernav.module.css";
 
 const iconStyles = { width: 20 };
 
 const Usernav: FC = () => {
+  const { user } = useUserInfo();
+
   return (
     <div className={styles.usernav}>
       <div className={styles.upperGroup}>
-        <div className={styles.profileImg}></div>
-        <small>José Eduardo</small>
+        <div className={styles.profileImg}>
+          {/* <Image
+            alt={'Eduardo'}
+            width="250px"
+            height="250px"
+            layout="responsive"
+            src={profileImage}
+          /> */}
+        </div>
+        <small>{user!.name}</small>
         <nav>
           <ul className={styles.navLinks}>
             <Link passHref href="/">
@@ -58,7 +70,7 @@ const Usernav: FC = () => {
         </nav>
       </div>
 
-      <Link passHref href="/logout">
+      <Link passHref href="/drive/logout">
         <p className={styles.logout}>
           <span style={{ marginRight: ".5rem", verticalAlign: "middle" }}>
             <Logout width={16} fill="red" />

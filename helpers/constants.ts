@@ -28,3 +28,7 @@ export const acceptStyle: CSSProperties = {
 export const rejectStyle: CSSProperties = {
   borderColor: "#ff1744",
 };
+
+export const MALE_PROFILE_PIC = "/static/public/images/profile-male.webp";
+
+export const FEMALE_PROFILE_PIC = "/static/public/images/profile-female.webp";

@@ -10,7 +10,9 @@ const cardHeight = "350px";
 const MainPage: NextPage & { LayoutDrive: FC } = () => {
   return (
     <>
-      <h1 style={{ fontWeight: 100, marginBottom: "3rem" }}>Hello, Eduardo.</h1>
+      <h1 style={{ fontWeight: 100, marginBottom: "3rem", color: "#2093C3" }}>
+        Hello, Eduardo.
+      </h1>
 
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
         <Card>
