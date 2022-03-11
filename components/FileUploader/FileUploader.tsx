@@ -22,13 +22,20 @@ import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
-  const onDropAccepted = (acceptedFiles: FileWithPath[]) =>
+  const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
-      // NOT WORKING!!!
-      const fileSet = new Set([...currentState, ...acceptedFiles]);
+      const filesArray = [...currentState, ...acceptedFiles];
 
-      return Array.from(fileSet);
+      // REMOVES ALL THE DUPLICATE FILES
+      const filteredFiles = filesArray.filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.name === value.name)
+      );
+
+      return filteredFiles;
     });
+  };
+
   const {
     fileRejections,
     acceptedFiles,
@@ -72,7 +79,7 @@ const FileUploader: FC = () => {
     setUploadedFiles((currentState) =>
       currentState.filter((file) => file.name !== name)
     );
-  const hasFiles = !(acceptedFiles.length === 0);
+  const hasFiles = !(uploadedFiles.length === 0);
   const hasRejections = !(fileRejections.length === 0);
 
   return (
@@ -108,7 +115,7 @@ const FileUploader: FC = () => {
         style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
         title="Select some files to upload them to your drive."
         isDisabled={!hasFiles}
-        onClick={() => alert("hello")}
+        onClick={() => alert(JSON.stringify(uploadedFiles))}
       >
         Send
       </Button>
