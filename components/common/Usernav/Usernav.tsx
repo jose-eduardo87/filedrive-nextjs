@@ -47,17 +47,17 @@ const Usernav: FC = () => {
                 <span className={styles.icon}>
                   <File {...iconStyles} />
                 </span>
-                Files
+                File Manager
               </li>
             </Link>
-            <Link passHref href="/drive/trash">
+            {/* <Link passHref href="/drive/trash">
               <li>
                 <span className={styles.icon}>
                   <Trash {...iconStyles} />
                 </span>
                 Trash
               </li>
-            </Link>
+            </Link> */}
             <Link passHref href="/drive/settings">
               <li>
                 <span className={styles.icon}>

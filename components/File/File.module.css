@@ -1,0 +1,9 @@
+.root {
+  margin-bottom: 4px;
+  padding: 0.2rem 0.6rem 0.2rem 0.6rem;
+  color: #999999;
+}
+
+.root:hover {
+  background-color: #fdfddf;
+}

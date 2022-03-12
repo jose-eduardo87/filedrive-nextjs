@@ -32,3 +32,9 @@ export const rejectStyle: CSSProperties = {
 export const MALE_PROFILE_PIC = "/static/public/images/profile-male.webp";
 
 export const FEMALE_PROFILE_PIC = "/static/public/images/profile-female.webp";
+
+export const STYLE_HEADING_DASHBOARD = {
+  fontWeight: 100,
+  marginBottom: "3rem",
+  color: "#2093C3",
+};

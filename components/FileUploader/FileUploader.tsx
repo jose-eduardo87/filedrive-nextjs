@@ -1,11 +1,4 @@
-import {
-  FC,
-  ReactNode,
-  CSSProperties,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "../ui";
 import { DragAndDrop } from "@/components/Icons";
@@ -28,8 +21,8 @@ const FileUploader: FC = () => {
 
       // REMOVES ALL THE DUPLICATE FILES
       const filteredFiles = filesArray.filter(
-        (value, index, self) =>
-          index === self.findIndex((t) => t.name === value.name)
+        (value, index, array) =>
+          index === array.findIndex((t) => t.name === value.name)
       );
 
       return filteredFiles;
@@ -83,7 +76,7 @@ const FileUploader: FC = () => {
   const hasRejections = !(fileRejections.length === 0);
 
   return (
-    <section className="container">
+    <section>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>
@@ -95,7 +88,9 @@ const FileUploader: FC = () => {
       </div>
       {hasRejections && (
         <p className={styles.errorMessage}>
-          * 10 Mb is the maximum file size allowed.
+          {fileRejections.length === 1
+            ? `${fileRejections[0].file.name} could not be uploaded because it exceeded the maximum file size (10 MB).`
+            : "Some files could not be selected due to the file size limitation (10MB)."}
         </p>
       )}
       <p className={styles.filesTitle}>{hasFiles ? "Add more:" : "Files:"}</p>

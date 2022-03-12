@@ -14,7 +14,7 @@ const UserContext = createContext<Partial<UserContextInterface>>({});
 
 const UserProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<UserInterface>({
-    name: "",
+    name: "Eduardo",
     profileImgSrc: "",
   });
 
