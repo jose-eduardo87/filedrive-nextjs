@@ -89,7 +89,7 @@ const FileUploader: FC = () => {
       {hasRejections && (
         <p className={styles.errorMessage}>
           {fileRejections.length === 1
-            ? `${fileRejections[0].file.name} could not be uploaded because it exceeded the maximum file size (10 MB).`
+            ? `${fileRejections[0].file.name} could not be uploaded because it exceeds the maximum allowed file size (10 MB).`
             : "Some files could not be selected due to the file size limitation (10MB)."}
         </p>
       )}
@@ -108,11 +108,17 @@ const FileUploader: FC = () => {
       </aside>
       <Button
         style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
-        title="Select some files to upload them to your drive."
+        title={
+          hasFiles
+            ? `Hit the button to upload the file${
+                uploadedFiles.length > 1 ? "s!" : "!"
+              }`
+            : "You must select at least one file."
+        }
         isDisabled={!hasFiles}
         onClick={() => alert(JSON.stringify(uploadedFiles))}
       >
-        Send
+        Send!
       </Button>
     </section>
   );
