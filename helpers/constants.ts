@@ -33,8 +33,20 @@ export const MALE_PROFILE_PIC = "/static/public/images/profile-male.webp";
 
 export const FEMALE_PROFILE_PIC = "/static/public/images/profile-female.webp";
 
-export const STYLE_HEADING_DASHBOARD = {
+export const HEADING_STYLE_IN_DASHBOARD = {
   fontWeight: 100,
   marginBottom: "3rem",
   color: "#2093C3",
+};
+
+export const HEADING_STYLE_IN_FILES: CSSProperties = {
+  color: "#7E7E7E",
+  fontSize: "1.2rem",
+  fontWeight: 400,
+  letterSpacing: "1px",
+};
+
+export const ICON_STYLE_IN_FILES: CSSProperties = {
+  width: "1.2rem",
+  fill: "#999999",
 };

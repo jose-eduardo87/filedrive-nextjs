@@ -6,6 +6,21 @@
   /* position: relative; */
 }
 
+.root div {
+  width: 50%;
+  height: 100%;
+  padding: 2rem;
+  overflow: auto;
+}
+
+.root div:first-of-type {
+  background-color: #e7ffff;
+}
+
+.root div:last-of-type {
+  background-color: #fde4e8;
+}
+
 .filesPanel,
 .trashPanel {
   width: 50%;

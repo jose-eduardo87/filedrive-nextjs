@@ -1,4 +1,4 @@
-const File = ({ ...props }) => (
+const Filedrive = ({ ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 490 490"
@@ -12,4 +12,4 @@ const File = ({ ...props }) => (
   </svg>
 );
 
-export default File;
+export default Filedrive;

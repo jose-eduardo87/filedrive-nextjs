@@ -1,7 +1,14 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Home, Dashboard, File, Trash, Gear, Logout } from "@/components/Icons";
+import {
+  Home,
+  Dashboard,
+  Filedrive,
+  Trash,
+  Gear,
+  Logout,
+} from "@/components/Icons";
 import { useUserInfo } from "store/user-context";
 
 import styles from "./Usernav.module.css";
@@ -45,7 +52,7 @@ const Usernav: FC = () => {
             <Link passHref href="/drive/files">
               <li>
                 <span className={styles.icon}>
-                  <File {...iconStyles} />
+                  <Filedrive {...iconStyles} />
                 </span>
                 File Manager
               </li>

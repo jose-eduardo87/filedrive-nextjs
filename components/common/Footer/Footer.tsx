@@ -6,7 +6,7 @@ import styles from "./Footer.module.css";
 const Footer: FC = () => {
   return (
     <footer className={styles.footer}>
-      <h1>
+      <small>
         Made solely for educational purposes. No commercial use. Built by{" "}
         <a
           target="_blank"
@@ -17,7 +17,7 @@ const Footer: FC = () => {
         </a>{" "}
         with NextJS, TypeScript, PostgreSQL, Prisma and LOTS of coffee!{" "}
         <Coffee width={16} />
-      </h1>
+      </small>
     </footer>
   );
 };
