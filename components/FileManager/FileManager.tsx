@@ -1,10 +1,7 @@
 import { FC, Dispatch, SetStateAction, useState, useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Files } from "@/components/Files";
-// import { File, Trash } from "@/components/Icons";
 import { FileInterface } from "pages/drive/files";
-
-// https://www.youtube.com/watch?v=Vqa9NMzF3wc&ab_channel=LogRocket
 
 import styles from "./FileManager.module.css";
 
@@ -55,26 +52,12 @@ const onDragEnd = (
         items: destinationItems,
       },
     });
-  }
-  // else {
-  //   const listStart = list[source.droppableId];
-  //   const copiedItems = [...listStart.items];
-  //   const [removed] = copiedItems.splice(source.index, 1);
-  //   copiedItems.splice(destination.index, 0, removed);
 
-  //   setList({
-  //     ...list,
-  //     [source.droppableId]: {
-  //       ...listStart,
-  //       items: copiedItems,
-  //     },
-  //   });
-  // }
+    // ADD POST REQUEST HERE
+  }
 };
 
 const FileManager: FC<FMProps> = ({ files, trash }) => {
-  // const filesIdArray = Object.values(files).map((file) => file.id);
-  // const trashIdArray = Object.values(trash).map((file) => file.id);
   const columns: DndType = {
     [Key.DRIVE]: {
       name: "drive",

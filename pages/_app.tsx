@@ -1,6 +1,7 @@
 import { FC } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import ThemeProvider from "store/theme-context";
 
 const Noop: FC = ({ children }) => <>{children}</>;
 
@@ -13,9 +14,11 @@ function MyApp({
   const Layout = Component.Layout ?? Component.LayoutDrive ?? Noop;
 
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <ThemeProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </ThemeProvider>
   );
 }
 

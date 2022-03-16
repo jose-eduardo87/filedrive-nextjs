@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 
 import styles from "./File.module.css";
-import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 interface draggableConfig {
   provided: DraggableProvided;
@@ -10,19 +10,30 @@ interface draggableConfig {
 }
 
 const File: FC<{
+  id: string;
   file: FileInterface;
   draggableConfig: draggableConfig;
-}> = ({ file, draggableConfig }) => {
+}> = ({ id, file, draggableConfig }) => {
   const { provided, snapshot } = draggableConfig;
+  const isFileInDrive = id === "list-drive";
+
+  const onDoubleClickHandler = (isInDrive: boolean) => {
+    if (!isInDrive) {
+      return;
+    }
+
+    alert("Download request must be done from here.");
+  };
   return (
     <li
       ref={provided.innerRef}
       className={styles.root}
-      style={{
-        userSelect: "none",
-        backgroundColor: snapshot.isDragging ? "#263B4A" : "#456C86",
-        ...provided.draggableProps.style,
-      }}
+      title={
+        isFileInDrive
+          ? "Double-click me to download this file."
+          : "Drag this file to the left panel in order to download it."
+      }
+      onDoubleClick={() => onDoubleClickHandler(isFileInDrive)}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >

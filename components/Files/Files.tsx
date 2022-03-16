@@ -30,12 +30,20 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
           <ul
             ref={provided.innerRef}
             className={styles.root}
+            style={{
+              backgroundColor: snapshot.isDraggingOver ? "#f3f3f3" : "",
+              border: snapshot.isDraggingOver ? "3px dotted #CECECE" : "",
+            }}
             {...provided.droppableProps}
           >
             {files.items.map((file, index) => (
               <Draggable key={file.id} draggableId={file.id} index={index}>
                 {(provided, snapshot) => (
-                  <File draggableConfig={{ provided, snapshot }} file={file} />
+                  <File
+                    draggableConfig={{ provided, snapshot }}
+                    file={file}
+                    id={id}
+                  />
                 )}
               </Draggable>
             ))}

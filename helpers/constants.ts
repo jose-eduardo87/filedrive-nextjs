@@ -33,7 +33,7 @@ export const MALE_PROFILE_PIC = "/static/public/images/profile-male.webp";
 
 export const FEMALE_PROFILE_PIC = "/static/public/images/profile-female.webp";
 
-export const HEADING_STYLE_IN_DASHBOARD = {
+export const HEADING_STYLE_IN_DASHBOARD: CSSProperties = {
   fontWeight: 100,
   marginBottom: "3rem",
   color: "#2093C3",
