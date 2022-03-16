@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { File } from "@/components/File";
-import { Filedrive, Trash } from "@/components/Icons";
+import { Filedrive, Empty, Trash } from "@/components/Icons";
 import { FileInListInterface } from "../FileManager/FileManager";
 import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 
@@ -21,6 +21,24 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
         <Trash {...ICON_STYLE_IN_FILES} /> Trash
       </h2>
     );
+  const renderEmptyPanel = (
+    <div
+      style={{ width: "100%", height: "100%", backgroundColor: "transparent" }}
+    >
+      <p style={{ textAlign: "center", color: "#A1A1A1" }}>
+        {files.name === "drive"
+          ? "Empty drive."
+          : "Clean bin, congratulations!"}
+      </p>
+    </div>
+  );
+  const renderFilePanel = files.items.map((file, index) => (
+    <Draggable key={file.id} draggableId={file.id} index={index}>
+      {(provided, snapshot) => (
+        <File draggableConfig={{ provided, snapshot }} file={file} id={id} />
+      )}
+    </Draggable>
+  ));
 
   return (
     <Droppable droppableId={id}>
@@ -36,17 +54,8 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
             }}
             {...provided.droppableProps}
           >
-            {files.items.map((file, index) => (
-              <Draggable key={file.id} draggableId={file.id} index={index}>
-                {(provided, snapshot) => (
-                  <File
-                    draggableConfig={{ provided, snapshot }}
-                    file={file}
-                    id={id}
-                  />
-                )}
-              </Draggable>
-            ))}
+            {files.items.length === 0 ? renderEmptyPanel : renderFilePanel}
+
             {provided.placeholder}
           </ul>
         </>

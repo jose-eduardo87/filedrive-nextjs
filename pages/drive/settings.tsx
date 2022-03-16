@@ -1,5 +1,5 @@
-import { NextPage } from "next";
 import { FC } from "react";
+import { NextPage } from "next";
 import { Card } from "@/components/ui";
 import { SettingsForm } from "@/components/SettingsForm";
 import { SettingsOptions } from "@/components/SettingsOptions";
@@ -15,7 +15,8 @@ const Settings: NextPage & { LayoutDrive: FC } = () => {
         style={{
           height: "500px",
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: "row",
+          // justifyContent: "space-between",
         }}
       >
         <SettingsForm />

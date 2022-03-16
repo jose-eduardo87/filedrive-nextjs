@@ -1,14 +1,15 @@
 import { FC } from "react";
-import { InferGetServerSidePropsType, NextPage } from "next";
-import { GetServerSideProps } from "next";
+import {
+  InferGetServerSidePropsType,
+  NextPage,
+  GetServerSideProps,
+} from "next";
 import { resetServerContext } from "react-beautiful-dnd";
 import { Card } from "@/components/ui";
 import { FileManager } from "@/components/FileManager";
 import { LayoutDrive } from "@/components/common";
 import { roundFileSizeToCorrectUnit } from "helpers/functions";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
-
-// DECIDE WETHER TO USE https://www.npmjs.com/package/react-beautiful-dnd, https://www.npmjs.com/package/react-draggable OR https://www.npmjs.com/package/react-dnd
 
 export interface FileInterface {
   id: string;
@@ -24,31 +25,31 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const files: FileInterface[] = [
     {
       id: "file-01",
-      name: "Photo 01",
+      name: "Photo 01.jpg",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-02",
-      name: "Photo 02",
+      name: "Photo 02.jpeg",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-03",
-      name: "Photo 03",
+      name: "Photo 03.pdf",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-04",
-      name: "Photo 04",
+      name: "Photo 04.mkv",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-05",
-      name: "Photo 05",
+      name: "Photo 05.mp4",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
@@ -56,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const trash: FileInterface[] = [
     {
       id: "file-02a",
-      name: "Photo 02",
+      name: "Photo 02.txt",
       size: roundFileSizeToCorrectUnit(235465),
       url: "/",
     },

@@ -1,0 +1,22 @@
+.root {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+  margin: 0 2rem 0 2rem;
+  color: #1c1d1f;
+}
+
+.root h2 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.upgradeLink {
+  cursor: pointer;
+  color: #00ff00;
+  font-weight: 600;
+}

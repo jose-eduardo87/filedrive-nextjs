@@ -16,8 +16,6 @@ type Action = {
   value?: string;
 };
 
-const initialValue = { value: "", isTouched: false };
-
 const inputReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case ActionKind.Input:
@@ -32,7 +30,8 @@ const inputReducer = (state: State, action: Action): State => {
   }
 };
 
-const useInput = (validateField: (arg: string) => {}) => {
+const useInput = (validateField: (arg: string) => {}, inputValue = "") => {
+  const initialValue = { value: inputValue, isTouched: false };
   const [input, dispatch] = useReducer(inputReducer, initialValue);
 
   const isValid = validateField(input.value);

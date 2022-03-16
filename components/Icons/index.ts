@@ -1,11 +1,14 @@
 export { default as Coffee } from "./Coffee";
+export { default as Dark } from "./Dark";
 export { default as Dashboard } from "./Dashboard";
 export { default as DragAndDrop } from "./DragAndDrop";
+export { default as Empty } from "./Empty";
 export { default as Filedrive } from "./Filedrive";
 export { default as FileSharingIllustration } from "./FileSharingIllustration";
 export { default as Gear } from "./Gear";
 export { default as GoogleLogo } from "./GoogleLogo";
 export { default as Home } from "./Home";
+export { default as Light } from "./Light";
 export { default as Login } from "./Login";
 export { default as Logout } from "./Logout";
 export { default as Mail } from "./Mail";

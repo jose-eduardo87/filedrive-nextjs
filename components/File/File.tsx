@@ -16,6 +16,8 @@ const File: FC<{
 }> = ({ id, file, draggableConfig }) => {
   const { provided, snapshot } = draggableConfig;
   const isFileInDrive = id === "list-drive";
+  const regex = new RegExp("[^.]+$");
+  const extension = file.name.match(regex);
 
   const onDoubleClickHandler = (isInDrive: boolean) => {
     if (!isInDrive) {
@@ -37,7 +39,8 @@ const File: FC<{
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
-      {file.name} | {file.size}
+      <span>{file.name}</span>
+      <span>{file.size}</span>
     </li>
   );
 };

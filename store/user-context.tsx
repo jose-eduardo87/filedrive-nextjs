@@ -1,4 +1,4 @@
-import { createContext, FC, useState, useContext, Dispatch } from "react";
+import { FC, Dispatch, createContext, useContext, useState } from "react";
 
 interface UserInterface {
   name: string;

@@ -1,6 +1,6 @@
 .root {
-  /* position: absolute;
-  position: 999; */
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 4px;
   padding: 0.2rem 0.6rem 0.2rem 0.6rem;
   color: #999999;
