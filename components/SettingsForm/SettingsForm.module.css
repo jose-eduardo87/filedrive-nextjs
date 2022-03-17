@@ -1,5 +1,5 @@
 .form {
-  width: 50%;
+  width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,8 @@
 }
 
 .formContainer {
-  width: 90%;
+  width: 80%;
+  padding-bottom: 1rem;
   margin: 0 auto;
 }
 

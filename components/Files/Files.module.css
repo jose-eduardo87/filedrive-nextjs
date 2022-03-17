@@ -1,7 +1,8 @@
 .root {
-  height: 84%;
+  height: 70%;
   list-style-type: none;
   padding: 2rem 0 0 0;
   margin-top: 2rem;
   border-top: 1px solid #cecece;
+  overflow: auto;
 }

@@ -53,6 +53,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
+    {
+      id: "file-06",
+      name: "Photo 06.asaks",
+      size: roundFileSizeToCorrectUnit(123564),
+      url: "/",
+    },
   ];
   const trash: FileInterface[] = [
     {

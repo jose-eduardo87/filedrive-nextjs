@@ -10,7 +10,7 @@
   width: 50%;
   height: 100%;
   padding: 2rem;
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .root div:first-of-type {

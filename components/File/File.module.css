@@ -9,3 +9,20 @@
 .root:hover {
   background-color: #fdfddf;
 }
+
+.inputContainer {
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+
+.inputContainer div {
+  background-color: inherit !important;
+}
+
+.inputContainer input {
+  margin-left: 0;
+}

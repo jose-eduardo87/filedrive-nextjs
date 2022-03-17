@@ -1,3 +1,15 @@
+import {
+  DocumentFile,
+  GenericFile,
+  ImageFile,
+  VideoFile,
+} from "@/components/Icons";
+import {
+  IMAGE_EXTENSION,
+  VIDEO_EXTENSION,
+  DOCUMENT_EXTENSION,
+} from "./constants";
+
 export const nameValidator = (name: string) => name.trim() !== "";
 
 export const emailValidator = (email: string) =>
@@ -13,4 +25,18 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
   }
 
   return `${value.toFixed(2)} B`;
+};
+
+export const getFileExtensionType = (extension: string) => {
+  if (IMAGE_EXTENSION.includes(extension)) {
+    return ImageFile;
+  }
+  if (VIDEO_EXTENSION.includes(extension)) {
+    return VideoFile;
+  }
+  if (DOCUMENT_EXTENSION.includes(extension)) {
+    return DocumentFile;
+  }
+
+  return GenericFile;
 };

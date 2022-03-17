@@ -14,9 +14,10 @@ const Settings: NextPage & { LayoutDrive: FC } = () => {
       <Card
         style={{
           height: "500px",
+          width: "70%",
+          margin: "0 auto",
           display: "flex",
           flexDirection: "row",
-          // justifyContent: "space-between",
         }}
       >
         <SettingsForm />
