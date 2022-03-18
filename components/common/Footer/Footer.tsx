@@ -1,11 +1,16 @@
 import { FC } from "react";
+import { useTheme } from "store/theme-context";
 import { Coffee } from "@/components/Icons";
 
 import styles from "./Footer.module.css";
 
 const Footer: FC = () => {
+  const { isDark } = useTheme();
   return (
-    <footer className={styles.footer}>
+    <footer
+      className={styles.footer}
+      style={{ backgroundColor: isDark ? "#212f45" : "" }}
+    >
       <small>
         Made solely for educational purposes. No commercial use. Built by{" "}
         <a

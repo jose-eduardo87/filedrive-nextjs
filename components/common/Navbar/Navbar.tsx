@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { Login } from "@/components/Icons";
+import { useTheme } from "store/theme-context";
 
 import styles from "./Navbar.module.css";
 
@@ -15,9 +16,13 @@ const iconStyles = {
 };
 
 const Navbar: FC = () => {
-  const router = useRouter();
+  const { isDark } = useTheme();
+
   return (
-    <header className={styles.header}>
+    <header
+      className={styles.header}
+      style={{ backgroundColor: isDark ? "#272640" : "" }}
+    >
       <div className={styles.container}>
         <Link passHref href="/">
           <h1>Capybara Drive</h1>

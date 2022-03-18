@@ -8,6 +8,7 @@ import styles from "./SettingsForm.module.css";
 
 const SettingsForm: FC = () => {
   const USER_NAME_FROM_BACKEND = "José Eduardo Oliveira de Araújo";
+
   const {
     value: nameValue,
     onBlur: onNameBlur,

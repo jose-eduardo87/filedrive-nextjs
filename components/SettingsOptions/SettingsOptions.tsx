@@ -1,6 +1,8 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import Link from "next/link";
 import { Selector } from "@/components/ui";
+import { useTheme } from "store/theme-context";
+import { useLanguageSelector } from "store/language-context";
 
 import styles from "./SettingsOptions.module.css";
 
@@ -21,6 +23,9 @@ const iconsStyles = {
 };
 
 const SettingsOptions: FC = () => {
+  const { isDark, toggleTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguageSelector();
+
   return (
     <div className={styles.root}>
       <h2>Additional options</h2>
@@ -28,20 +33,24 @@ const SettingsOptions: FC = () => {
       <div className={styles.selectionGroup}>
         <p>Choose theme: </p>
         <Selector
+          isChecked={!isDark}
           icons={{
-            checked: <p style={{ ...iconsStyles }}>DARK</p>,
-            unchecked: <p style={{ ...iconsStyles }}>LIGHT</p>,
+            checked: <p style={{ ...iconsStyles }}>LIGHT</p>,
+            unchecked: <p style={{ ...iconsStyles }}>DARK</p>,
           }}
+          onChange={useCallback(() => toggleTheme, [toggleTheme])}
           {...selectorStyles}
         />
       </div>
       <div className={styles.selectionGroup}>
         Choose language:{" "}
         <Selector
+          isChecked={language === "EN"}
           icons={{
             checked: <p style={{ ...iconsStyles }}>EN</p>,
             unchecked: <p style={{ ...iconsStyles }}>PT</p>,
           }}
+          onChange={useCallback(() => toggleLanguage, [toggleLanguage])}
           {...selectorStyles}
         />
       </div>

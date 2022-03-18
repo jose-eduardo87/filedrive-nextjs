@@ -1,4 +1,5 @@
 import { FC, CSSProperties } from "react";
+import { useTheme } from "store/theme-context";
 
 import styles from "./Card.module.css";
 
@@ -7,8 +8,12 @@ interface CardInterface {
 }
 
 const Card: FC<CardInterface> = ({ children, style }) => {
+  const { isDark } = useTheme();
   return (
-    <div style={style} className={styles.root}>
+    <div
+      style={{ backgroundColor: isDark ? "#E7E7E7" : "", ...style }}
+      className={styles.root}
+    >
       {children}
     </div>
   );

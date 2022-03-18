@@ -1,25 +1,25 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Home,
-  Dashboard,
-  Filedrive,
-  Trash,
-  Gear,
-  Logout,
-} from "@/components/Icons";
 import { useUserInfo } from "store/user-context";
+import { useTheme } from "store/theme-context";
+import { Home, Dashboard, Filedrive, Gear, Logout } from "@/components/Icons";
 
 import styles from "./Usernav.module.css";
 
-const iconStyles = { width: 20 };
+const getIconStyles = (isDark: boolean) => {
+  return { width: 20, fill: isDark ? "#FFFFFF" : "#000000" };
+};
 
 const Usernav: FC = () => {
   const { user } = useUserInfo();
+  const { isDark } = useTheme();
 
   return (
-    <div className={styles.usernav}>
+    <div
+      className={styles.usernav}
+      style={{ backgroundColor: isDark ? "#272640" : "#FFFFFF" }}
+    >
       <div className={styles.upperGroup}>
         <div className={styles.profileImg}>
           {/* <Image
@@ -36,7 +36,7 @@ const Usernav: FC = () => {
             <Link passHref href="/">
               <li>
                 <span className={styles.icon}>
-                  <Home {...iconStyles} />
+                  <Home {...getIconStyles(isDark)} />
                 </span>
                 Homepage
               </li>
@@ -44,7 +44,7 @@ const Usernav: FC = () => {
             <Link passHref href="/drive">
               <li>
                 <span className={styles.icon}>
-                  <Dashboard {...iconStyles} />
+                  <Dashboard {...getIconStyles(isDark)} />
                 </span>
                 Dashboard
               </li>
@@ -52,7 +52,7 @@ const Usernav: FC = () => {
             <Link passHref href="/drive/files">
               <li>
                 <span className={styles.icon}>
-                  <Filedrive {...iconStyles} />
+                  <Filedrive {...getIconStyles(isDark)} />
                 </span>
                 File Manager
               </li>
@@ -60,7 +60,7 @@ const Usernav: FC = () => {
             {/* <Link passHref href="/drive/trash">
               <li>
                 <span className={styles.icon}>
-                  <Trash {...iconStyles} />
+                  <Trash {...getIconStyles(isDark)} />
                 </span>
                 Trash
               </li>
@@ -68,7 +68,7 @@ const Usernav: FC = () => {
             <Link passHref href="/drive/settings">
               <li>
                 <span className={styles.icon}>
-                  <Gear {...iconStyles} />
+                  <Gear {...getIconStyles(isDark)} />
                 </span>
                 Settings
               </li>

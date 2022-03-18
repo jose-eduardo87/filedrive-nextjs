@@ -1,18 +1,20 @@
 import { FC } from "react";
 import { Footer, Usernav } from "@/components/common";
-import UserProvider from "store/user-context";
+import { useTheme } from "store/theme-context";
 
 import styles from "../Layout/Layout.module.css";
 
 const LayoutDrive: FC = ({ children }) => {
+  const { isDark } = useTheme();
   return (
     <div className={styles.layout}>
-      <UserProvider>
-        <div className={styles.root}>
-          <Usernav />
-          <div className={styles.dashboard}>{children}</div>
-        </div>
-      </UserProvider>
+      <div
+        className={styles.root}
+        style={{ backgroundColor: isDark ? "#312244" : "" }}
+      >
+        <Usernav />
+        <div className={styles.dashboard}>{children}</div>
+      </div>
       <Footer />
     </div>
   );

@@ -2,10 +2,12 @@ import { FC, useState } from "react";
 import Switch from "react-switch";
 
 interface SelectorProps {
+  isChecked: boolean;
   icons: {
-    checked: JSX.Element | string;
-    unchecked: JSX.Element | string;
+    checked: JSX.Element;
+    unchecked: JSX.Element;
   };
+  onChange: () => void;
   onColor?: string;
   offColor?: string;
   width?: number;
@@ -25,19 +27,26 @@ const iconStyle = {
   paddingRight: 2,
 };
 
-const Selector: FC<SelectorProps> = ({ icons, ...selectorStyles }) => {
-  const [checked, setChecked] = useState(false);
+const Selector: FC<SelectorProps> = ({
+  isChecked,
+  icons,
+  onChange,
+  ...selectorStyles
+}) => {
+  const [, setChecked] = useState(isChecked);
 
   const changeHandler = () => {
+    // SEND REQUEST TO SAVE CURRENT OPTION
+
     setChecked((currentState) => !currentState);
 
-    // SEND REQUEST TO SAVE CURRENT OPTION
+    onChange();
   };
 
   return (
     <Switch
       onChange={changeHandler}
-      checked={checked}
+      checked={isChecked}
       checkedIcon={<div style={{ ...iconStyle }}>{icons.checked}</div>}
       uncheckedIcon={<div style={{ ...iconStyle }}>{icons.unchecked}</div>}
       className="react-switch"

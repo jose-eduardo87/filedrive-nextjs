@@ -1,15 +1,8 @@
-import {
-  FC,
-  MouseEventHandler,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { FC, createContext, useContext, useEffect, useState } from "react";
 
 interface ThemeInterface {
-  isDark: boolean;
-  toggleTheme: MouseEventHandler<HTMLButtonElement>;
+  readonly isDark: boolean;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeInterface>({
@@ -22,8 +15,15 @@ const ThemeProvider: FC = ({ children }) => {
   const toggleTheme = () => setIsDark((currentState) => !currentState);
 
   useEffect(() => {
+    // FETCH PROCESS TO GET USER'S THEMING PREFERENCE, LET'S FAKE IT UNTIL WE HAVE A WORKING BACKEND:
+    const isDarkFromBackend = false;
+
+    setIsDark(isDarkFromBackend);
+  }, []);
+
+  useEffect(() => {
     if (isDark) {
-      document.body.style.backgroundColor = "#000000";
+      document.body.style.backgroundColor = "#28282B";
       document.body.style.color = "#FFFFFF";
 
       return;

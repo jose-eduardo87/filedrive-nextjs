@@ -5,8 +5,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border-right: 1px solid #ebebeb;
-  background-color: #ffffff;
+  /* border-right: 1px solid #ebebeb; */
 }
 
 .upperGroup {

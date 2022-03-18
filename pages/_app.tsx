@@ -1,7 +1,9 @@
 import { FC } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import UserProvider from "store/user-context";
 import ThemeProvider from "store/theme-context";
+import LanguageProvider from "store/language-context";
 
 const Noop: FC = ({ children }) => <>{children}</>;
 
@@ -14,11 +16,15 @@ function MyApp({
   const Layout = Component.Layout ?? Component.LayoutDrive ?? Noop;
 
   return (
-    <ThemeProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </LanguageProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 
