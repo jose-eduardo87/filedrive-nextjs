@@ -10,7 +10,7 @@ const LayoutDrive: FC = ({ children }) => {
     <div className={styles.layout}>
       <div
         className={styles.root}
-        style={{ backgroundColor: isDark ? "#312244" : "" }}
+        style={{ backgroundColor: isDark ? "#28282B" : "" }}
       >
         <Usernav />
         <div className={styles.dashboard}>{children}</div>

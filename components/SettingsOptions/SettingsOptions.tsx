@@ -26,6 +26,12 @@ const SettingsOptions: FC = () => {
   const { isDark, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguageSelector();
 
+  const toggleThemeHandler = useCallback(() => toggleTheme(), [toggleTheme]);
+  const toggleLanguageHandler = useCallback(
+    () => toggleLanguage(),
+    [toggleLanguage]
+  );
+
   return (
     <div className={styles.root}>
       <h2>Additional options</h2>
@@ -38,7 +44,7 @@ const SettingsOptions: FC = () => {
             checked: <p style={{ ...iconsStyles }}>LIGHT</p>,
             unchecked: <p style={{ ...iconsStyles }}>DARK</p>,
           }}
-          onChange={useCallback(() => toggleTheme, [toggleTheme])}
+          onChange={toggleThemeHandler}
           {...selectorStyles}
         />
       </div>
@@ -50,7 +56,7 @@ const SettingsOptions: FC = () => {
             checked: <p style={{ ...iconsStyles }}>EN</p>,
             unchecked: <p style={{ ...iconsStyles }}>PT</p>,
           }}
-          onChange={useCallback(() => toggleLanguage, [toggleLanguage])}
+          onChange={toggleLanguageHandler}
           {...selectorStyles}
         />
       </div>

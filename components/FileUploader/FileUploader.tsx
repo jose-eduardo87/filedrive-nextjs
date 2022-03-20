@@ -89,7 +89,7 @@ const FileUploader: FC = () => {
       {hasRejections && (
         <p className={styles.errorMessage}>
           {fileRejections.length === 1
-            ? `${fileRejections[0].file.name} could not be uploaded because it exceeds the maximum allowed file size (10 MB).`
+            ? `${fileRejections[0].file.name} could not be selected because it exceeds the maximum allowed file size (10 MB).`
             : "Some files could not be selected due to the file size limitation (10MB)."}
         </p>
       )}

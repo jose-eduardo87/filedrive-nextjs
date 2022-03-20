@@ -21,7 +21,7 @@ const Navbar: FC = () => {
   return (
     <header
       className={styles.header}
-      style={{ backgroundColor: isDark ? "#272640" : "" }}
+      style={{ backgroundColor: isDark ? "#272640" : "#8800C7" }}
     >
       <div className={styles.container}>
         <Link passHref href="/">

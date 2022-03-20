@@ -78,7 +78,7 @@ const FileManager: FC<FMProps> = ({ files, trash }) => {
           [list]
         )}
       >
-        {Object.entries(list).map(([columnId, column], index) => (
+        {Object.entries(list).map(([columnId, column]) => (
           <div key={columnId}>
             <Files id={columnId} files={column} />
           </div>

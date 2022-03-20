@@ -38,11 +38,7 @@ export default function Welcome() {
             </div>
           </div>
           <div className={styles.rightPanel}>
-            <FileSharingIllustration
-              width="100%"
-              height="100%"
-              isDark={isDark}
-            />
+            <FileSharingIllustration width="100%" height="100%" />
           </div>
         </div>
       </div>

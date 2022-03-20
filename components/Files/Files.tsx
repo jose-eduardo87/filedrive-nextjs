@@ -8,6 +8,8 @@ import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 
 import styles from "./Files.module.css";
 
+// COMPONENT GOT TOO BIG, SPLIT IT IN TWO: DRIVE AND BIN
+
 const Files: FC<{ files: FileInListInterface; id: string }> = ({
   files,
   id,
@@ -15,20 +17,9 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
   const [checkedItems, setCheckedItems] = useState<Partial<{ id: string }[]>>(
     []
   );
-
-  const onChangeInputHandler = (id: string, isChecked: boolean) => {
-    if (!isChecked) {
-      return setCheckedItems(checkedItems!.filter((item) => item!.id !== id));
-    }
-
-    if (checkedItems.length === 0) {
-      return setCheckedItems([{ id }]);
-    }
-
-    setCheckedItems((currentState) => [...currentState!, { id }]);
-  };
-
-  const hasCheckedItems = checkedItems.length === 0;
+  const [toggleSelection, setToggleSelection] = useState(false);
+  const hasFilesInTrash = files.items.length > 0;
+  const hasCheckedItems = checkedItems.length > 0;
 
   const renderHeading =
     files.name === "drive" ? (
@@ -67,6 +58,30 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
     </Draggable>
   ));
 
+  const onChangeInputHandler = (id: string, isChecked: boolean) => {
+    if (!isChecked) {
+      return setCheckedItems(checkedItems!.filter((item) => item!.id !== id));
+    }
+
+    if (checkedItems.length === 0) {
+      return setCheckedItems([{ id }]);
+    }
+
+    setCheckedItems((currentState) => [...currentState!, { id }]);
+  };
+
+  const toggleCheckAllFilesHandler = () => {
+    setToggleSelection((currentState) => !currentState);
+
+    const filesInTrashArray = files.items.map((file) => {
+      return { id: file.id };
+    });
+
+    // !toggleSelection &&
+  };
+
+  console.log(checkedItems);
+
   return (
     <Droppable droppableId={id}>
       {(provided, snapshot) => (
@@ -86,27 +101,48 @@ const Files: FC<{ files: FileInListInterface; id: string }> = ({
           </ul>
 
           {files.name === "trash" && (
-            <Button
-              title={
-                hasCheckedItems
-                  ? "You must check at least one file in order to clean the bin."
-                  : "Click this button to permanently delete the selected files."
-              }
-              isDisabled={hasCheckedItems}
-              onClick={() =>
-                alert(
-                  `A POST request will be sent to the server to delete the following files: ${checkedItems}`
-                )
-              }
-              style={{
-                width: "100%",
-                backgroundColor: "#FFFFE0",
-                color: "#CECECE",
-                border: "none",
-              }}
-            >
-              Clear bin
-            </Button>
+            <>
+              <Button
+                title={
+                  hasFilesInTrash
+                    ? "Click this button to check all the files in the bin."
+                    : "The bin is empty."
+                }
+                isDisabled={!hasFilesInTrash}
+                onClick={toggleCheckAllFilesHandler}
+                style={{
+                  width: "15%",
+                  backgroundColor: "#F2D2BD",
+                  color: "#B3B3B3",
+                  border: "none",
+                }}
+              >
+                Click
+              </Button>
+              <Button
+                title={
+                  hasCheckedItems
+                    ? "Click this button to permanently delete the selected files."
+                    : "You must check at least one file in order to clean the bin."
+                }
+                isDisabled={!hasCheckedItems}
+                onClick={() =>
+                  alert(
+                    `A POST request will be sent to the server to delete the following files: ${JSON.stringify(
+                      checkedItems
+                    )}`
+                  )
+                }
+                style={{
+                  width: "85%",
+                  backgroundColor: "#FFFFE0",
+                  color: "#CECECE",
+                  border: "none",
+                }}
+              >
+                Clear bin
+              </Button>
+            </>
           )}
         </>
       )}

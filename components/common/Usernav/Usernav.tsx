@@ -8,7 +8,7 @@ import { Home, Dashboard, Filedrive, Gear, Logout } from "@/components/Icons";
 import styles from "./Usernav.module.css";
 
 const getIconStyles = (isDark: boolean) => {
-  return { width: 20, fill: isDark ? "#FFFFFF" : "#000000" };
+  return { width: 20, fill: isDark ? "#FF7F50" : "#000000" };
 };
 
 const Usernav: FC = () => {
@@ -57,14 +57,6 @@ const Usernav: FC = () => {
                 File Manager
               </li>
             </Link>
-            {/* <Link passHref href="/drive/trash">
-              <li>
-                <span className={styles.icon}>
-                  <Trash {...getIconStyles(isDark)} />
-                </span>
-                Trash
-              </li>
-            </Link> */}
             <Link passHref href="/drive/settings">
               <li>
                 <span className={styles.icon}>
