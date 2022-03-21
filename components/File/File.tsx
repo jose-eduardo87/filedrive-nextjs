@@ -1,4 +1,4 @@
-import { FC, useState, memo } from "react";
+import { FC, Dispatch, SetStateAction, useEffect, useState, memo } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getFileExtensionType } from "helpers/functions";
@@ -14,8 +14,12 @@ const File: FC<{
   file: FileInterface;
   draggableConfig: draggableConfig;
   currentStatus: string;
-  onChangeHandler?: null | ((id: string, isChecked: boolean) => void);
-}> = ({ id, file, draggableConfig, currentStatus, onChangeHandler }) => {
+  registerFile?: (
+    id: string,
+    isChecked: boolean,
+    setIsChecked: Dispatch<SetStateAction<boolean>>
+  ) => void;
+}> = ({ id, file, draggableConfig, currentStatus, registerFile }) => {
   const [isChecked, setIsChecked] = useState(false);
   const { provided } = draggableConfig;
   const isFileInDrive = id === "list-drive";
@@ -24,11 +28,12 @@ const File: FC<{
   const MediaIcon = getFileExtensionType(extension![0].toLowerCase());
   const iconStyles = { width: 16, fill: "#B4B4B4" };
 
-  const changeHandler = () => {
-    setIsChecked((currentState) => !currentState);
-
-    onChangeHandler!(file.id, !isChecked);
-  };
+  useEffect(() => {
+    // IF FILE COMPONENT IS LIVING IN "BIN", IT WILL RECEIVE registerFile AS PROPS THEREFORE THIS IF CONDITION WILL BE MET.
+    if (registerFile) {
+      registerFile(file.id, isChecked, setIsChecked);
+    }
+  }, [isChecked]);
 
   const renderFileInDrive = (
     <>
@@ -43,11 +48,11 @@ const File: FC<{
     <span className={styles.inputContainer}>
       <span style={{ width: "30%", padding: 0 }}>
         <input
-          onChange={changeHandler}
           type="checkbox"
-          id={file.name}
-          checked={isChecked}
+          id={file.id}
           name={file.name}
+          checked={isChecked}
+          onChange={() => setIsChecked((currentState) => !currentState)}
         />
         <span>
           <MediaIcon {...iconStyles} /> {file.name}

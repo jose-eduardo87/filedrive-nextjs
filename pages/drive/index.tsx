@@ -28,7 +28,7 @@ const MainPage: NextPage & { LayoutDrive: FC } = () => {
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>Welcome to Your Dashboard.</h1>
 
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
-        <Card style={{ width: "500px" }}>
+        <Card style={{ width: "400px" }}>
           <Slider components={componentsArray} />
         </Card>
         <Card>

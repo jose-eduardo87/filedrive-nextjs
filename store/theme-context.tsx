@@ -16,7 +16,7 @@ const ThemeProvider: FC = ({ children }) => {
 
   useEffect(() => {
     // FETCH PROCESS TO GET USER'S THEMING PREFERENCE, LET'S FAKE IT UNTIL WE HAVE A WORKING BACKEND:
-    const isDarkFromBackend = false;
+    const isDarkFromBackend = true;
 
     setIsDark(isDarkFromBackend);
   }, []);

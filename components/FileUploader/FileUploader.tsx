@@ -1,6 +1,6 @@
 import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import { Button } from "../ui";
+import { Button } from "@/components/ui";
 import { DragAndDrop } from "@/components/Icons";
 import { Trash } from "@/components/Icons";
 import {
@@ -93,7 +93,9 @@ const FileUploader: FC = () => {
             : "Some files could not be selected due to the file size limitation (10MB)."}
         </p>
       )}
-      <p className={styles.filesTitle}>{hasFiles ? "Add more:" : "Files:"}</p>
+      <p className={styles.filesTitle} style={{ color: "#BEBEBE" }}>
+        {hasFiles ? "Add more:" : "Files:"}
+      </p>
       {hasFiles && (
         <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
           Total{" "}
