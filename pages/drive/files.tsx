@@ -25,37 +25,37 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const files: FileInterface[] = [
     {
       id: "file-01",
-      name: "Photo 01.jpg",
+      name: "File 01.jpg",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-02",
-      name: "Photo 02.jpeg",
+      name: "File 02.jpeg",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-03",
-      name: "Photo 03.pdf",
+      name: "File 03.pdf",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-04",
-      name: "Photo 04.mkv",
+      name: "File 04.mkv",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-05",
-      name: "Photo 05.mp4",
+      name: "File 05.mp4",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
     {
       id: "file-06",
-      name: "Photo 06.asaks",
+      name: "File 06.asaks",
       size: roundFileSizeToCorrectUnit(123564),
       url: "/",
     },
@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const trash: FileInterface[] = [
     {
       id: "file-02a",
-      name: "Photo 02.txt",
+      name: "File 02.txt",
       size: roundFileSizeToCorrectUnit(235465),
       url: "/",
     },

@@ -1,4 +1,12 @@
-import { FC, Dispatch, SetStateAction, useEffect, useState, memo } from "react";
+import {
+  FC,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useRef,
+  memo,
+} from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getFileExtensionType } from "helpers/functions";
@@ -19,7 +27,9 @@ const File: FC<{
     isChecked: boolean,
     setIsChecked: Dispatch<SetStateAction<boolean>>
   ) => void;
-}> = ({ id, file, draggableConfig, currentStatus, registerFile }) => {
+  cleanup: (id: string) => void;
+}> = ({ id, file, draggableConfig, currentStatus, registerFile, cleanup }) => {
+  const isFileFromTrash = useRef(id === "list-trash" ? true : false);
   const [isChecked, setIsChecked] = useState(false);
   const { provided } = draggableConfig;
   const isFileInDrive = id === "list-drive";
@@ -29,11 +39,19 @@ const File: FC<{
   const iconStyles = { width: 16, fill: "#B4B4B4" };
 
   useEffect(() => {
-    // IF FILE COMPONENT IS LIVING IN "BIN", IT WILL RECEIVE registerFile AS PROPS THEREFORE THIS IF CONDITION WILL BE MET.
-    if (registerFile) {
-      registerFile(file.id, isChecked, setIsChecked);
+    // IF FILE COMPONENT IS LIVING IN "BIN", IT WILL RECEIVE registerFile AS PROPS,
+    // THEREFORE THIS IF-CONDITION WILL BE MET.
+    if (isFileFromTrash.current) {
+      registerFile!(file.id, isChecked, setIsChecked);
     }
   }, [isChecked]);
+
+  // CLEAN-UP IN ORDER TO REMOVE THE COMPONENT FROM THE LIST OF ALL FILES IN TRASH COMPONENT.
+  useEffect(() => {
+    if (isFileFromTrash.current) {
+      return () => cleanup(file.id);
+    }
+  }, []);
 
   const renderFileInDrive = (
     <>

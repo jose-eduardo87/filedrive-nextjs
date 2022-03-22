@@ -1,26 +1,19 @@
-import { Dispatch, FC, SetStateAction, useState, useCallback } from "react";
+import { FC } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { File } from "@/components/File";
 import { Button } from "@/components/ui";
 import { ToggleCheck, Trash } from "@/components/Icons";
-import { FileInListInterface } from "../FileManager/FileManager";
+import useControlledInput from "hooks/use-controlled-checkbox";
+import { FileInListInterface } from "@/components/FileManager/FileManager";
 import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
-  const [toggleSelection, setToggleSelection] = useState(true);
-  const [registeredItems, setRegisteredItems] = useState<
-    Partial<
-      {
-        id: string;
-        isChecked: boolean;
-        setIsChecked: Dispatch<SetStateAction<boolean>>;
-      }[]
-    >
-  >([]);
+  const { registeredFiles, registerFile, onToggleFiles, FileCleanup } =
+    useControlledInput();
   const hasFilesInTrash = files.items.length > 0;
-  const hasRegisteredItems = registeredItems.length > 0;
+  const hasRegisteredFiles = registeredFiles.length > 0;
 
   const renderEmptyPanel = (
     <div
@@ -40,44 +33,12 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
           file={file}
           id={id}
           currentStatus={files.name}
-          registerFile={onRegisterFile}
+          registerFile={registerFile}
+          cleanup={FileCleanup}
         />
       )}
     </Draggable>
   ));
-
-  // FUNCTION RESPONSIBLE TO REGISTER ALL THE INFORMATION REGARDING FILES LIVING IN Bin.tsx. BY ARCHITECTURING THIS WAY, BIN WILL CONTROL THE ITS CHILDREN, MAKING IT REALLY SIMPLE
-  // DOING STATE CHANGES (eg: onToggleFiles() TO TOGGLE ON/OFF INPUT SELECTION).
-  const onRegisterFile = useCallback(
-    (
-      id: string,
-      isChecked: boolean,
-      setIsChecked: Dispatch<SetStateAction<boolean>>
-    ) => {
-      const index = registeredItems.findIndex((item) => item?.id === id);
-
-      if (index < 0) {
-        setRegisteredItems((currentState) => [
-          ...currentState,
-          { id, isChecked, setIsChecked },
-        ]);
-
-        return;
-      }
-
-      const updatedItems = [...registeredItems];
-      updatedItems[index] = { id, isChecked, setIsChecked };
-
-      setRegisteredItems(updatedItems);
-    },
-    [registeredItems]
-  );
-
-  const onToggleFiles = () => {
-    setToggleSelection((currentState) => !currentState);
-
-    registeredItems.map((file) => file?.setIsChecked(toggleSelection));
-  };
 
   return (
     <Droppable droppableId={id}>
@@ -118,15 +79,15 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
           </Button>
           <Button
             title={
-              hasRegisteredItems
+              hasRegisteredFiles
                 ? "Click this button to permanently delete the selected files."
                 : "You must check at least one file in order to clean the bin."
             }
-            isDisabled={!hasRegisteredItems}
+            isDisabled={!hasRegisteredFiles}
             onClick={() =>
               alert(
                 `A POST request will be sent to the server to delete the following files: ${JSON.stringify(
-                  registeredItems
+                  registeredFiles
                 )}`
               )
             }
