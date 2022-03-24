@@ -27,14 +27,17 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
   return `${value.toFixed(2)} B`;
 };
 
-export const getFileExtensionType = (extension: string) => {
-  if (IMAGE_EXTENSION.includes(extension)) {
+export const getMediaIcon = (name: string) => {
+  const regex = new RegExp("[^.]+$");
+  const extension = name.match(regex);
+
+  if (IMAGE_EXTENSION.includes(extension![0].toLowerCase())) {
     return ImageFile;
   }
-  if (VIDEO_EXTENSION.includes(extension)) {
+  if (VIDEO_EXTENSION.includes(extension![0].toLowerCase())) {
     return VideoFile;
   }
-  if (DOCUMENT_EXTENSION.includes(extension)) {
+  if (DOCUMENT_EXTENSION.includes(extension![0].toLowerCase())) {
     return DocumentFile;
   }
 

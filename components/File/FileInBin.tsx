@@ -2,74 +2,50 @@
 import { FC, useEffect, useState, memo } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
-import { getFileExtensionType } from "helpers/functions";
+import { getMediaIcon } from "helpers/functions";
 
 import styles from "./File.module.css";
 
-interface draggableConfig {
-  provided: DraggableProvided;
-}
-
 interface FileProps {
   file: FileInterface;
-  draggableConfig: draggableConfig;
+  provided: DraggableProvided;
   isToggling: boolean;
-  registerFile: (id: string, isChecked: boolean) => void;
-  unregisterFile: (id: string) => void;
+  detectiveFunctions: {
+    registerFile: (id: string, isChecked: boolean) => void;
+    unregisterFile: (id: string) => void;
+  };
 }
 
 const FileInBin: FC<FileProps> = ({
   file,
-  draggableConfig,
+  provided,
   isToggling,
-  registerFile,
-  unregisterFile,
+  detectiveFunctions,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [hasToggledBefore, setHasToggledBefore] = useState(false);
-  const { provided } = draggableConfig;
-  const regex = new RegExp("[^.]+$");
-  const extension = file.name.match(regex);
-  const MediaIcon = getFileExtensionType(extension![0].toLowerCase());
+  const { registerFile, unregisterFile } = detectiveFunctions;
+  const MediaIcon = getMediaIcon(file.name);
   const iconStyles = { width: 16, fill: "#B4B4B4" };
+  console.log("isToggling: ", isToggling);
 
-  // Responsible for registering current File component into Bin component.
   useEffect(() => {
-    registerFile!(file.id, isChecked);
+    // registers current File component into Bin component.
+    registerFile(file.id, isChecked);
+
+    // Everytime this component ends its lifecycle, this unregisterFile cleanup function runs.
+    // This function removes the file from the file's list by filtering out its ID in the list.
+    return () => unregisterFile(file.id);
   }, [isChecked]);
 
-  // Responsible for changing isChecked state whenever there is a change is toggle.
+  // changes isChecked state whenever there is a change in toggle. STILL NOT WORKING WELL.
   useEffect(() => {
     if (hasToggledBefore) {
-      setIsChecked(isToggling!);
+      setIsChecked(isToggling);
     }
 
     setHasToggledBefore(true);
   }, [isToggling]);
-
-  // Everytime this component ends its lifecycle, this unregisterFile cleanup function will run.
-  // This function removes the file from the file's list by filtering its ID in the list.
-  useEffect(() => {
-    return () => unregisterFile!(file.id);
-  }, []);
-
-  const renderFile = (
-    <span className={styles.inputContainer}>
-      <span style={{ width: "30%", padding: 0 }}>
-        <input
-          type="checkbox"
-          id={file.id}
-          name={file.name}
-          checked={isChecked}
-          onChange={() => setIsChecked((currentState) => !currentState)}
-        />
-        <span>
-          <MediaIcon {...iconStyles} /> {file.name}
-        </span>
-      </span>
-      <span>{file.size}</span>
-    </span>
-  );
 
   return (
     <li
@@ -79,7 +55,21 @@ const FileInBin: FC<FileProps> = ({
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
-      {renderFile}
+      <span className={styles.inputContainer}>
+        <span style={{ width: "30%", padding: 0 }}>
+          <input
+            type="checkbox"
+            id={file.id}
+            name={file.name}
+            checked={isChecked}
+            onChange={() => setIsChecked((currentState) => !currentState)}
+          />
+          <span>
+            <MediaIcon {...iconStyles} /> {file.name}
+          </span>
+        </span>
+        <span>{file.size}</span>
+      </span>
     </li>
   );
 };

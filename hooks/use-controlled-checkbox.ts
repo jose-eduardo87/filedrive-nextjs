@@ -24,35 +24,13 @@ interface RegisteredFilesInterface {
 }
 
 const useControlledInput = () => {
+  // registeredFilesRef is used only inside this hook. useEffect does not have access to current states, so
+  // it makes necessary to use a ref to keep track of latest state updates.
   const registeredFilesRef = useRef<typeof registeredFiles>([]);
   const [isTogglingCheckboxes, setIsTogglingCheckboxes] = useState(false);
   const [registeredFiles, setRegisteredFiles] = useState<
     Partial<RegisteredFilesInterface[]>
   >([]);
-
-  // Handler responsible for toggling state for selection.
-  const onToggleFiles = useCallback(() => {
-    // In case there is at least one File unchecked, all the files will be checked.
-    // Otherwise, all the files will be unchecked.
-    const hasUncheckedFile = registeredFilesRef.current.some(
-      (file) => !file?.isChecked
-    );
-
-    console.log("hasUncheckedFile", hasUncheckedFile);
-    setIsTogglingCheckboxes(hasUncheckedFile ? true : false);
-    console.log("isTogglingCheckboxes", isTogglingCheckboxes);
-
-    // const updatedRegisteredFiles = [...registeredFiles];
-    const updatedRegisteredFiles = [...registeredFilesRef.current];
-    updatedRegisteredFiles.forEach(
-      (file) => (file!.isChecked = isTogglingCheckboxes)
-    );
-
-    registeredFilesRef.current = updatedRegisteredFiles;
-    console.log("AFTER UPDATE: ", registeredFilesRef.current);
-    setRegisteredFiles(updatedRegisteredFiles);
-    // }, [isTogglingCheckboxes, registeredFiles]);
-  }, [isTogglingCheckboxes]);
 
   // Function responsible to register all the information regarding files living in Bin.tsx.
   // By architecturing this way, Bin has access to control its children's (File.tsx) state,
@@ -79,20 +57,40 @@ const useControlledInput = () => {
     setRegisteredFiles(registeredFilesRef.current);
   }, []);
 
-  const unregisterFile = (id: string) => {
+  // Runs everytime a component reaches its lifecycle. It filters the registeredFiles list by id
+  // and removes the unmounted component.
+  const unregisterFile = useCallback((id: string) => {
     const filteredRegisteredFiles = registeredFilesRef.current.filter(
       (file) => file!.id !== id
     );
 
     registeredFilesRef.current = filteredRegisteredFiles;
     setRegisteredFiles(filteredRegisteredFiles);
-  };
+  }, []);
 
-  // Custom hook runs everytime a component reaches its lifecycle. It filters the registeredFiles list by id
-  // and removes the unmounted component.
+  console.log("HOOK: ", isTogglingCheckboxes);
+
+  // Handler responsible for toggling state for selection.
+  const onToggleFiles = useCallback(() => {
+    // In case there is at least one File unchecked, all the files will be checked.
+    // Otherwise, all the files will be unchecked.
+    const hasUncheckedFile = registeredFilesRef.current.some(
+      (file) => !file?.isChecked
+    );
+
+    setIsTogglingCheckboxes(hasUncheckedFile ? true : false);
+    // setIsTogglingCheckboxes((currentState) => !currentState);
+
+    const updatedRegisteredFiles = [...registeredFilesRef.current];
+    updatedRegisteredFiles.forEach(
+      (file) => (file!.isChecked = isTogglingCheckboxes)
+    );
+
+    registeredFilesRef.current = updatedRegisteredFiles;
+    setRegisteredFiles(updatedRegisteredFiles);
+  }, [isTogglingCheckboxes]);
 
   return {
-    registeredFilesRef,
     isTogglingCheckboxes,
     registeredFiles,
     onToggleFiles,

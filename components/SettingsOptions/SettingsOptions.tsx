@@ -36,6 +36,7 @@ const SettingsOptions: FC = () => {
     <div className={styles.root}>
       <h2>Additional options</h2>
 
+      <div className=""></div>
       <div className={styles.selectionGroup}>
         <p>Choose theme: </p>
         <Selector

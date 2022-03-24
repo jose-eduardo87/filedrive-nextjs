@@ -1,7 +1,7 @@
 import { FC, memo } from "react";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
-import { getFileExtensionType } from "helpers/functions";
+import { getMediaIcon } from "helpers/functions";
 
 import styles from "./File.module.css";
 
@@ -16,19 +16,8 @@ interface FileProps {
 
 const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
   const { provided } = draggableConfig;
-  const regex = new RegExp("[^.]+$");
-  const extension = file.name.match(regex);
-  const MediaIcon = getFileExtensionType(extension![0].toLowerCase());
+  const MediaIcon = getMediaIcon(file.name);
   const iconStyles = { width: 16, fill: "#B4B4B4" };
-
-  const renderFile = (
-    <>
-      <span>
-        <MediaIcon {...iconStyles} /> {file.name}
-      </span>
-      <span>{file.size}</span>
-    </>
-  );
 
   const onDoubleClickHandler = () => {
     console.log("Download request must be done from here.");
@@ -43,7 +32,10 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
-      {renderFile}
+      <span>
+        <MediaIcon {...iconStyles} /> {file.name}
+      </span>
+      <span>{file.size}</span>
     </li>
   );
 };
