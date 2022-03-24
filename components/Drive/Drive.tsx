@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { File } from "@/components/File";
-import { Filedrive } from "@/components/Icons";
+import { FileInDrive } from "@/components/File";
+import { Filedrive } from "@/components/Icons"; // CHANGE THIS NAME?
 import { FileInListInterface } from "../FileManager/FileManager";
 import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 
@@ -21,14 +21,7 @@ const Drive: FC<{ files: FileInListInterface; id: string }> = ({
 
   const renderFilePanel = files.items.map((file, index) => (
     <Draggable key={file.id} draggableId={file.id} index={index}>
-      {(provided) => (
-        <File
-          draggableConfig={{ provided }}
-          file={file}
-          id={id}
-          currentStatus={files.name}
-        />
-      )}
+      {(provided) => <FileInDrive draggableConfig={{ provided }} file={file} />}
     </Draggable>
   ));
   return (
@@ -42,7 +35,7 @@ const Drive: FC<{ files: FileInListInterface; id: string }> = ({
             ref={provided.innerRef}
             className={styles.root}
             style={{
-              backgroundColor: snapshot.isDraggingOver ? "#ebfced" : "",
+              backgroundColor: snapshot.isDraggingOver ? "#EBFCED" : "",
               border: snapshot.isDraggingOver ? "2px dotted #CECECE" : "",
             }}
             {...provided.droppableProps}

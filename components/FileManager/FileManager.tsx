@@ -24,39 +24,6 @@ type DndType = {
   [key in Key]: FileInListInterface;
 };
 
-const onDragEnd = (
-  result: DropResult,
-  list: DndType,
-  setList: Dispatch<SetStateAction<DndType>>
-) => {
-  const { source, destination } = result;
-
-  if (!destination) {
-    return;
-  }
-  if (source.droppableId !== destination.droppableId) {
-    const sourceId: keyof DndType = source.droppableId as Key;
-    const destinationId: keyof DndType = destination.droppableId as Key;
-    const sourceList = list[sourceId];
-    const destinationList = list[destinationId];
-    const sourceItems = [...sourceList.items];
-    const destinationItems = [...destinationList.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destinationItems.splice(destination.index, 0, removed);
-
-    setList({
-      ...list,
-      [source.droppableId]: { ...sourceList, items: sourceItems },
-      [destination.droppableId]: {
-        ...destinationList,
-        items: destinationItems,
-      },
-    });
-
-    // ADD POST REQUEST HERE
-  }
-};
-
 const FileManager: FC<FMProps> = ({ files, trash }) => {
   const columns: DndType = {
     [Key.DRIVE]: {
@@ -69,6 +36,39 @@ const FileManager: FC<FMProps> = ({ files, trash }) => {
     },
   };
   const [list, setList] = useState<DndType>(columns);
+
+  const onDragEnd = (
+    result: DropResult,
+    list: DndType,
+    setList: Dispatch<SetStateAction<DndType>>
+  ) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+    if (source.droppableId !== destination.droppableId) {
+      const sourceId: keyof DndType = source.droppableId as Key;
+      const destinationId: keyof DndType = destination.droppableId as Key;
+      const sourceList = list[sourceId];
+      const destinationList = list[destinationId];
+      const sourceItems = [...sourceList.items];
+      const destinationItems = [...destinationList.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destinationItems.splice(destination.index, 0, removed);
+
+      setList({
+        ...list,
+        [source.droppableId]: { ...sourceList, items: sourceItems },
+        [destination.droppableId]: {
+          ...destinationList,
+          items: destinationItems,
+        },
+      });
+
+      // ADD POST REQUEST HERE
+    }
+  };
 
   return (
     <section className={styles.root}>

@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { File } from "@/components/File";
+import { FileInBin } from "@/components/File";
 import { Button } from "@/components/ui";
 import { ToggleCheck, Trash } from "@/components/Icons";
 import useControlledInput from "hooks/use-controlled-checkbox";
@@ -10,8 +10,13 @@ import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
-  const { registeredFiles, registerFile, onToggleFiles, FileCleanup } =
-    useControlledInput();
+  const {
+    registeredFiles,
+    isTogglingCheckboxes,
+    registerFile,
+    unregisterFile,
+    onToggleFiles,
+  } = useControlledInput();
   const hasFilesInTrash = files.items.length > 0;
   const hasRegisteredFiles = registeredFiles.length > 0;
 
@@ -25,16 +30,24 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
     </div>
   );
 
+  // file,
+  // draggableConfig,
+  // isToggling,
+  // registerFile,
+  // unregisterFile,
+
+  console.log("id", id);
+  console.log("status", files.name);
+
   const renderFilePanel = files.items.map((file, index) => (
     <Draggable key={file.id} draggableId={file.id} index={index}>
       {(provided) => (
-        <File
+        <FileInBin
           draggableConfig={{ provided }}
           file={file}
-          id={id}
-          currentStatus={files.name}
           registerFile={registerFile}
-          cleanup={FileCleanup}
+          unregisterFile={unregisterFile}
+          isToggling={isTogglingCheckboxes}
         />
       )}
     </Draggable>
@@ -56,7 +69,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
             }}
             {...provided.droppableProps}
           >
-            {files.items.length === 0 ? renderEmptyPanel : renderFilePanel}
+            {hasFilesInTrash ? renderFilePanel : renderEmptyPanel}
             {provided.placeholder}
           </ul>
           <Button
