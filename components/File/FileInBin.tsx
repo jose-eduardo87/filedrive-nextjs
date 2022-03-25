@@ -9,7 +9,7 @@ import styles from "./File.module.css";
 interface FileProps {
   file: FileInterface;
   provided: DraggableProvided;
-  toggleState: { isTogglingCheckboxes: boolean; keepRendering: number };
+  toggleState: { isTogglingCheckboxes: boolean; runUseEffect: number };
   detectiveFunctions: {
     registerFile: (id: string, isChecked: boolean) => void;
     unregisterFile: (id: string) => void;
@@ -24,17 +24,16 @@ const FileInBin: FC<FileProps> = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [hasToggledBefore, setHasToggledBefore] = useState(false);
-  const { isTogglingCheckboxes, keepRendering } = toggleState;
+  const { isTogglingCheckboxes, runUseEffect } = toggleState;
   const { registerFile, unregisterFile } = detectiveFunctions;
   const MediaIcon = getMediaIcon(file.name);
   const iconStyles = { width: 16, fill: "#B4B4B4" };
 
   useEffect(() => {
-    registerFile(file.id, isChecked);
+    registerFile(file.id, isChecked); // stores file information in Bin.
 
-    // cleanup function.
-    return () => unregisterFile(file.id);
-  }, [isChecked]);
+    return () => unregisterFile(file.id); // cleanup. Removes the current file from Bin when component unmounts.
+  }, [runUseEffect, isChecked]);
 
   useEffect(() => {
     if (hasToggledBefore) {
@@ -42,13 +41,13 @@ const FileInBin: FC<FileProps> = ({
     }
 
     setHasToggledBefore(true);
-  }, [keepRendering, isTogglingCheckboxes]);
+  }, [runUseEffect, isTogglingCheckboxes]);
 
   return (
     <li
       ref={provided.innerRef}
       className={styles.root}
-      title="Drag this file to the left panel in order to download it."
+      title="Drag this file to the drive panel in order to download it."
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >

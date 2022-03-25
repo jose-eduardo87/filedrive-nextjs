@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import {
   DocumentFile,
   GenericFile,
@@ -25,6 +26,17 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
   }
 
   return `${value.toFixed(2)} B`;
+};
+
+export const getButtonStyleInBin = (type?: string): CSSProperties => {
+  const isToggle = type === "toggle";
+  return {
+    width: isToggle ? "15%" : "85%",
+    backgroundColor: isToggle ? "#F2D2BD" : "#FFFFE0",
+    color: isToggle ? "#B3B3B3" : "#CECECE",
+    border: "none",
+    padding: isToggle ? 0 : "",
+  };
 };
 
 export const getMediaIcon = (name: string) => {

@@ -5,13 +5,14 @@ import { Button } from "@/components/ui";
 import useCheckbox from "hooks/use-checkbox";
 import { FileInListInterface } from "@/components/FileManager/FileManager";
 import { ToggleCheck, Trash } from "@/components/Icons";
-import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
+import { getButtonStyleInBin } from "helpers/functions";
+import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants"; // check these constant names
 
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   const { registeredFiles, detectiveFunctions, toggleState } = useCheckbox();
-  const { isTogglingCheckboxes, keepRendering, onToggleFiles } = toggleState;
+  const { isTogglingCheckboxes, runUseEffect, onToggleFiles } = toggleState;
   const hasFilesInBin = files.items.length > 0;
   const hasRegisteredFiles = registeredFiles.some((file) => file?.isChecked);
 
@@ -32,7 +33,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
           provided={provided}
           file={file}
           detectiveFunctions={detectiveFunctions}
-          toggleState={{ isTogglingCheckboxes, keepRendering }}
+          toggleState={{ isTogglingCheckboxes, runUseEffect }}
         />
       )}
     </Draggable>
@@ -64,13 +65,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
                 : "The bin is empty."
             }
             isDisabled={!hasFilesInBin}
-            style={{
-              width: "15%",
-              backgroundColor: "#F2D2BD",
-              color: "#B3B3B3",
-              border: "none",
-              padding: 0,
-            }}
+            style={getButtonStyleInBin("toggle")}
             onClick={onToggleFiles}
           >
             <ToggleCheck width="2rem" height="1rem" />
@@ -89,12 +84,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
                 )}`
               )
             }
-            style={{
-              width: "85%",
-              backgroundColor: "#FFFFE0",
-              color: "#CECECE",
-              border: "none",
-            }}
+            style={getButtonStyleInBin()}
           >
             Clear bin
           </Button>
