@@ -23,11 +23,12 @@ interface RegisteredFilesInterface {
   isChecked: boolean;
 }
 
-const useControlledInput = () => {
+const useCheckbox = () => {
   // registeredFilesRef is used only inside this hook. useEffect does not have access to current states, so
   // it makes necessary to use a ref to keep track of latest state updates.
   const registeredFilesRef = useRef<typeof registeredFiles>([]);
   const [isTogglingCheckboxes, setIsTogglingCheckboxes] = useState(false);
+  const [keepRendering, setKeepRendering] = useState(0);
   const [registeredFiles, setRegisteredFiles] = useState<
     Partial<RegisteredFilesInterface[]>
   >([]);
@@ -68,10 +69,10 @@ const useControlledInput = () => {
     setRegisteredFiles(filteredRegisteredFiles);
   }, []);
 
-  console.log("HOOK: ", isTogglingCheckboxes);
-
-  // Handler responsible for toggling state for selection.
+  // Handler responsible for toggling state for selection. Only problem for now is that when toggling item individually, things get messy.
   const onToggleFiles = useCallback(() => {
+    // helper state to make useEffect in FileInBin run at every click on onToggleFiles.
+    setKeepRendering((currentState) => currentState + 1);
     // In case there is at least one File unchecked, all the files will be checked.
     // Otherwise, all the files will be unchecked.
     const hasUncheckedFile = registeredFilesRef.current.some(
@@ -79,7 +80,6 @@ const useControlledInput = () => {
     );
 
     setIsTogglingCheckboxes(hasUncheckedFile ? true : false);
-    // setIsTogglingCheckboxes((currentState) => !currentState);
 
     const updatedRegisteredFiles = [...registeredFilesRef.current];
     updatedRegisteredFiles.forEach(
@@ -87,16 +87,22 @@ const useControlledInput = () => {
     );
 
     registeredFilesRef.current = updatedRegisteredFiles;
+
     setRegisteredFiles(updatedRegisteredFiles);
   }, [isTogglingCheckboxes]);
 
   return {
-    isTogglingCheckboxes,
+    detectiveFunctions: {
+      registerFile,
+      unregisterFile,
+    },
+    toggleState: {
+      isTogglingCheckboxes,
+      keepRendering,
+      onToggleFiles,
+    },
     registeredFiles,
-    onToggleFiles,
-    registerFile,
-    unregisterFile,
   };
 };
 
-export default useControlledInput;
+export default useCheckbox;

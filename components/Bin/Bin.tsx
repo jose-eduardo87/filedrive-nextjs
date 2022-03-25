@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInBin } from "@/components/File";
 import { Button } from "@/components/ui";
-import useControlledInput from "hooks/use-controlled-checkbox";
+import useCheckbox from "hooks/use-checkbox";
 import { FileInListInterface } from "@/components/FileManager/FileManager";
 import { ToggleCheck, Trash } from "@/components/Icons";
 import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
@@ -10,13 +10,8 @@ import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants";
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
-  const {
-    registeredFiles,
-    isTogglingCheckboxes,
-    registerFile,
-    unregisterFile,
-    onToggleFiles,
-  } = useControlledInput();
+  const { registeredFiles, detectiveFunctions, toggleState } = useCheckbox();
+  const { isTogglingCheckboxes, keepRendering, onToggleFiles } = toggleState;
   const hasFilesInBin = files.items.length > 0;
   const hasRegisteredFiles = registeredFiles.some((file) => file?.isChecked);
 
@@ -36,8 +31,8 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
         <FileInBin
           provided={provided}
           file={file}
-          detectiveFunctions={{ registerFile, unregisterFile }}
-          isToggling={isTogglingCheckboxes}
+          detectiveFunctions={detectiveFunctions}
+          toggleState={{ isTogglingCheckboxes, keepRendering }}
         />
       )}
     </Draggable>

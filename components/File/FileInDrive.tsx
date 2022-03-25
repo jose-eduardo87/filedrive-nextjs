@@ -27,7 +27,7 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
     <li
       ref={provided.innerRef}
       className={styles.root}
-      title={"Double-click me to download this file."}
+      title="Double-click me to download this file."
       onDoubleClick={onDoubleClickHandler}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
