@@ -1,10 +1,20 @@
-import { FC } from "react";
-import type { NextPage } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Layout } from "@/components/common";
 import { Container } from "@/components/ui";
 import { Welcome } from "@/components/sections";
 
-const HomePage: NextPage & { Layout: FC } = () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common", "welcome"])),
+    },
+  };
+};
+
+const HomePage = ({
+  locale,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <Container>

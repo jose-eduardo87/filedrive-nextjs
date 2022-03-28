@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import { FileSharingIllustration } from "@/components/Icons";
 import { Button } from "@/components/ui";
 import { CSSProperties } from "react";
@@ -12,6 +13,7 @@ const buttonStyle = (isDark: boolean): CSSProperties => {
 };
 
 export default function Welcome() {
+  const { t } = useTranslation("welcome");
   const { isDark } = useTheme();
 
   return (
@@ -19,21 +21,20 @@ export default function Welcome() {
       <div className={styles.infoContainer}>
         <div className={styles.rowItems}>
           <div className={styles.leftPanel}>
-            <h2>Your files, accessible from anywhere!</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum
-              nulla eaque molestias, dolores magni quaerat et modi illo sapiente
-              sint nemo sequi doloribus, est quibusdam?
-            </p>
+            <h2>{t("heading")}</h2>
+            <p>{t("main-text")}</p>
             <div className={styles.buttonsGroup}>
-              <Button title="Create a new account" style={buttonStyle(isDark)}>
-                Create an account
-              </Button>
               <Button
-                title="Send your files right away!"
+                title={t("btn-create-account")}
                 style={buttonStyle(isDark)}
               >
-                Send files!
+                {t("btn-create-account")}
+              </Button>
+              <Button
+                title={t("btn-send-files-title")}
+                style={buttonStyle(isDark)}
+              >
+                {t("btn-send-files")}
               </Button>
             </div>
           </div>

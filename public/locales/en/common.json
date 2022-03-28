@@ -1,0 +1,9 @@
+{
+  "navbar-link1": "Link 1",
+  "navbar-link2": "Link 2",
+  "navbar-link3": "Link 3",
+  "usernav-file-manager": "File Manager",
+  "usernav-settings": "Settings",
+  "footer-small-part1": "Made solely for educational purposes. No commercial use. Built by ",
+  "footer-small-part2": " with NextJS, TypeScript, PostgreSQL, Prisma and LOTS of coffee! "
+}

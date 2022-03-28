@@ -1,4 +1,5 @@
 import { FC, FormEvent } from "react";
+import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui";
 import { Mail } from "../Icons";
@@ -8,6 +9,7 @@ import { emailValidator, passwordValidator } from "helpers/functions";
 import styles from "./LoginForm.module.css";
 
 const LoginForm: FC = () => {
+  const { t } = useTranslation("loginform");
   const {
     value: emailValue,
     onBlur: onEmailBlur,
@@ -26,7 +28,7 @@ const LoginForm: FC = () => {
   } = useInput(passwordValidator);
 
   const isFormValid = isEmailValid && isPasswordValid;
-  const errorMessage = "Required field.";
+  const errorMessage = t("error-message");
   const setVisibility = (hasError: boolean) =>
     hasError ? "visible" : "hidden";
   const onSubmitHandler = (e: FormEvent) => {
@@ -56,7 +58,7 @@ const LoginForm: FC = () => {
       </p>
       <Input
         type="password"
-        placeholder="Password"
+        placeholder={t("placeholder-pwd")}
         value={passwordValue}
         onBlur={onPasswordBlur}
         onChange={onPasswordChange}

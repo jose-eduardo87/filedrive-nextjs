@@ -1,4 +1,5 @@
 import { FC, FormEvent } from "react";
+import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui";
 import useInput from "hooks/use-input";
@@ -11,6 +12,7 @@ import {
 import styles from "./SignUpForm.module.css";
 
 const SignUpForm: FC = () => {
+  const { t } = useTranslation("signupform");
   const {
     value: nameValue,
     onBlur: onNameBlur,
@@ -44,7 +46,7 @@ const SignUpForm: FC = () => {
     hasError: passwordConfirmHasError,
   } = useInput(passwordValidator);
 
-  const errorMessage = "Invalid field.";
+  const errorMessage = t("error-message");
   const passwordConfirmIsValid =
     !passwordConfirmHasError && passwordValue === passwordConfirmValue;
   const isFormValid =
@@ -61,7 +63,7 @@ const SignUpForm: FC = () => {
     <form className={styles.form} onSubmit={onSubmitHandler}>
       <Input
         type="text"
-        placeholder="Name"
+        placeholder={t("placeholder-name")}
         value={nameValue}
         onBlur={onNameBlur}
         onChange={onNameChange}
@@ -78,7 +80,7 @@ const SignUpForm: FC = () => {
       </p>
       <Input
         type="text"
-        placeholder="E-mail"
+        placeholder={t("placeholder-email")}
         value={emailValue}
         onBlur={onEmailBlur}
         onChange={onEmailChange}
@@ -95,7 +97,7 @@ const SignUpForm: FC = () => {
       </p>
       <Input
         type="password"
-        placeholder="Password"
+        placeholder={t("placeholder-pwd")}
         value={passwordValue}
         onBlur={onPasswordBlur}
         onChange={onPasswordChange}
@@ -113,7 +115,7 @@ const SignUpForm: FC = () => {
       </p>
       <Input
         type="password"
-        placeholder="Confirm Password"
+        placeholder={t("placeholder-confirm-pwd")}
         value={passwordConfirmValue}
         onBlur={onPasswordConfirmBlur}
         onChange={onPasswordConfirmChange}
@@ -131,7 +133,7 @@ const SignUpForm: FC = () => {
       </p>
 
       <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
-        Login
+        {t("btn")}
       </Button>
     </form>
   );

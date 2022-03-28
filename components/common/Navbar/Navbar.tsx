@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { FC } from "react";
 import { Login } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
@@ -16,6 +16,7 @@ const iconStyles = {
 };
 
 const Navbar: FC = () => {
+  const { t } = useTranslation("common");
   const { isDark } = useTheme();
 
   return (
@@ -30,13 +31,13 @@ const Navbar: FC = () => {
         <nav>
           <ul className={styles.navLinks}>
             <Link passHref href="/">
-              <li className={styles.navLink}>Link 1</li>
+              <li className={styles.navLink}>{t("navbar-link1")}</li>
             </Link>
             <Link passHref href="/">
-              <li className={styles.navLink}>Link 2</li>
+              <li className={styles.navLink}>{t("navbar-link2")}</li>
             </Link>
             <Link passHref href="/">
-              <li className={styles.navLink}>Link 3</li>
+              <li className={styles.navLink}>{t("navbar-link3")}</li>
             </Link>
           </ul>
           <div className={styles.iconsArea}>

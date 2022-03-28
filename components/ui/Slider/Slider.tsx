@@ -17,7 +17,7 @@ const Slider: FC<SliderProps> = ({ components }) => {
   return (
     <Carousel
       autoPlay={true}
-      interval={5000}
+      interval={4000}
       showThumbs={false}
       showStatus={false}
       showArrows={false}

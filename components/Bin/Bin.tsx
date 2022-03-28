@@ -1,27 +1,43 @@
 import { FC } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInBin } from "@/components/File";
 import { Button } from "@/components/ui";
-import useCheckbox from "hooks/use-checkbox";
 import { FileInListInterface } from "@/components/FileManager/FileManager";
-import { ToggleCheck, Trash } from "@/components/Icons";
+import useCheckbox from "hooks/use-checkbox";
+import { Checked, Unchecked, Trash } from "@/components/Icons";
 import { getButtonStyleInBin } from "helpers/functions";
-import { HEADING_STYLE_IN_FILES, ICON_STYLE_IN_FILES } from "helpers/constants"; // check these constant names
+import {
+  HEADING_STYLE_IN_DRIVE_BIN,
+  ICON_STYLE_IN_DRIVE_BIN,
+} from "helpers/constants";
 
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
-  const { registeredFiles, detectiveFunctions, toggleState } = useCheckbox();
+  const { locale } = useRouter();
+  const isEnglish = locale === "en";
+  const { t } = useTranslation("bin");
+  const { registeredFilesState, trackerFunctions, toggleState } = useCheckbox();
   const { isTogglingCheckboxes, runUseEffect, onToggleFiles } = toggleState;
+  const { registeredFiles, setRegisteredFiles } = registeredFilesState;
   const hasFilesInBin = files.items.length > 0;
   const hasRegisteredFiles = registeredFiles.some((file) => file?.isChecked);
+  const togglingString = isTogglingCheckboxes
+    ? isEnglish
+      ? "uncheck"
+      : "desmarcar"
+    : isEnglish
+    ? "check"
+    : "marcar";
 
   const renderEmptyPanel = (
     <div
       style={{ width: "100%", height: "100%", backgroundColor: "transparent" }}
     >
       <p style={{ textAlign: "center", color: "#A1A1A1" }}>
-        Clean bin, congratulations!
+        {t("empty_bin_message")}
       </p>
     </div>
   );
@@ -32,7 +48,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
         <FileInBin
           provided={provided}
           file={file}
-          detectiveFunctions={detectiveFunctions}
+          trackerFunctions={trackerFunctions}
           toggleState={{ isTogglingCheckboxes, runUseEffect }}
         />
       )}
@@ -43,8 +59,8 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
     <Droppable droppableId={id}>
       {(provided, snapshot) => (
         <>
-          <h2 style={{ ...HEADING_STYLE_IN_FILES }}>
-            <Trash {...ICON_STYLE_IN_FILES} /> Trash
+          <h2 style={{ ...HEADING_STYLE_IN_DRIVE_BIN }}>
+            <Trash {...ICON_STYLE_IN_DRIVE_BIN} /> {t("heading")}
           </h2>
           <ul
             ref={provided.innerRef}
@@ -61,32 +77,28 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
           <Button
             title={
               hasFilesInBin
-                ? "Click this button to check/uncheck all the files in the bin."
-                : "The bin is empty."
+                ? t("btn-toggle-title-true", {
+                    toggleState: togglingString,
+                  })
+                : t("btn-toggle-title-false")
             }
             isDisabled={!hasFilesInBin}
             style={getButtonStyleInBin("toggle")}
             onClick={onToggleFiles}
           >
-            <ToggleCheck width="2rem" height="1rem" />
+            {isTogglingCheckboxes ? <Unchecked /> : <Checked />}
           </Button>
           <Button
             title={
               hasRegisteredFiles
-                ? "Click this button to permanently delete the selected files."
-                : "You must check at least one file in order to clean the bin."
+                ? t("btn-clear-title-true")
+                : t("btn-clear-title-false")
             }
             isDisabled={!hasRegisteredFiles}
-            onClick={() =>
-              alert(
-                `A POST request will be sent to the server to delete the following files: ${JSON.stringify(
-                  registeredFiles
-                )}`
-              )
-            }
+            onClick={() => alert(JSON.stringify(registeredFiles))}
             style={getButtonStyleInBin()}
           >
-            Clear bin
+            {t("btn-clear")}
           </Button>
         </>
       )}

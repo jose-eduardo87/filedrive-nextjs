@@ -34,6 +34,7 @@ export const getButtonStyleInBin = (type?: string): CSSProperties => {
     width: isToggle ? "15%" : "85%",
     backgroundColor: isToggle ? "#F2D2BD" : "#FFFFE0",
     color: isToggle ? "#B3B3B3" : "#CECECE",
+    verticalAlign: isToggle ? "middle" : "",
     border: "none",
     padding: isToggle ? 0 : "",
   };

@@ -1,0 +1,9 @@
+{
+  "navbar-link1": "Link 1",
+  "navbar-link2": "Link 2",
+  "navbar-link3": "Link 3",
+  "usernav-file-manager": "Gerenciador",
+  "usernav-settings": "Configurações",
+  "footer-small-part1": "Feito exclusivamente para fins educacionais. Sem uso comercial. Construído por ",
+  "footer-small-part2": " e NextJS, TypeScript, PostgreSQL, Prisma e MUITO café! "
+}

@@ -1,0 +1,9 @@
+{
+  "heading": "Bin",
+  "empty_bin_message": "Clean bin, congratulations!",
+  "btn-toggle-title-true": "Click this button to {{toggleState}} all the files in the bin.",
+  "btn-toggle-title-false": "The bin is empty.",
+  "btn-clear-title-true": "Click this button to permanently delete the selected files.",
+  "btn-clear-title-false": "You must check at least one file in order to clean the bin.",
+  "btn-clear": "Clear bin"
+}

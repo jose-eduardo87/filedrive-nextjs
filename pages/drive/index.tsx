@@ -1,11 +1,20 @@
-import { FC } from "react";
-import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Grid, Card } from "@/components/ui";
 import { Slider } from "@/components/ui";
 import { FileUploader } from "@/components/FileUploader";
 import { StorageInfo } from "@/components/StorageInfo";
 import { LayoutDrive } from "@/components/common";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
+    },
+  };
+};
 
 const componentsArray = [
   {
@@ -22,10 +31,29 @@ const componentsArray = [
   },
 ];
 
-const MainPage: NextPage & { LayoutDrive: FC } = () => {
+const MainPage: InferGetServerSidePropsType<typeof getServerSideProps> = () => {
+  const { locale } = useRouter();
+  const componentsArray = [
+    {
+      title: locale === "en" ? "Drive Information" : "Informação do Drive",
+      Component: StorageInfo,
+      freeSpace: 976,
+      usedSpace: 48,
+    },
+    {
+      title: locale === "en" ? "Trash Information" : "Informação da Lixeira",
+      Component: StorageInfo,
+      freeSpace: 480,
+      usedSpace: 32,
+    },
+  ];
   return (
     <>
-      <h1 style={HEADING_STYLE_IN_DASHBOARD}>Welcome to Your Dashboard.</h1>
+      <h1 style={HEADING_STYLE_IN_DASHBOARD}>
+        {locale === "en"
+          ? "Welcome to your Dashboard."
+          : "Bem-vindo ao seu Dashboard."}
+      </h1>
 
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
         <Card style={{ width: "400px" }}>

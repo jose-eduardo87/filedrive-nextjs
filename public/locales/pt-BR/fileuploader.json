@@ -1,0 +1,12 @@
+{
+  "drag-n-drop-message": "Arraste e solte seus arquivos aqui, ou clique para selecionar os arquivos.",
+  "fileRejections-length-true": "{{filename}} não pode ser selecionado porque excede o tamanho máximo permitido (10 MB).",
+  "fileRejections-length-false": "Alguns arquivos não foram selecionados por conta da limitação do tamanho do arquivo (10MB).",
+  "hasFiles-true": "Adicionar mais: ",
+  "hasFiles-false": "Arquivos: ",
+  "total-files-single": "1 arquivo",
+  "total-files-multi": "{{amount}} arquivos ",
+  "btn-title": "Clique no botão para fazer o upload do arquivo",
+  "btn-title-disabled": "Você precisa selecionar pelo menos um arquivo.",
+  "btn": "Enviar!"
+}

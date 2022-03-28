@@ -1,4 +1,5 @@
 import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
+import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui";
 import { DragAndDrop } from "@/components/Icons";
@@ -14,6 +15,7 @@ import { roundFileSizeToCorrectUnit } from "helpers/functions";
 import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
+  const { t } = useTranslation("fileuploader");
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
@@ -83,25 +85,27 @@ const FileUploader: FC = () => {
           <span style={{ verticalAlign: "middle" }}>
             <DragAndDrop width={"20px"} fill="#BBBBBB" />
           </span>{" "}
-          Drag and drop your files here, or click to select files.
+          {t("drag-n-drop-message")}
         </p>
       </div>
       {hasRejections && (
         <p className={styles.errorMessage}>
           {fileRejections.length === 1
-            ? `${fileRejections[0].file.name} could not be selected because it exceeds the maximum allowed file size (10 MB).`
-            : "Some files could not be selected due to the file size limitation (10MB)."}
+            ? t("fileRejections-length-true", {
+                filename: fileRejections[0].file.name,
+              })
+            : t("fileRejections-length-false")}
         </p>
       )}
       <p className={styles.filesTitle} style={{ color: "#BEBEBE" }}>
-        {hasFiles ? "Add more:" : "Files:"}
+        {hasFiles ? t("hasFiles-true") : t("hasFiles-false")}
       </p>
       {hasFiles && (
         <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
           Total{" "}
           {uploadedFiles.length === 1
-            ? `${uploadedFiles.length} file`
-            : `${uploadedFiles.length} files`}{" "}
+            ? t("total-files-single")
+            : t("total-files-multi", { amount: uploadedFiles.length })}
           * {roundFileSizeToCorrectUnit(totalSize)}
         </small>
       )}
@@ -112,15 +116,13 @@ const FileUploader: FC = () => {
         style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
         title={
           hasFiles
-            ? `Hit the button to upload the file${
-                uploadedFiles.length > 1 ? "s!" : "!"
-              }`
-            : "You must select at least one file."
+            ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s!" : "!"}`
+            : t("btn-title-disabled")
         }
         isDisabled={!hasFiles}
         onClick={() => alert(JSON.stringify(uploadedFiles))}
       >
-        Send!
+        {t("btn")}
       </Button>
     </section>
   );

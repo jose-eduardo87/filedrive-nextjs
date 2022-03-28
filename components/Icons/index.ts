@@ -1,3 +1,4 @@
+export { default as Checked } from "./Checked";
 export { default as Coffee } from "./Coffee";
 export { default as Dashboard } from "./Dashboard";
 export { default as DocumentFile } from "./DocumentFile";
@@ -13,7 +14,7 @@ export { default as Login } from "./Login";
 export { default as Logout } from "./Logout";
 export { default as Mail } from "./Mail";
 export { default as SignIn } from "./SignIn";
-export { default as ToggleCheck } from "./ToggleCheck";
 export { default as Trash } from "./Trash";
+export { default as Unchecked } from "./Unchecked";
 export { default as VideoFile } from "./VideoFile";
 export { default as Wave } from "./Wave";

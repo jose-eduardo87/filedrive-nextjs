@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 import { useUserInfo } from "store/user-context";
 import { useTheme } from "store/theme-context";
 import { Home, Dashboard, Filedrive, Gear, Logout } from "@/components/Icons";
@@ -12,6 +13,7 @@ const getIconStyles = (isDark: boolean) => {
 };
 
 const Usernav: FC = () => {
+  const { t } = useTranslation("common");
   const { user } = useUserInfo();
   const { isDark } = useTheme();
 
@@ -38,7 +40,7 @@ const Usernav: FC = () => {
                 <span className={styles.icon}>
                   <Home {...getIconStyles(isDark)} />
                 </span>
-                Homepage
+                Home
               </li>
             </Link>
             <Link passHref href="/drive">
@@ -54,7 +56,7 @@ const Usernav: FC = () => {
                 <span className={styles.icon}>
                   <Filedrive {...getIconStyles(isDark)} />
                 </span>
-                File Manager
+                {t("usernav-file-manager")}
               </li>
             </Link>
             <Link passHref href="/drive/settings">
@@ -62,7 +64,7 @@ const Usernav: FC = () => {
                 <span className={styles.icon}>
                   <Gear {...getIconStyles(isDark)} />
                 </span>
-                Settings
+                {t("usernav-settings")}
               </li>
             </Link>
           </ul>

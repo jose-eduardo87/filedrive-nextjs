@@ -1,10 +1,19 @@
-import { NextPage } from "next";
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import { FC } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Layout } from "@/components/common";
 import { Container } from "@/components/ui";
 import { SignUp } from "@/components/sections";
 
-const SignUpPage: NextPage & { Layout: FC } = () => (
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common", "signupform"])),
+    },
+  };
+};
+
+const SignUpPage: InferGetStaticPropsType<typeof getStaticProps> = () => (
   <Container>
     <SignUp />
   </Container>

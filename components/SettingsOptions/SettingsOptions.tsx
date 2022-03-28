@@ -1,8 +1,9 @@
 import { FC, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { Selector } from "@/components/ui";
 import { useTheme } from "store/theme-context";
-import { useLanguageSelector } from "store/language-context";
 
 import styles from "./SettingsOptions.module.css";
 
@@ -23,39 +24,42 @@ const iconsStyles = {
 };
 
 const SettingsOptions: FC = () => {
+  const router = useRouter();
+  const { locale, pathname, asPath, query } = router;
+  const { t } = useTranslation("settingsoptions");
   const { isDark, toggleTheme } = useTheme();
-  const { language, toggleLanguage } = useLanguageSelector();
+  const isEnglish = locale === "en";
 
   const toggleThemeHandler = useCallback(() => toggleTheme(), [toggleTheme]);
-  const toggleLanguageHandler = useCallback(
-    () => toggleLanguage(),
-    [toggleLanguage]
-  );
+  const toggleLanguageHandler = useCallback(() => {
+    router.push({ pathname, query }, asPath, {
+      locale: isEnglish ? "pt-BR" : "en",
+    });
+  }, [asPath, isEnglish, pathname, query, router]);
 
   return (
     <div className={styles.root}>
-      <h2>Additional options</h2>
+      <h2>{t("heading")}</h2>
 
-      <div className=""></div>
       <div className={styles.selectionGroup}>
-        <p>Choose theme: </p>
+        <p>{t("theme-selector")}</p>
         <Selector
           isChecked={!isDark}
           icons={{
-            checked: <p style={{ ...iconsStyles }}>LIGHT</p>,
-            unchecked: <p style={{ ...iconsStyles }}>DARK</p>,
+            checked: <p style={{ ...iconsStyles }}>{t("theme-light")}</p>,
+            unchecked: <p style={{ ...iconsStyles }}>{t("theme-dark")}</p>,
           }}
           onChange={toggleThemeHandler}
           {...selectorStyles}
         />
       </div>
       <div className={styles.selectionGroup}>
-        Choose language:{" "}
+        {t("language-selector")}
         <Selector
-          isChecked={language === "EN"}
+          isChecked={isEnglish}
           icons={{
-            checked: <p style={{ ...iconsStyles }}>EN</p>,
-            unchecked: <p style={{ ...iconsStyles }}>PT</p>,
+            checked: <p style={{ ...iconsStyles }}>{t("language-en")}</p>,
+            unchecked: <p style={{ ...iconsStyles }}>{t("language-ptbr")}</p>,
           }}
           onChange={toggleLanguageHandler}
           {...selectorStyles}
@@ -63,7 +67,7 @@ const SettingsOptions: FC = () => {
       </div>
 
       <Link passHref href="/drive/upgrade">
-        <p className={styles.upgradeLink}>Upgrade plans</p>
+        <p className={styles.upgradeLink}>{t("upgrade-link")}</p>
       </Link>
     </div>
   );

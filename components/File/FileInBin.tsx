@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState, memo } from "react";
+import { useRouter } from "next/router";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getMediaIcon } from "helpers/functions";
@@ -10,7 +11,7 @@ interface FileProps {
   file: FileInterface;
   provided: DraggableProvided;
   toggleState: { isTogglingCheckboxes: boolean; runUseEffect: number };
-  detectiveFunctions: {
+  trackerFunctions: {
     registerFile: (id: string, isChecked: boolean) => void;
     unregisterFile: (id: string) => void;
   };
@@ -20,14 +21,14 @@ const FileInBin: FC<FileProps> = ({
   file,
   provided,
   toggleState,
-  detectiveFunctions,
+  trackerFunctions,
 }) => {
+  const { locale } = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [hasToggledBefore, setHasToggledBefore] = useState(false);
   const { isTogglingCheckboxes, runUseEffect } = toggleState;
-  const { registerFile, unregisterFile } = detectiveFunctions;
+  const { registerFile, unregisterFile } = trackerFunctions;
   const MediaIcon = getMediaIcon(file.name);
-  const iconStyles = { width: 16, fill: "#B4B4B4" };
 
   useEffect(() => {
     registerFile(file.id, isChecked); // stores file information in Bin.
@@ -41,13 +42,17 @@ const FileInBin: FC<FileProps> = ({
     }
 
     setHasToggledBefore(true);
-  }, [runUseEffect, isTogglingCheckboxes]);
+  }, [runUseEffect]);
 
   return (
     <li
       ref={provided.innerRef}
       className={styles.root}
-      title="Drag this file to the drive panel in order to download it."
+      title={
+        locale === "en"
+          ? "Drag this file to the drive panel in order to download it."
+          : "Arraste este arquivo para o painel do drive para realizar o download."
+      }
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
@@ -61,7 +66,7 @@ const FileInBin: FC<FileProps> = ({
             onChange={() => setIsChecked((currentState) => !currentState)}
           />
           <span>
-            <MediaIcon {...iconStyles} /> {file.name}
+            <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.name}
           </span>
         </span>
         <span>{file.size}</span>

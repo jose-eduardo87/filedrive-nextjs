@@ -1,10 +1,12 @@
 import { FC } from "react";
+import { useTranslation } from "next-i18next";
 import { useTheme } from "store/theme-context";
 import { Coffee } from "@/components/Icons";
 
 import styles from "./Footer.module.css";
 
 const Footer: FC = () => {
+  const { t } = useTranslation("common");
   const { isDark } = useTheme();
   return (
     <footer
@@ -12,15 +14,15 @@ const Footer: FC = () => {
       style={{ backgroundColor: isDark ? "#212f45" : "" }}
     >
       <small>
-        Made solely for educational purposes. No commercial use. Built by{" "}
+        {t("footer-small-part1")}
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://portfolio-nextjs-theta-pink.vercel.app/"
         >
           José Eduardo
-        </a>{" "}
-        with NextJS, TypeScript, PostgreSQL, Prisma and LOTS of coffee!{" "}
+        </a>
+        {t("footer-small-part2")}
         <Coffee width={16} />
       </small>
     </footer>

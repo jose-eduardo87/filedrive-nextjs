@@ -1,6 +1,7 @@
 import { FC } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import { appWithTranslation } from "next-i18next";
 import UserProvider from "store/user-context";
 import ThemeProvider from "store/theme-context";
 import LanguageProvider from "store/language-context";
@@ -28,4 +29,4 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

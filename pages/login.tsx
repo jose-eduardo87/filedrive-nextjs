@@ -1,10 +1,23 @@
 import { FC } from "react";
-import { NextPage } from "next";
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Layout } from "@/components/common";
 import { Container } from "@/components/ui";
 import { Login } from "@/components/sections";
 
-const LoginPage: NextPage & { Layout: FC } = () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, [
+        "common",
+        "login",
+        "loginform",
+      ])),
+    },
+  };
+};
+
+const LoginPage: InferGetStaticPropsType<typeof getStaticProps> = () => {
   return (
     <Container>
       <Login />

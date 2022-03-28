@@ -1,4 +1,5 @@
 import { FC, FormEvent } from "react";
+import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui/";
 import useInput from "hooks/use-input";
@@ -8,6 +9,8 @@ import styles from "./SettingsForm.module.css";
 
 const SettingsForm: FC = () => {
   const USER_NAME_FROM_BACKEND = "José Eduardo Oliveira de Araújo";
+
+  const { t } = useTranslation("settingsform");
 
   const {
     value: nameValue,
@@ -41,7 +44,7 @@ const SettingsForm: FC = () => {
     isValid: isPasswordConfirmValid,
     hasError: passwordConfirmHasError,
   } = useInput(passwordValidator);
-  const errorMessage = "Invalid field.";
+  const errorMessage = t("error-message");
   const passwordConfirmIsValid =
     !passwordConfirmHasError && passwordValue === passwordConfirmValue;
   const isFormValid =
@@ -65,11 +68,11 @@ const SettingsForm: FC = () => {
 
   return (
     <form className={styles.form} onSubmit={onSubmitHandler}>
-      <h2>Basic information</h2>
+      <h2>{t("heading")}</h2>
       <div className={styles.formContainer}>
         <Input
           type="text"
-          placeholder="Name"
+          placeholder={t("placeholder-name")}
           value={nameValue}
           onBlur={onNameBlur}
           onChange={onNameChange}
@@ -86,7 +89,7 @@ const SettingsForm: FC = () => {
         </p>
         <Input
           type="password"
-          placeholder="Current Password"
+          placeholder={t("placeholder-curr-pwd")}
           value={currentPasswordValue}
           onBlur={onCurrentPasswordBlur}
           onChange={onCurrentPasswordChange}
@@ -104,7 +107,7 @@ const SettingsForm: FC = () => {
         </p>
         <Input
           type="password"
-          placeholder="New Password"
+          placeholder={t("placeholder-new-pwd")}
           value={passwordValue}
           onBlur={onPasswordBlur}
           onChange={onPasswordChange}
@@ -122,7 +125,7 @@ const SettingsForm: FC = () => {
         </p>
         <Input
           type="password"
-          placeholder="Confirm New Password"
+          placeholder={t("placeholder-confirm-pwd")}
           value={passwordConfirmValue}
           onBlur={onPasswordConfirmBlur}
           onChange={onPasswordConfirmChange}
@@ -140,7 +143,7 @@ const SettingsForm: FC = () => {
         </p>
 
         <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
-          Save changes
+          {t("btn-form")}
         </Button>
       </div>
     </form>

@@ -4,6 +4,7 @@ import {
   NextPage,
   GetServerSideProps,
 } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
 import { Card } from "@/components/ui";
 import { FileManager } from "@/components/FileManager";
@@ -18,7 +19,7 @@ export interface FileInterface {
   url: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   // REQUIRED TO RENDER DRAG AND DROP FUNCTIONALITY CORRECTLY
   resetServerContext();
 
@@ -70,7 +71,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   ];
 
   return {
-    props: { files, trash },
+    props: {
+      files,
+      trash,
+      ...(await serverSideTranslations(locale!, ["common", "bin"])),
+    },
   };
 };
 

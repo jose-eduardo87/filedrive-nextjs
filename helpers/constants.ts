@@ -39,14 +39,14 @@ export const HEADING_STYLE_IN_DASHBOARD: CSSProperties = {
   color: "#2093C3",
 };
 
-export const HEADING_STYLE_IN_FILES: CSSProperties = {
+export const HEADING_STYLE_IN_DRIVE_BIN: CSSProperties = {
   color: "#7E7E7E",
   fontSize: "1.2rem",
   fontWeight: 400,
   letterSpacing: "1px",
 };
 
-export const ICON_STYLE_IN_FILES: CSSProperties = {
+export const ICON_STYLE_IN_DRIVE_BIN: CSSProperties = {
   width: "1.2rem",
   fill: "#999999",
 };

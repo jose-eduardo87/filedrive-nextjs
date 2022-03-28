@@ -1,29 +1,3 @@
-// ================================== ADDITIONAL NOTES ================================== //
-
-// Implementing this custom hook was a defiant but very rewarding experience.
-// My goal was to have a central place where I could manage checkbox state from
-// different parts of my application. Being more specific, I have this parent
-// component "Bin" which renders "N" child components "FileInBin". The latter would
-// be added and removed dinamically, being 100% dependent on the user interaction.
-// The FileInBin component returns a checkbox input. The challenges here are that we
-// don't know how many input will be rendered and that there are two states for the
-// same element: the individual checkbox and the toggle button, responsible for toggling
-// all the checkboxes on and off.
-// (...)
-// So here is the main architecture:  I would have a list in the parent component
-// that keeps track of all the files being added/removed and individual pieces of
-// state for each checkbox. The list would be responsible for controlling the toggling
-// state and to have an up-to-date information about the current items added/removed.
-// Due to useEffect's own nature where it closures the states by the time the component
-// is mounted, it was impossible to update the list with all the information regarding
-// the files. To resolve that, to control the state was necessary to use useRef instead
-// of useState/useReducer. To conclude, after a lot of refactoring, some frustrations
-// and change of architecture, it took me three long days to come to this implementation.
-// I had to deal with React's unique particularities. During this time, I learned important
-// things, like the useEffect being limited to have the surrounding states with the values
-// when the component got rendered, the impossibility of using hooks inside loops,
-// conditionals and nested functions and most importantly: I am moved for good challenges.
-
 import { useCallback, useState, useRef } from "react";
 
 interface RegisteredFilesInterface {
@@ -33,7 +7,7 @@ interface RegisteredFilesInterface {
 
 const useCheckbox = () => {
   // registeredFilesRef is used only inside this hook. useEffect does not have access to current states, so
-  // it makes necessary to use a ref to keep track of latest state updates.
+  // it is mandatory to use a ref to keep track of latest state updates.
   const registeredFilesRef = useRef<typeof registeredFiles>([]);
   const [isTogglingCheckboxes, setIsTogglingCheckboxes] = useState(false);
   const [runUseEffect, setRunUseEffect] = useState(0);
@@ -100,17 +74,47 @@ const useCheckbox = () => {
   }, [isTogglingCheckboxes]);
 
   return {
-    detectiveFunctions: {
+    trackerFunctions: {
       registerFile,
       unregisterFile,
     },
     toggleState: {
       isTogglingCheckboxes,
-      runUseEffect,
       onToggleFiles,
+      runUseEffect,
     },
-    registeredFiles,
+    registeredFilesState: {
+      registeredFiles,
+      setRegisteredFiles,
+    },
   };
 };
 
 export default useCheckbox;
+
+// ================================ ABOUT THIS HOOK ================================ //
+
+// Implementing this custom hook was a very rewarding experience.
+
+// My goal was to have a central place where I could manage checkbox states from
+// different parts of my application. Being more specific, I have this parent
+// component "Bin" which renders "N" child components "FileInBin". The latter would
+// be added and removed dinamically, being 100% dependent on the user interaction.
+// The FileInBin component returns a checkbox input. The challenges here are that we
+// don't know how many input will be rendered and that there are two states for the
+// same element: the individual checkbox and the toggle button, responsible for toggling
+// all the checkboxes on and off.
+
+// So here is the main architecture:  I would have a list in the parent component
+// that keeps track of all the files being added/removed and individual pieces of
+// state for each checkbox. The list would be responsible for controlling the toggling
+// state and to have an up-to-date information about the current items added/removed.
+// Due to useEffect's own nature where it closures the states by the time the component
+// is mounted, it was impossible to update the list with all the information regarding
+// the files. To resolve that, to control the state was necessary to use useRef instead
+// of useState/useReducer. To conclude, after a lot of refactoring, some frustrations
+// and change of architecture, it took me three long days to come to this implementation.
+// I had to deal with React's unique particularities. During this time, I learned important
+// things, like the useEffect being limited to have the surrounding states with the values
+// when the useEffect ran, the impossibility of using hooks inside loops,
+// conditionals and nested functions and most importantly: I am moved for good challenges.

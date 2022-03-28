@@ -1,4 +1,5 @@
 import { FC, memo } from "react";
+import { useRouter } from "next/router";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getMediaIcon } from "helpers/functions";
@@ -15,9 +16,9 @@ interface FileProps {
 }
 
 const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
+  const { locale } = useRouter();
   const { provided } = draggableConfig;
   const MediaIcon = getMediaIcon(file.name);
-  const iconStyles = { width: 16, fill: "#B4B4B4" };
 
   const onDoubleClickHandler = () => {
     console.log("Download request must be done from here.");
@@ -27,13 +28,17 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
     <li
       ref={provided.innerRef}
       className={styles.root}
-      title="Double-click me to download this file."
+      title={
+        locale === "en"
+          ? "Double-click me to download this file."
+          : "Dê um duplo-clique em mim para fazer o download deste arquivo."
+      }
       onDoubleClick={onDoubleClickHandler}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
       <span>
-        <MediaIcon {...iconStyles} /> {file.name}
+        <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.name}
       </span>
       <span>{file.size}</span>
     </li>

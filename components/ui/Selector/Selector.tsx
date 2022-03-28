@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, memo } from "react";
 import Switch from "react-switch";
 
 interface SelectorProps {
@@ -36,7 +36,7 @@ const Selector: FC<SelectorProps> = ({
   const [, setChecked] = useState(isChecked);
 
   const changeHandler = () => {
-    // SEND REQUEST TO SAVE CURRENT OPTION
+    // send reuest to save current option
 
     setChecked((currentState) => !currentState);
 
@@ -55,4 +55,4 @@ const Selector: FC<SelectorProps> = ({
   );
 };
 
-export default Selector;
+export default memo(Selector);

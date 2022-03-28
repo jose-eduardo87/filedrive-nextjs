@@ -1,0 +1,9 @@
+{
+  "heading": "Lixeira",
+  "empty_bin_message": "Lixeira vazia, parabéns!",
+  "btn-toggle-title-true": "Clique neste botão para {{toggleState}} todos os arquivos na lixeira.",
+  "btn-toggle-title-false": "A lixeira está vazia.",
+  "btn-clear-title-true": "Clique neste botão para apagar permanentemente os arquivos selecionados.",
+  "btn-clear-title-false": "Você precisa checar pelo menos um arquivo para apagá-lo.",
+  "btn-clear": "Limpar lixeira"
+}

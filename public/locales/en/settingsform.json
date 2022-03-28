@@ -1,0 +1,9 @@
+{
+  "error-message": "Invalid field.",
+  "heading": "Basic information",
+  "placeholder-name": "Name",
+  "placeholder-curr-pwd": "Current Password",
+  "placeholder-new-pwd": "New Password",
+  "placeholder-confirm-pwd": "Confirm New Password",
+  "btn-form": "Save changes"
+}

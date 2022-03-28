@@ -1,0 +1,9 @@
+{
+  "error-message": "Campo inválido.",
+  "heading": "Informações básicas",
+  "placeholder-name": "Nome",
+  "placeholder-curr-pwd": "Password Atual",
+  "placeholder-new-pwd": "Novo Password",
+  "placeholder-confirm-pwd": "Confirmar Novo Password",
+  "btn-form": "Salvar alterações"
+}
