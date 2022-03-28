@@ -1,5 +1,10 @@
+import { FC } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Grid, Card } from "@/components/ui";
 import { Slider } from "@/components/ui";
@@ -31,7 +36,9 @@ const componentsArray = [
   },
 ];
 
-const MainPage: InferGetServerSidePropsType<typeof getServerSideProps> = () => {
+const MainPage: NextPage & {
+  LayoutDrive: FC;
+} = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const componentsArray = [
     {
@@ -47,6 +54,7 @@ const MainPage: InferGetServerSidePropsType<typeof getServerSideProps> = () => {
       usedSpace: 32,
     },
   ];
+
   return (
     <>
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>

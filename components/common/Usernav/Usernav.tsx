@@ -76,7 +76,7 @@ const Usernav: FC = () => {
           <span style={{ marginRight: ".5rem", verticalAlign: "middle" }}>
             <Logout width={16} fill="red" />
           </span>
-          Logout
+          {t("usernav-logout")}
         </p>
       </Link>
     </div>

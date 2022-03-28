@@ -1,4 +1,9 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { FC } from "react";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Card } from "@/components/ui";
@@ -19,8 +24,11 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   };
 };
 
-const Settings: InferGetServerSidePropsType<typeof getServerSideProps> = () => {
+const Settings: NextPage & {
+  LayoutDrive: FC;
+} = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
+
   return (
     <>
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>

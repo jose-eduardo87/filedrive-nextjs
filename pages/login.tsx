@@ -17,7 +17,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-const LoginPage: InferGetStaticPropsType<typeof getStaticProps> = () => {
+const LoginPage: NextPage & { Layout: FC } = ({}: InferGetStaticPropsType<
+  typeof getStaticProps
+>) => {
   return (
     <Container>
       <Login />

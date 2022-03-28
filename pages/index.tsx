@@ -1,4 +1,5 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { FC } from "react";
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Layout } from "@/components/common";
 import { Container } from "@/components/ui";
@@ -12,9 +13,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-const HomePage = ({
-  locale,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const HomePage: NextPage & { Layout: FC } = ({}: InferGetStaticPropsType<
+  typeof getStaticProps
+>) => {
   return (
     <>
       <Container>

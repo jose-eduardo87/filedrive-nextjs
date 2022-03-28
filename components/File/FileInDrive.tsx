@@ -31,7 +31,7 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
       title={
         locale === "en"
           ? "Double-click me to download this file."
-          : "Dê um duplo-clique em mim para fazer o download deste arquivo."
+          : "Dê um duplo-clique para fazer o download deste arquivo."
       }
       onDoubleClick={onDoubleClickHandler}
       {...provided.draggableProps}

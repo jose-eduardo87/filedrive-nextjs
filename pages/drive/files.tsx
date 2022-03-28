@@ -20,8 +20,7 @@ export interface FileInterface {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  // REQUIRED TO RENDER DRAG AND DROP FUNCTIONALITY CORRECTLY
-  resetServerContext();
+  resetServerContext(); // required to render drag and drop functionality correctly
 
   const files: FileInterface[] = [
     {
@@ -82,10 +81,13 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
 const Files: NextPage & { LayoutDrive: FC } = ({
   files,
   trash,
+  locale,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
-      <h1 style={HEADING_STYLE_IN_DASHBOARD}>Manage Your Files.</h1>
+      <h1 style={HEADING_STYLE_IN_DASHBOARD}>
+        {locale === "en" ? "Manage your files." : "Gerencie seus arquivos."}
+      </h1>
 
       <Card>
         <FileManager files={files} trash={trash} />

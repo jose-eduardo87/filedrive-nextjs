@@ -2,7 +2,6 @@ import { FC, FormEvent } from "react";
 import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui";
-import { Mail } from "../Icons";
 import useInput from "hooks/use-input";
 import { emailValidator, passwordValidator } from "helpers/functions";
 
