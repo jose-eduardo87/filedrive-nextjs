@@ -8,6 +8,8 @@ import { GoogleLogo } from "@/components/Icons";
 
 import styles from "./Login.module.css";
 
+// FOR TODAY: RESTRICT USERS FROM ACCESSING /login IF THEY ARE ALREADY LOGGED.
+
 const Login: FC<{ currentLocale: string }> = ({ currentLocale }) => {
   const { data: session, status } = useSession();
   const { t } = useTranslation("login");

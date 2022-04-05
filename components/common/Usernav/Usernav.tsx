@@ -75,7 +75,7 @@ const Usernav: FC = () => {
             </ul>
           </nav>
         </div>
-          <p className={styles.logout} onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}>
+          <p className={styles.logout} onClick={() => signOut({ callbackUrl: "/" })}>
             <span style={{ marginRight: ".5rem", verticalAlign: "middle" }}>
               <Logout width={16} fill="red" />
             </span>
