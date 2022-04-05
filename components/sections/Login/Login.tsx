@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import { useSession, signIn } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useTranslation } from "next-i18next";
 import { Button } from "@/components/ui";
 import { LoginForm } from "@/components/LoginForm";
@@ -8,10 +8,7 @@ import { GoogleLogo } from "@/components/Icons";
 
 import styles from "./Login.module.css";
 
-// FOR TODAY: RESTRICT USERS FROM ACCESSING /login IF THEY ARE ALREADY LOGGED.
-
 const Login: FC<{ currentLocale: string }> = ({ currentLocale }) => {
-  const { data: session, status } = useSession();
   const { t } = useTranslation("login");
 
   return (

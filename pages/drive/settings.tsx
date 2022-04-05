@@ -4,6 +4,7 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Card } from "@/components/ui";
@@ -12,7 +13,19 @@ import { SettingsOptions } from "@/components/SettingsOptions";
 import { LayoutDrive } from "@/components/common";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, locale }) => {
+  const session = await getSession({ req });
+
+  // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
+  if(!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+  
   return {
     props: {
       ...(await serverSideTranslations(locale!, [

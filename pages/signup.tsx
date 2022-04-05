@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, req }) =>
       }
     }
   }
+
   return {
     props: {
       ...(await serverSideTranslations(locale!, ["common", "signupform"])),

@@ -4,6 +4,7 @@ import {
   NextPage,
   GetServerSideProps,
 } from "next";
+import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
 import { Card } from "@/components/ui";
@@ -19,8 +20,20 @@ export interface FileInterface {
   url: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, locale }) => {
   resetServerContext(); // required to render drag and drop functionality correctly
+
+  const session = await getSession({ req });
+
+  // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
+  if(!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
 
   const files: FileInterface[] = [
     {
