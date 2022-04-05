@@ -1,10 +1,10 @@
 import { FC } from "react";
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
+import { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react"
-import UserProvider from "store/user-context";
 import ThemeProvider from "store/theme-context";
+
+import "../styles/globals.css";
 
 const Noop: FC = ({ children }) => <>{children}</>;
 
@@ -17,14 +17,12 @@ function MyApp({
   const Layout = Component.Layout ?? Component.LayoutDrive ?? Noop;
 
   return (
-    <SessionProvider session={session} refetchInterval={5 * 60}>
-    <UserProvider>
+    <SessionProvider session={session}>
       <ThemeProvider>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
-    </UserProvider>
     </SessionProvider>
   );
 }

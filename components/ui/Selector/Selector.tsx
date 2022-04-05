@@ -36,7 +36,7 @@ const Selector: FC<SelectorProps> = ({
   const [, setChecked] = useState(isChecked);
 
   const changeHandler = () => {
-    // send reuest to save current option
+    // send request to save current option
 
     setChecked((currentState) => !currentState);
 

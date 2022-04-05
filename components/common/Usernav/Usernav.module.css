@@ -23,6 +23,7 @@
 .profileImg {
   width: 150px;
   height: 150px;
+  overflow: hidden;
   margin-bottom: 2rem;
   background-color: antiquewhite;
   border: 2px solid #ff69b4;

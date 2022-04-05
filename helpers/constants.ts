@@ -29,9 +29,7 @@ export const rejectStyle: CSSProperties = {
   borderColor: "#ff1744",
 };
 
-export const MALE_PROFILE_PIC = "/static/public/images/profile-male.webp";
-
-export const FEMALE_PROFILE_PIC = "/static/public/images/profile-female.webp";
+export const DEFAULT_AVATAR = "/images/default-avatar.webp";
 
 export const HEADING_STYLE_IN_DASHBOARD: CSSProperties = {
   fontWeight: 100,

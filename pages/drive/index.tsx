@@ -21,21 +21,6 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   };
 };
 
-const componentsArray = [
-  {
-    title: "Drive Information",
-    Component: StorageInfo,
-    freeSpace: 976,
-    usedSpace: 48,
-  },
-  {
-    title: "Trash Information",
-    Component: StorageInfo,
-    freeSpace: 480,
-    usedSpace: 32,
-  },
-];
-
 const MainPage: NextPage & {
   LayoutDrive: FC;
 } = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {

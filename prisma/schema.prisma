@@ -8,6 +8,13 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+model Option {
+  id       String    @id @default(cuid())
+  isDark   Boolean?  @default(false)
+  language Language?
+  user     User[]
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")
@@ -48,6 +55,8 @@ model User {
   password        String?
   passwordConfirm String?
   image           String?
+  optionId        String?
+  options         Option?   @relation(fields: [optionId], references: [id], onDelete: Cascade)
   accounts        Account[]
   sessions        Session[]
   role            Role?     @default(USER)
@@ -72,7 +81,7 @@ model File {
   size      Decimal   @db.Decimal(10, 2)
   location  Location? @default(DRIVE)
   ownerId   String
-  user      User?     @relation(fields: [ownerId], references: [id])
+  user      User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
@@ -83,4 +92,9 @@ enum Role {
 enum Location {
   DRIVE
   TRASH
+}
+
+enum Language {
+  en
+  ptBR
 }

@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useTranslation } from "next-i18next";
 import { FC } from "react";
-import { Login } from "@/components/Icons";
+import { Dashboard, Login } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
 
 import styles from "./Navbar.module.css";
@@ -16,8 +17,21 @@ const iconStyles = {
 };
 
 const Navbar: FC = () => {
+  const { data: session } = useSession();
   const { t } = useTranslation("common");
   const { isDark } = useTheme();
+
+  const renderDriveLink = <Link passHref href="/drive">
+  <a>
+    <Dashboard {...iconStyles} />
+  </a>
+</Link>
+
+const renderLoginLink = <Link passHref href="/login">
+<a>
+  <Login {...iconStyles} />
+</a>
+</Link>
 
   return (
     <header
@@ -41,11 +55,7 @@ const Navbar: FC = () => {
             </Link>
           </ul>
           <div className={styles.iconsArea}>
-            <Link passHref href="/login">
-              <a>
-                <Login {...iconStyles} />
-              </a>
-            </Link>
+            {session ? renderDriveLink : renderLoginLink}
           </div>
         </nav>
       </div>

@@ -8,6 +8,7 @@ import { Login } from "@/components/sections";
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
+      locale,
       ...(await serverSideTranslations(locale!, [
         "common",
         "login",
@@ -17,12 +18,12 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-const LoginPage: NextPage & { Layout: FC } = ({}: InferGetStaticPropsType<
+const LoginPage: NextPage & { Layout: FC } = ({ locale }: InferGetStaticPropsType<
   typeof getStaticProps
 >) => {
   return (
     <Container>
-      <Login />
+      <Login currentLocale={locale} />
     </Container>
   );
 };
