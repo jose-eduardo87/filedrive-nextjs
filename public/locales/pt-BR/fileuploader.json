@@ -7,6 +7,6 @@
   "total-files-single": "1 arquivo",
   "total-files-multi": "{{amount}} arquivos ",
   "btn-title": "Clique no botão para fazer o upload do arquivo",
-  "btn-title-disabled": "Você precisa selecionar pelo menos um arquivo.",
+  "btn-title-disabled": "Você precisa selecionar ao menos um arquivo.",
   "btn": "Enviar!"
 }

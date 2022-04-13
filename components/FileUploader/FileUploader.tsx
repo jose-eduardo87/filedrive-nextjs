@@ -2,6 +2,7 @@ import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui";
+import useHttp from "hooks/use-http";
 import { DragAndDrop } from "@/components/Icons";
 import { Trash } from "@/components/Icons";
 import {
@@ -16,12 +17,13 @@ import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
+  const { sendRequest } = useHttp();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
       const filesArray = [...currentState, ...acceptedFiles];
 
-      // REMOVES ALL THE DUPLICATE FILES
+      // removes all the duplicate fields
       const filteredFiles = filesArray.filter(
         (value, index, array) =>
           index === array.findIndex((t) => t.name === value.name)
@@ -39,7 +41,7 @@ const FileUploader: FC = () => {
     isFocused,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ maxSize: 10000000, onDropAccepted });
+  } = useDropzone({ maxSize: 10000000, onDropAccepted, multiple: false });
   const style = useMemo(
     (): CSSProperties => ({
       ...baseStyle,
@@ -50,12 +52,13 @@ const FileUploader: FC = () => {
     [isFocused, isDragAccept, isDragReject]
   );
   let totalSize: number = 0;
+
   const renderFiles = uploadedFiles.map((file: FileWithPath): ReactNode => {
     totalSize += file.size;
 
     return (
       <li key={file.path}>
-        <span>{file.path}</span> -{" "}
+        <span>{file.path}</span>
         <span className={styles.fileSize}>
           {roundFileSizeToCorrectUnit(file.size)}
         </span>
@@ -70,10 +73,20 @@ const FileUploader: FC = () => {
       </li>
     );
   });
+
   const onRemoveFileHandler = (name: string) =>
     setUploadedFiles((currentState) =>
       currentState.filter((file) => file.name !== name)
     );
+  const onPOSTFilesHandler = async () => {
+    console.log("uploadedFiles", uploadedFiles);
+
+    await sendRequest({
+      url: "/api/files",
+      method: "POST",
+      body: uploadedFiles,
+    });
+  };
   const hasFiles = !(uploadedFiles.length === 0);
   const hasRejections = !(fileRejections.length === 0);
 
@@ -120,7 +133,7 @@ const FileUploader: FC = () => {
             : t("btn-title-disabled")
         }
         isDisabled={!hasFiles}
-        onClick={() => alert(JSON.stringify(uploadedFiles))}
+        onClick={onPOSTFilesHandler}
       >
         {t("btn")}
       </Button>

@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Head from "next/head";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -13,19 +14,22 @@ import { SettingsOptions } from "@/components/SettingsOptions";
 import { LayoutDrive } from "@/components/common";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  locale,
+}) => {
   const session = await getSession({ req });
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
-  if(!session?.user) {
+  if (!session?.user) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
-  
+
   return {
     props: {
       ...(await serverSideTranslations(locale!, [
@@ -41,9 +45,17 @@ const Settings: NextPage & {
   LayoutDrive: FC;
 } = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
+  const isEnglish = locale === "en";
 
   return (
     <>
+      <Head>
+        <title>{isEnglish ? "Settings" : "Configurações"}</title>
+        <meta
+          name="description"
+          content="Manage your user account preferences. Change theme or language. Cancel your account."
+        />
+      </Head>
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>
         {locale === "en" ? "Settings" : "Configurações"}
       </h1>

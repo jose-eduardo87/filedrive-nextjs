@@ -6,8 +6,8 @@ import { FileInterface } from "pages/drive/files";
 import styles from "./FileManager.module.css";
 
 interface FMProps {
-  files: FileInterface[];
-  trash: FileInterface[];
+  filesInDrive: FileInterface[];
+  filesInTrash: FileInterface[];
 }
 
 enum Key {
@@ -24,15 +24,15 @@ type DndType = {
   [key in Key]: FileInListInterface;
 };
 
-const FileManager: FC<FMProps> = ({ files, trash }) => {
+const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
   const columns: DndType = {
     [Key.DRIVE]: {
       name: "drive",
-      items: files,
+      items: filesInDrive,
     },
     [Key.TRASH]: {
       name: "trash",
-      items: trash,
+      items: filesInTrash,
     },
   };
   const [list, setList] = useState<DndType>(columns);
