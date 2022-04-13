@@ -41,7 +41,7 @@ const FileUploader: FC = () => {
     isFocused,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ maxSize: 10000000, onDropAccepted, multiple: false });
+  } = useDropzone({ maxSize: 10000000, onDropAccepted });
   const style = useMemo(
     (): CSSProperties => ({
       ...baseStyle,
