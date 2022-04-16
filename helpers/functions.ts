@@ -10,8 +10,6 @@ import {
   VIDEO_EXTENSION,
   DOCUMENT_EXTENSION,
 } from "./constants";
-import { Session } from "next-auth";
-import { NextApiResponse } from "next";
 
 export const nameValidator = (name: string) => name.trim() !== "";
 

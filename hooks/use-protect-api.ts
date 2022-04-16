@@ -4,13 +4,13 @@ import { NextHandler } from "next-connect";
 import ErrorClass from "helpers/Error";
 
 const useProtectAPI = async (req: IncomingMessage, next: NextHandler) => {
-    const session = await getSession({ req });
-    
-    if(!session) {
-        return next(new ErrorClass('Unauthorized user. Are you logged in?', 401));
-    }
+  const session = await getSession({ req });
 
-    next();
+  if (!session) {
+    return next(new ErrorClass("Unauthorized user. Are you logged in?", 401));
+  }
+
+  next();
 };
 
 export default useProtectAPI;

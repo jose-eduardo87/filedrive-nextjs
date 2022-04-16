@@ -4,7 +4,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 
 const S3Client = new AWS.S3({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_REGION!,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY!,
     secretAccessKey: process.env.AWS_SECRET_KEY!,
@@ -17,10 +17,10 @@ const upload = multer({
     bucket: process.env.AWS_BUCKET!,
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
-    metadata(req, file, cb) {
+    metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
-    key(req, file, cb) {
+    key: function (req, file, cb) {
       randomBytes(16, (err, hash) => {
         if (err) {
           cb(err);

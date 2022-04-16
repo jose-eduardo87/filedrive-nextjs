@@ -73,22 +73,29 @@ const FileUploader: FC = () => {
       </li>
     );
   });
+  const hasFiles = !(uploadedFiles.length === 0);
+  const hasRejections = !(fileRejections.length === 0);
 
   const onRemoveFileHandler = (name: string) =>
     setUploadedFiles((currentState) =>
       currentState.filter((file) => file.name !== name)
     );
-  const onPOSTFilesHandler = async () => {
-    console.log("uploadedFiles", uploadedFiles);
+  const onUploadFilesHandler = async () => {
+    if (!hasFiles) {
+      return;
+    }
 
-    await sendRequest({
+    const formData = new FormData();
+    uploadedFiles.forEach((file) => formData.append("files", file));
+
+    const res = await sendRequest({
       url: "/api/files",
       method: "POST",
-      body: uploadedFiles,
+      body: formData,
     });
+
+    console.log(res);
   };
-  const hasFiles = !(uploadedFiles.length === 0);
-  const hasRejections = !(fileRejections.length === 0);
 
   return (
     <section>
@@ -133,7 +140,7 @@ const FileUploader: FC = () => {
             : t("btn-title-disabled")
         }
         isDisabled={!hasFiles}
-        onClick={onPOSTFilesHandler}
+        onClick={onUploadFilesHandler}
       >
         {t("btn")}
       </Button>

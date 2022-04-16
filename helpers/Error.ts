@@ -1,4 +1,8 @@
-export type ErrorType = Error & { statusCode: number; isOperational: boolean };
+export type ErrorType = Error & {
+  statusCode: number;
+  isOperational: boolean;
+  code?: string;
+};
 
 class ErrorClass extends Error {
   statusCode: number;
