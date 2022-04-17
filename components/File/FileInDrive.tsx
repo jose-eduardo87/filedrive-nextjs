@@ -2,7 +2,7 @@ import { FC, memo } from "react";
 import { useRouter } from "next/router";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
-import { getMediaIcon } from "helpers/functions";
+import { getMediaIcon, roundFileSizeToCorrectUnit } from "helpers/functions";
 
 import styles from "./File.module.css";
 
@@ -18,10 +18,10 @@ interface FileProps {
 const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
   const { locale } = useRouter();
   const { provided } = draggableConfig;
-  const MediaIcon = getMediaIcon(file.name);
+  const MediaIcon = getMediaIcon(file.fileName);
 
   const onDoubleClickHandler = () => {
-    console.log("Download request must be done from here.");
+    console.log(file);
   };
 
   return (
@@ -38,9 +38,9 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
       {...provided.dragHandleProps}
     >
       <span>
-        <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.name}
+        <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.fileName}
       </span>
-      <span>{file.size}</span>
+      <span>{roundFileSizeToCorrectUnit(file.size)}</span>
     </li>
   );
 };

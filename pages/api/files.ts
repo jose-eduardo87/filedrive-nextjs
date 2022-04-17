@@ -1,35 +1,48 @@
-import nc, { NextHandler } from "next-connect";
+import nc from "next-connect";
 import prisma from "lib/prisma";
 import useProtectAPI from "hooks/use-protect-api";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import upload from "middlewares/upload";
-import { ErrorType } from "helpers/Error";
+import ErrorClass, { ErrorType } from "helpers/Error";
 
-interface Req extends Request {
-  file: Express.MulterS3.File;
+export interface RequestWithFile extends NextApiRequest {
+  files: Express.MulterS3.File[];
+  userID: string;
 }
 
-const handler = nc<Req, NextApiResponse>({
-  onError: (err: ErrorType, req, res, next) => {
-    return errorHandler(err, res);
-  },
-  onNoMatch: (req, res) => {
-    res.status(404).end("Page not found");
-  },
+const handler = nc<RequestWithFile, NextApiResponse>({
+  onError: (err: ErrorType, _req, res) => errorHandler(err, res),
+  onNoMatch: (_req, res) => res.status(404).end("Page not found"),
 })
-  .use((req, res, next) => useProtectAPI(req, next), upload.array("files"))
-  .get((req, res) => {
-    return res.status(200).json({ message: "Inside GET response." });
-  })
-  .post((req, res) => {
-    res.status(200).json({ hello: "world" });
-  })
-  .put(async (req, res) => {
-    res.end("async/await is also supported!");
+  .use(
+    (req: RequestWithFile, _res, next) => useProtectAPI(req, next),
+    upload.array("files")
+  )
+  .post(async (req, res, next) => {
+    const files = req.files.map((file) => {
+      return {
+        fileName: file.originalname,
+        size: file.size,
+        ownerId: req.userID,
+        url: file.location,
+      };
+    });
+
+    const uploadedFiles = await prisma.file.createMany({
+      data: files,
+    });
+
+    if (!uploadedFiles) {
+      return next(
+        new ErrorClass("There was an error updating the database.", 500)
+      );
+    }
+
+    return res.status(200).json({ success: true });
   })
   .patch(async (req, res) => {
-    throw new Error("Throws me around! Error can be caught and handled.");
+    // CHANGING FILE'S LOCATION FROM BIN TO TRASH AND VICE-VERSA LOGIC GOES HERE
   });
 
 export const config = {

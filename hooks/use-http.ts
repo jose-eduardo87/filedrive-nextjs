@@ -19,37 +19,33 @@ const useHttp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const sendRequest = useCallback(
-    async (requestConfig: RequestType): Promise<Response> => {
-      setIsLoading(true);
-      setError(null);
+  const sendRequest = useCallback(async (requestConfig: RequestType) => {
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        const response = await fetch(requestConfig.url, {
-          method: requestConfig.method ? requestConfig.method : "GET",
-          headers: requestConfig.headers ? requestConfig.headers : {},
-          body: requestConfig.body ? requestConfig.body : null,
-        });
+    try {
+      const response = await fetch(requestConfig.url, {
+        method: requestConfig.method ? requestConfig.method : "GET",
+        headers: requestConfig.headers ? requestConfig.headers : {},
+        body: requestConfig.body ? requestConfig.body : null,
+      });
 
-        if (!response.ok) {
-          throw new Error("Request failed!");
-        }
-        const data = await response.json();
-
-        setIsLoading(false);
-
-        return data;
-      } catch (err) {
-        const errorMessage = getErrorMessage(err);
-
-        setError(errorMessage);
-        setIsLoading(false);
-
-        throw new Error(errorMessage);
+      if (!response.ok) {
+        throw new Error("Request failed!");
       }
-    },
-    []
-  );
+
+      const data = await response.json();
+
+      setIsLoading(false);
+
+      return data;
+    } catch (err) {
+      const errorMessage = getErrorMessage(err);
+
+      setError(errorMessage);
+      setIsLoading(false);
+    }
+  }, []);
 
   return {
     isLoading,

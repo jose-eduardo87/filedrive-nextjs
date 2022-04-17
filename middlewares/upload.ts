@@ -2,6 +2,7 @@ import { randomBytes } from "crypto";
 import AWS from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
+import { RequestWithFile } from "pages/api/files";
 
 const S3Client = new AWS.S3({
   region: process.env.AWS_REGION!,
@@ -17,19 +18,13 @@ const upload = multer({
     bucket: process.env.AWS_BUCKET!,
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
-    metadata: function (req, file, cb) {
+    metadata: function (_req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
-    key: function (req, file, cb) {
-      randomBytes(16, (err, hash) => {
-        if (err) {
-          cb(err);
-        }
+    key: function (req: RequestWithFile, file, cb) {
+      const fileName = `${req.userID}/${file.originalname}`;
 
-        const fileName = `${hash.toString("hex")}-${file.originalname}`;
-
-        cb(null, fileName);
-      });
+      cb(null, fileName);
     },
   }),
 });

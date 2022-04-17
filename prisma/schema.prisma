@@ -76,9 +76,10 @@ model VerificationToken {
 
 model File {
   id        String    @unique @default(cuid())
-  createdAt DateTime  @default(now())
+  createdAt DateTime? @default(now())
   fileName  String    @db.VarChar(255)
-  size      Decimal   @db.Decimal(10, 2)
+  size      Int
+  url       String
   location  Location? @default(DRIVE)
   ownerId   String
   user      User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)

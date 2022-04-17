@@ -3,7 +3,7 @@ import { FC, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
-import { getMediaIcon } from "helpers/functions";
+import { getMediaIcon, roundFileSizeToCorrectUnit } from "helpers/functions";
 
 import styles from "./File.module.css";
 
@@ -28,7 +28,7 @@ const FileInBin: FC<FileProps> = ({
   const [hasToggledBefore, setHasToggledBefore] = useState(false);
   const { isTogglingCheckboxes, runUseEffect } = toggleState;
   const { registerFile, unregisterFile } = trackerFunctions;
-  const MediaIcon = getMediaIcon(file.name);
+  const MediaIcon = getMediaIcon(file.fileName);
 
   useEffect(() => {
     registerFile(file.id, isChecked); // stores file information in Bin.
@@ -61,15 +61,15 @@ const FileInBin: FC<FileProps> = ({
           <input
             type="checkbox"
             id={file.id}
-            name={file.name}
+            name={file.fileName}
             checked={isChecked}
             onChange={() => setIsChecked((currentState) => !currentState)}
           />
           <span>
-            <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.name}
+            <MediaIcon {...{ width: 16, fill: "#B4B4B4" }} /> {file.fileName}
           </span>
         </span>
-        <span>{file.size}</span>
+        <span>{roundFileSizeToCorrectUnit(file.size)}</span>
       </span>
     </li>
   );

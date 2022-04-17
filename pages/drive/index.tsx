@@ -37,13 +37,20 @@ export const getServerSideProps: GetServerSideProps = async ({
       id: session.user.id,
     },
     include: {
-      files: true,
+      files: {
+        select: {
+          fileName: true,
+          id: true,
+          location: true,
+          size: true,
+        },
+      },
     },
   });
 
   return {
     props: {
-      userFiles: user?.files,
+      userFiles: user!.files,
       ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
     },
   };
@@ -53,7 +60,7 @@ const MainPage: NextPage & {
   LayoutDrive: FC;
 } = ({ userFiles }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
-  const componentsArray = [
+  const sliderComponents = [
     {
       title: locale === "en" ? "Drive Information" : "Informação do Drive",
       Component: StorageInfo,
@@ -85,7 +92,7 @@ const MainPage: NextPage & {
 
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
         <Card style={{ width: "400px" }}>
-          <Slider components={componentsArray} />
+          <Slider components={sliderComponents} />
         </Card>
         <Card>
           <FileUploader />

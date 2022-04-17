@@ -17,7 +17,7 @@ import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
-  const { sendRequest } = useHttp();
+  const { isLoading, error, sendRequest } = useHttp();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
@@ -88,63 +88,65 @@ const FileUploader: FC = () => {
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("files", file));
 
-    const res = await sendRequest({
+    await sendRequest({
       url: "/api/files",
       method: "POST",
       body: formData,
     });
-
-    console.log(res);
   };
 
   return (
-    <section>
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <p>
-          <span style={{ verticalAlign: "middle" }}>
-            <DragAndDrop width={"20px"} fill="#BBBBBB" />
-          </span>{" "}
-          {t("drag-n-drop-message")}
+    <>
+      {error && <p>{error}</p>}
+
+      <section>
+        <div {...getRootProps({ style })}>
+          <input {...getInputProps()} />
+          <p>
+            <span style={{ verticalAlign: "middle" }}>
+              <DragAndDrop width={"20px"} fill="#BBBBBB" />
+            </span>{" "}
+            {t("drag-n-drop-message")}
+          </p>
+        </div>
+        {hasRejections && (
+          <p className={styles.errorMessage}>
+            {fileRejections.length === 1
+              ? t("fileRejections-length-true", {
+                  filename: fileRejections[0].file.name,
+                })
+              : t("fileRejections-length-false")}
+          </p>
+        )}
+        <p className={styles.filesTitle} style={{ color: "#BEBEBE" }}>
+          {hasFiles ? t("hasFiles-true") : t("hasFiles-false")}
         </p>
-      </div>
-      {hasRejections && (
-        <p className={styles.errorMessage}>
-          {fileRejections.length === 1
-            ? t("fileRejections-length-true", {
-                filename: fileRejections[0].file.name,
-              })
-            : t("fileRejections-length-false")}
-        </p>
-      )}
-      <p className={styles.filesTitle} style={{ color: "#BEBEBE" }}>
-        {hasFiles ? t("hasFiles-true") : t("hasFiles-false")}
-      </p>
-      {hasFiles && (
-        <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
-          Total{" "}
-          {uploadedFiles.length === 1
-            ? t("total-files-single")
-            : t("total-files-multi", { amount: uploadedFiles.length })}
-          * {roundFileSizeToCorrectUnit(totalSize)}
-        </small>
-      )}
-      <aside className={styles.filesContainer}>
-        <ul>{renderFiles}</ul>
-      </aside>
-      <Button
-        style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
-        title={
-          hasFiles
-            ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s!" : "!"}`
-            : t("btn-title-disabled")
-        }
-        isDisabled={!hasFiles}
-        onClick={onUploadFilesHandler}
-      >
-        {t("btn")}
-      </Button>
-    </section>
+        {hasFiles && (
+          <small style={{ color: "#BEBEBE", fontWeight: 600 }}>
+            Total{" "}
+            {uploadedFiles.length === 1
+              ? t("total-files-single")
+              : t("total-files-multi", { amount: uploadedFiles.length })}
+            * {roundFileSizeToCorrectUnit(totalSize)}
+          </small>
+        )}
+        <aside className={styles.filesContainer}>
+          <ul>{renderFiles}</ul>
+        </aside>
+        <Button
+          style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
+          title={
+            hasFiles
+              ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s!" : "!"}`
+              : t("btn-title-disabled")
+          }
+          isDisabled={!hasFiles || isLoading}
+          onClick={onUploadFilesHandler}
+        >
+          {isLoading ? "Wait a moment..." : t("btn")}
+        </Button>
+      </section>
+    </>
   );
 };
 
