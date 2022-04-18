@@ -3,8 +3,8 @@ import { useState, useCallback } from "react";
 type RequestType = {
   url: string;
   headers?: { [key: string]: any };
-  body: FormData;
-  method: "POST" | "GET" | "PUT" | "DELETE";
+  body?: FormData;
+  method?: "POST" | "GET" | "PUT" | "DELETE";
 };
 
 const getErrorMessage = (error: unknown) => {

@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           id: true,
           location: true,
           size: true,
+          url: true,
         },
       },
     },
@@ -59,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 const MainPage: NextPage & {
   LayoutDrive: FC;
 } = ({ userFiles }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(userFiles);
   const { locale } = useRouter();
   const sliderComponents = [
     {

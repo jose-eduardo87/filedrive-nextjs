@@ -1,5 +1,6 @@
 import { FC, memo } from "react";
 import { useRouter } from "next/router";
+import useHttp from "hooks/use-http";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getMediaIcon, roundFileSizeToCorrectUnit } from "helpers/functions";
@@ -17,11 +18,15 @@ interface FileProps {
 
 const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
   const { locale } = useRouter();
+  const { error, isLoading, sendRequest } = useHttp();
   const { provided } = draggableConfig;
   const MediaIcon = getMediaIcon(file.fileName);
 
-  const onDoubleClickHandler = () => {
-    console.log(file);
+  const onDoubleClickHandler = async () => {
+    const res = await fetch(file.url);
+    const data = await res.json();
+
+    console.log(data);
   };
 
   return (

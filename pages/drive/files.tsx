@@ -51,16 +51,19 @@ export const getServerSideProps: GetServerSideProps = async ({
           id: true,
           location: true,
           size: true,
+          url: true,
         },
       },
     },
   });
 
-  const filesInDrive: typeof user.files = [];
-  const filesInTrash: typeof user.files = [];
+  const { files } = user!;
+
+  const filesInDrive: typeof files = [];
+  const filesInTrash: typeof files = [];
 
   // check if file is in drive or trash and push it to the correct array.
-  user?.files.forEach((file) => {
+  files.forEach((file) => {
     file.location === "DRIVE"
       ? filesInDrive.push(file)
       : filesInTrash.push(file);
