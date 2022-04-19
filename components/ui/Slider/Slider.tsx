@@ -33,6 +33,9 @@ const Slider: FC<SliderProps> = ({ components }) => {
               title={title}
             />
           }
+          <small style={{ fontSize: ".6rem", color: "gray" }}>
+            <em>Values shown in MB.</em>
+          </small>
         </div>
       ))}
     </Carousel>

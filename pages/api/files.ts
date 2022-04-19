@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import prisma from "lib/prisma";
+import { file } from "lib/prisma";
 import useProtectAPI from "hooks/use-protect-api";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -29,7 +29,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       };
     });
 
-    const uploadedFiles = await prisma.file.createMany({
+    const uploadedFiles = await file.createMany({
       data: files,
     });
 

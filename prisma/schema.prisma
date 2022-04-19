@@ -56,6 +56,7 @@ model User {
   passwordConfirm String?
   image           String?
   optionId        String?
+  isActive        Boolean?  @default(true)
   options         Option?   @relation(fields: [optionId], references: [id], onDelete: Cascade)
   accounts        Account[]
   sessions        Session[]

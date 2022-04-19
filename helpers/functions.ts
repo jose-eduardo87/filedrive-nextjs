@@ -19,9 +19,9 @@ export const emailValidator = (email: string) =>
 export const passwordValidator = (password: string) => password.length >= 6;
 
 export const roundFileSizeToCorrectUnit = (value: number) => {
-  if (value >= 1024000) {
-    return `${(value / 1024000).toFixed(2)} MB`;
-  } else if (value >= 1024 && value < 1024000) {
+  if (value >= 1048576) {
+    return `${(value / 1048576).toFixed(2)} MB`;
+  } else if (value >= 1024 && value < 1048576) {
     return `${(value / 1024).toFixed(2)} KB`;
   }
 
@@ -30,6 +30,7 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
 
 export const getButtonStyleInBin = (type?: string): CSSProperties => {
   const isToggle = type === "toggle";
+
   return {
     width: isToggle ? "15%" : "85%",
     backgroundColor: isToggle ? "#F2D2BD" : "#FFFFE0",

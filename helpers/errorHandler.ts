@@ -1,4 +1,5 @@
 // error handler to catch all the possible errors in the app.
+
 import { NextApiResponse } from "next";
 import type { ErrorType } from "./Error";
 

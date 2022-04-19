@@ -8,7 +8,7 @@ import {
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import prisma from "lib/prisma";
+import { user } from "lib/prisma";
 import { Grid, Card } from "@/components/ui";
 import { Slider } from "@/components/ui";
 import { FileUploader } from "@/components/FileUploader";
@@ -32,26 +32,19 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
-    include: {
-      files: {
-        select: {
-          fileName: true,
-          id: true,
-          location: true,
-          size: true,
-          url: true,
-        },
-      },
-    },
-  });
+  const loggedUser = await user.login(session.user.id);
+  const { files } = loggedUser;
+  const driveSpaceInfo = loggedUser.getAvailableSpace(
+    files.filter((file) => file.location === "DRIVE")
+  );
+  const trashSpaceInfo = loggedUser.getAvailableSpace(
+    files.filter((file) => file.location === "TRASH")
+  );
 
   return {
     props: {
-      userFiles: user!.files,
+      driveSpaceInfo,
+      trashSpaceInfo,
       ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
     },
   };
@@ -59,21 +52,23 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const MainPage: NextPage & {
   LayoutDrive: FC;
-} = ({ userFiles }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(userFiles);
+} = ({
+  driveSpaceInfo,
+  trashSpaceInfo,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const sliderComponents = [
     {
       title: locale === "en" ? "Drive Information" : "Informação do Drive",
       Component: StorageInfo,
-      freeSpace: 976,
-      usedSpace: 48,
+      freeSpace: driveSpaceInfo.freeSpace,
+      usedSpace: driveSpaceInfo.usedSpace,
     },
     {
       title: locale === "en" ? "Trash Information" : "Informação da Lixeira",
       Component: StorageInfo,
-      freeSpace: 480,
-      usedSpace: 32,
+      freeSpace: trashSpaceInfo.freeSpace,
+      usedSpace: trashSpaceInfo.usedSpace,
     },
   ];
 

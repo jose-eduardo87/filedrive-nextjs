@@ -3,11 +3,13 @@ import { FileInListInterface } from "../FileManager/FileManager";
 import { Drive } from "@/components/Drive";
 import { Bin } from "@/components/Bin";
 
-const Files: FC<{ files: FileInListInterface; id: string }> = ({
-  files,
-  id,
-}) => {
-  const props = { files, id };
+interface PropsInterface {
+  files: FileInListInterface;
+  id: string;
+}
+
+const Files: FC<PropsInterface> = (props) => {
+  const { files } = props;
 
   return files.name === "drive" ? <Drive {...props} /> : <Bin {...props} />;
 };
