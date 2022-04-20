@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Head from "next/head";
 import { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
@@ -20,6 +21,13 @@ function MyApp({
     <SessionProvider session={session}>
       <ThemeProvider>
         <Layout>
+          <Head>
+            <title>Capybara Drive - Your files, everywhere!</title>
+            <meta
+              name="viewport"
+              content="initial-scale=1.0, width=device-width"
+            />
+          </Head>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>

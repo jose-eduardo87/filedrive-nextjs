@@ -1,7 +1,9 @@
 import { FC, Dispatch, SetStateAction, useState, useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Files } from "@/components/Files";
+import { Modal } from "@/components/ui";
 import useHttp from "hooks/use-http";
+import { Important } from "@/components/Icons";
 import { FileInterface } from "pages/drive/files";
 
 import styles from "./FileManager.module.css";
@@ -44,7 +46,7 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
       const [, location] = locationID.split("-");
 
       await sendRequest({
-        url: "/api/files/changeLocation",
+        url: "/api/files/change-location",
         method: "PATCH",
         body: { id: fileID, location },
         headers: { "Content-Type": "application/json" },
@@ -92,6 +94,27 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
 
   return (
     <section className={styles.root}>
+      {isLoading && (
+        <Modal
+          CSSStyles={{
+            width: "16rem",
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Important />
+          <p className={styles.loadingMessage}>Moving file...</p>
+        </Modal>
+      )}
+      {error && (
+        <Modal>
+          <p style={{ color: "black" }}>{error}</p>
+        </Modal>
+      )}
       <DragDropContext onDragEnd={(result) => onDragEnd(result, list, setList)}>
         {Object.entries(list).map(([columnId, column]) => (
           <div key={columnId}>

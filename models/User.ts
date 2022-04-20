@@ -9,7 +9,6 @@ type FileFrontend = {
   url: string;
 }[];
 
-// function that returns computed fields extended to the prisma object:
 function User() {
   return Object.assign(prisma.user, {
     // computed field added to the prisma.user object. Logs user by finding it by its ID.

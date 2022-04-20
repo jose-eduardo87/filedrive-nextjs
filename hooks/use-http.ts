@@ -36,11 +36,11 @@ const useHttp = () => {
         body,
       });
 
-      if (!response.ok) {
-        throw new Error("Request failed!");
-      }
-
       const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message);
+      }
 
       setIsLoading(false);
 

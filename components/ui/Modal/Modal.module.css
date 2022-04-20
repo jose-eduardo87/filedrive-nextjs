@@ -1,54 +1,36 @@
 .backdrop {
   position: fixed;
-  overflow-y: hidden;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .modal {
   position: fixed;
-  top: 5%;
-  left: 5%;
-  width: fit-content;
+  top: 15vh;
+  left: 5px;
   background-color: white;
-  padding: 1rem;
-  border-radius: 14px;
+  border-radius: 25px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 99999;
-  animation: slide-down 300ms ease-out forwards;
+  animation: fade-in 800ms ease-in-out forwards;
 }
 
 @media (min-width: 768px) {
   .modal {
-    width: 50rem;
-    left: calc(50% - 25rem);
+    width: 40rem;
+    left: calc(50% - 20rem);
   }
 }
 
-@media (max-width: 835px) {
-  .modal {
-    position: fixed;
-    border-radius: 0;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-}
-
-@keyframes slide-down {
+@keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(-3rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }

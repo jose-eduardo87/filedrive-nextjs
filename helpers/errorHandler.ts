@@ -5,7 +5,7 @@ import type { ErrorType } from "./Error";
 
 // send errors in development environment. In this case, all the possible details will be returned.
 const sendErrorDev = (err: ErrorType, res: NextApiResponse) => {
-  console.error(err.code);
+  console.error(err);
 
   return res.status(err.statusCode).json({
     success: false,

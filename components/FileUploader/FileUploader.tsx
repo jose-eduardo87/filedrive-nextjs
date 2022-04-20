@@ -89,7 +89,7 @@ const FileUploader: FC = () => {
     uploadedFiles.forEach((file) => formData.append("files", file));
 
     await sendRequest({
-      url: "/api/files/postFiles",
+      url: "/api/files/post-files",
       method: "POST",
       body: formData,
     });
@@ -143,7 +143,7 @@ const FileUploader: FC = () => {
           isDisabled={!hasFiles || isLoading}
           onClick={onUploadFilesHandler}
         >
-          {isLoading ? "Wait a moment..." : t("btn")}
+          {isLoading ? "Uploading..." : t("btn")}
         </Button>
       </section>
     </>

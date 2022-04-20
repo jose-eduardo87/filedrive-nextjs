@@ -57,15 +57,16 @@ const MainPage: NextPage & {
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
+  const isEnglish = locale === "en";
   const sliderComponents = [
     {
-      title: locale === "en" ? "Drive Information" : "Informação do Drive",
+      title: isEnglish ? "Drive Information" : "Informação do Drive",
       Component: StorageInfo,
       freeSpace: driveSpaceInfo.freeSpace,
       usedSpace: driveSpaceInfo.usedSpace,
     },
     {
-      title: locale === "en" ? "Trash Information" : "Informação da Lixeira",
+      title: isEnglish ? "Trash Information" : "Informação da Lixeira",
       Component: StorageInfo,
       freeSpace: trashSpaceInfo.freeSpace,
       usedSpace: trashSpaceInfo.usedSpace,
@@ -82,7 +83,7 @@ const MainPage: NextPage & {
         />
       </Head>
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>
-        {locale === "en"
+        {isEnglish
           ? "Welcome to your Dashboard."
           : "Bem-vindo ao seu Dashboard."}
       </h1>

@@ -1,24 +1,29 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, CSSProperties } from "react";
 import { createPortal } from "react-dom";
-
-// BASIC MODAL. FOR MORE EXAMPLES/MORE ROBUST MODALS, npm install react-overlays
-// UNCOMMENT <div id="overlays></div> IN _document.js IF YOU ARE GOING TO USE THIS MODAL
 
 import styles from "./Modal.module.css";
 
 interface Props {
-  onClose: () => {};
+  onClose?: () => void;
+  CSSStyles?: CSSProperties;
 }
 
-const Backdrop: FC<Props> = ({ onClose }) => {
+const Backdrop: FC<Pick<Props, "onClose">> = ({ onClose }) => {
   return <div className={styles.backdrop} onClick={onClose} />;
 };
 
-const ModalOverlay: FC = ({ children }) => {
-  return <div className={styles.modal}>{children}</div>;
+const ModalOverlay: FC<Pick<Props, "CSSStyles">> = ({
+  children,
+  CSSStyles,
+}) => {
+  return (
+    <div className={styles.modal} style={{ ...CSSStyles }}>
+      {children}
+    </div>
+  );
 };
 
-const Modal: FC<Props> = ({ children, onClose }) => {
+const Modal: FC<Props> = ({ children, onClose, CSSStyles }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ const Modal: FC<Props> = ({ children, onClose }) => {
         document.getElementById("overlays") as HTMLElement
       )}
       {createPortal(
-        <ModalOverlay>{children}</ModalOverlay>,
+        <ModalOverlay CSSStyles={CSSStyles}>{children}</ModalOverlay>,
         document.getElementById("overlays") as HTMLElement
       )}
     </>

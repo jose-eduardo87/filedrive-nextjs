@@ -10,6 +10,7 @@ export { default as GenericFile } from "./GenericFile";
 export { default as GoogleLogo } from "./GoogleLogo";
 export { default as Home } from "./Home";
 export { default as ImageFile } from "./ImageFile";
+export { default as Important } from "./Important";
 export { default as Login } from "./Login";
 export { default as Logout } from "./Logout";
 export { default as Mail } from "./Mail";
