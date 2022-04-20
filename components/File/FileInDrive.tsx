@@ -22,7 +22,9 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
   const { provided } = draggableConfig;
   const MediaIcon = getMediaIcon(file.fileName);
 
-  const onDoubleClickHandler = async () => {};
+  const onDoubleClickHandler = async () => {
+    alert(file.url);
+  };
 
   return (
     <li

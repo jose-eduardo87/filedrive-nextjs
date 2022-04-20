@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FileInListInterface } from "../FileManager/FileManager";
+import { FileInListInterface } from "@/components/FileManager";
 import { Drive } from "@/components/Drive";
 import { Bin } from "@/components/Bin";
 

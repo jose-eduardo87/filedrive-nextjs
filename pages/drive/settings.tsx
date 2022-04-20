@@ -8,6 +8,7 @@ import {
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import user from "models/User";
 import { Card } from "@/components/ui";
 import { SettingsForm } from "@/components/SettingsForm";
 import { SettingsOptions } from "@/components/SettingsOptions";
@@ -30,8 +31,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
+  const loggedUser = await user.login(session.user.id);
+
   return {
     props: {
+      name: loggedUser.name,
       ...(await serverSideTranslations(locale!, [
         "common",
         "settingsform",
@@ -43,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const Settings: NextPage & {
   LayoutDrive: FC;
-} = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+} = ({ name }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
 
@@ -69,7 +73,7 @@ const Settings: NextPage & {
           flexDirection: "row",
         }}
       >
-        <SettingsForm />
+        <SettingsForm userName={name} />
         <SettingsOptions />
       </Card>
     </>

@@ -4,7 +4,7 @@ import { useTranslation } from "next-i18next";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInBin } from "@/components/File";
 import { Button } from "@/components/ui";
-import { FileInListInterface } from "@/components/FileManager/FileManager";
+import { FileInListInterface } from "@/components/FileManager/";
 import useCheckbox from "hooks/use-checkbox";
 import { Checked, Unchecked, Trash } from "@/components/Icons";
 import { getButtonStyleInBin } from "helpers/functions";

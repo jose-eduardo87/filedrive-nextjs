@@ -3,8 +3,8 @@ import { useState, useCallback } from "react";
 type RequestType = {
   url: string;
   headers?: { [key: string]: any };
-  body?: FormData;
-  method?: "POST" | "GET" | "PUT" | "DELETE";
+  body?: any;
+  method?: "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
 };
 
 const getErrorMessage = (error: unknown) => {
@@ -22,12 +22,18 @@ const useHttp = () => {
   const sendRequest = useCallback(async (requestConfig: RequestType) => {
     setIsLoading(true);
     setError(null);
+    // check if body is empty and if not, check if it is prototype of FormData (used when uploading files) or not (for anything else).
+    const body = requestConfig.body
+      ? FormData.prototype.isPrototypeOf(requestConfig.body)
+        ? requestConfig.body
+        : JSON.stringify(requestConfig.body)
+      : null;
 
     try {
       const response = await fetch(requestConfig.url, {
         method: requestConfig.method ? requestConfig.method : "GET",
         headers: requestConfig.headers ? requestConfig.headers : {},
-        body: requestConfig.body ? requestConfig.body : null,
+        body,
       });
 
       if (!response.ok) {

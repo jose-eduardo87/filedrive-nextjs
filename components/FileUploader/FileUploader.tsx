@@ -89,7 +89,7 @@ const FileUploader: FC = () => {
     uploadedFiles.forEach((file) => formData.append("files", file));
 
     await sendRequest({
-      url: "/api/files",
+      url: "/api/files/postFiles",
       method: "POST",
       body: formData,
     });

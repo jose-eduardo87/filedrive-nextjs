@@ -4,13 +4,16 @@ import { NextApiResponse } from "next";
 import type { ErrorType } from "./Error";
 
 // send errors in development environment. In this case, all the possible details will be returned.
-const sendErrorDev = (err: ErrorType, res: NextApiResponse) =>
-  res.status(err.statusCode).json({
+const sendErrorDev = (err: ErrorType, res: NextApiResponse) => {
+  console.error(err.code);
+
+  return res.status(err.statusCode).json({
     success: false,
     error: err,
     message: err.message,
     stack: err.stack,
   });
+};
 
 // send errors in production environment.
 const sendErrorProd = (err: ErrorType, res: NextApiResponse) => {

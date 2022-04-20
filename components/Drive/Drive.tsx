@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInDrive } from "@/components/File";
 import { Filedrive } from "@/components/Icons"; // CHANGE THIS NAME?
-import { FileInListInterface } from "../FileManager/FileManager";
+import { FileInListInterface } from "@/components/FileManager";
 import {
   HEADING_STYLE_IN_DRIVE_BIN,
   ICON_STYLE_IN_DRIVE_BIN,
@@ -11,10 +11,10 @@ import {
 
 import styles from "../Files/Files.module.css";
 
-const Drive: FC<{ files: FileInListInterface; id: string }> = ({
-  files,
-  id,
-}) => {
+const Drive: FC<{
+  files: FileInListInterface;
+  id: string;
+}> = ({ files, id }) => {
   const { locale } = useRouter();
   const renderEmptyPanel = (
     <div

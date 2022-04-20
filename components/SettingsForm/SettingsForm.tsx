@@ -3,14 +3,14 @@ import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui/";
 import useInput from "hooks/use-input";
+import useHttp from "hooks/use-http";
 import { nameValidator, passwordValidator } from "helpers/functions";
 
 import styles from "./SettingsForm.module.css";
 
-const SettingsForm: FC = () => {
-  const USER_NAME_FROM_BACKEND = "José Eduardo Oliveira de Araújo";
-
+const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
   const { t } = useTranslation("settingsform");
+  const { error, isLoading, sendRequest } = useHttp();
 
   const {
     value: nameValue,
@@ -19,7 +19,7 @@ const SettingsForm: FC = () => {
     reset: resetName,
     isValid: isNameValid,
     hasError: nameHasError,
-  } = useInput(nameValidator, USER_NAME_FROM_BACKEND);
+  } = useInput(nameValidator, userName);
   const {
     value: currentPasswordValue,
     onBlur: onCurrentPasswordBlur,
@@ -48,10 +48,8 @@ const SettingsForm: FC = () => {
   const passwordConfirmIsValid =
     !passwordConfirmHasError && passwordValue === passwordConfirmValue;
   const isFormValid =
-    isNameValid &&
-    isCurrentPasswordValid &&
-    isPasswordValid &&
-    passwordConfirmIsValid;
+    isNameValid ||
+    (isCurrentPasswordValid && isPasswordValid && passwordConfirmIsValid);
   const setVisibility = (hasError: boolean) =>
     hasError ? "visible" : "hidden";
 

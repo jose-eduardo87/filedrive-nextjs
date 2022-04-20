@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
-import { RequestWithFile } from "pages/api/files";
+import { RequestWithFile } from "pages/api/files/postFiles";
 
 const S3Client = new AWS.S3({
   region: process.env.AWS_REGION!,

@@ -8,7 +8,7 @@ import {
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
-import { user } from "lib/prisma";
+import user from "models/User";
 import { Card } from "@/components/ui";
 import { FileManager } from "@/components/FileManager";
 import { LayoutDrive } from "@/components/common";

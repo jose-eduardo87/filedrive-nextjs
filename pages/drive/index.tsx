@@ -8,7 +8,7 @@ import {
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { user } from "lib/prisma";
+import user from "models/User";
 import { Grid, Card } from "@/components/ui";
 import { Slider } from "@/components/ui";
 import { FileUploader } from "@/components/FileUploader";

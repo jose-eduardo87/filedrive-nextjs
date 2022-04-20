@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/react";
 import { NextHandler } from "next-connect";
 import ErrorClass from "helpers/Error";
-import { RequestWithFile } from "pages/api/files";
+import { RequestWithFile } from "pages/api/files/postFiles";
 
 const useProtectAPI = async (req: RequestWithFile, next: NextHandler) => {
   const session = await getSession({ req });
