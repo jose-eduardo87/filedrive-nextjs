@@ -11,7 +11,7 @@ type FileFrontend = {
 
 function User() {
   return Object.assign(prisma.user, {
-    // computed field added to the prisma.user object. Logs user by finding it by its ID.
+    // computed field added to the prisma.user object. Logs user by finding it by ID.
     async login(id: string) {
       return Object.assign(
         await prisma.user.findUnique({
@@ -30,7 +30,7 @@ function User() {
             },
           },
         }),
-        // computed field added only to logged in users. Useful because it would not be interesting to have this method available in prisma.user.
+        // computed field available only to logged in users. Useful because it would not be interesting to have this method available in prisma.user.
         // Returns available space information.
         {
           getAvailableSpace(filesArray: FileFrontend) {

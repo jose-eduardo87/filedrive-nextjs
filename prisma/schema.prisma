@@ -83,6 +83,7 @@ model File {
   url       String
   location  Location? @default(DRIVE)
   ownerId   String
+  key       String
   user      User?     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 

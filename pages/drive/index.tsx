@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const loggedUser = await user.login(session.user.id);
+  const loggedUser = await user.login(session!.user.id);
   const { files } = loggedUser;
   const driveSpaceInfo = loggedUser.getAvailableSpace(
     files.filter((file) => file.location === "DRIVE")

@@ -27,6 +27,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
         size: file.size,
         ownerId: req.userID,
         url: file.location,
+        key: file.key,
       };
     });
 
@@ -56,4 +57,9 @@ export default handler;
 // every API route can export a config object that has bodyParser as an option. Setting it to false automatically would solve my problem. Next thing to do is to send
 // the body in a FormData() instance. Again, easy peasy, as soon as the user hits the button Send to upload the file(s), everything is converted to a FormData instance
 // before being sent via fetch(). The last piece of the puzzle is to not send any headers in fetch(). After a bit of refactoring in my HTTP requests hook, everything was
-// working beautifully. However... (CONTINUAR)
+// working beautifully. Initially, I planned on having one route '/files' capable of handling my CRUD. However, when uploading files (among other formats), the body parser
+// must be set to false. Fortunately Next JS gives us this feature of exporting a config object with some customized settings. One of them, "bodyParser", can be enabled/
+// disabled by setting it to true or false. The main problem was, I needed bodyParser to be set to false in my POST request but, because I had to get data from the client,
+// needed the bodyParser set to true in my PATCH. I have come up with some hacky ways, like creating a middleware that would be give me the method by extracting it
+// from req.method and conditionally disable/enable based on the current method. Even though it worked, the solution looked like a code smell. So I created two routes, one
+// when the user wants to upload a file and the bodyParser will be set to false, and when the user changes the files in the file manager.

@@ -6,6 +6,7 @@ import { FileInBin } from "@/components/File";
 import { Button } from "@/components/ui";
 import { FileInListInterface } from "@/components/FileManager/";
 import useCheckbox from "hooks/use-checkbox";
+import useHttp from "hooks/use-http";
 import { Checked, Unchecked, Trash } from "@/components/Icons";
 import { getButtonStyleInBin } from "helpers/functions";
 import {
@@ -18,6 +19,7 @@ import styles from "../Files/Files.module.css";
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
+  const { error, isLoading, sendRequest } = useHttp();
   const { t } = useTranslation("bin");
   const { registeredFilesState, trackerFunctions, toggleState } = useCheckbox();
   const { isTogglingCheckboxes, runUseEffect, onToggleFiles } = toggleState;
@@ -54,6 +56,10 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
       )}
     </Draggable>
   ));
+
+  const onDeleteFiles = async () => {
+    await sendRequest({ url: "/api/files/delete-files", method: "DELETE" });
+  };
 
   return (
     <Droppable droppableId={id}>
@@ -95,7 +101,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
                 : t("btn-clear-title-false")
             }
             isDisabled={!hasRegisteredFiles}
-            onClick={() => alert(JSON.stringify(registeredFiles))}
+            onClick={onDeleteFiles}
             style={getButtonStyleInBin()}
           >
             {t("btn-clear")}
