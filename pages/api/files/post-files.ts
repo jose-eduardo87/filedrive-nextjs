@@ -20,7 +20,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
     upload.array("files")
   )
   .post(async (req, res, next) => {
-    // endpoint responsible for creating a database whenever new file(s) is(are) added.
+    // endpoint responsible for creating a database record whenever new file(s) is(are) added.
     const data = req.files.map((file) => {
       return {
         fileName: file.originalname,

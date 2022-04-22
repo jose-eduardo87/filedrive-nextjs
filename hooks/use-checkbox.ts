@@ -1,7 +1,8 @@
 import { useCallback, useState, useRef } from "react";
 
-interface RegisteredFilesInterface {
+export interface RegisteredFilesInterface {
   id: string;
+  key: string;
   isChecked: boolean;
 }
 
@@ -18,27 +19,30 @@ const useCheckbox = () => {
   // function responsible for registering all information regarding files living in Bin.tsx.
   // By architecturing this way, Bin has access to control all of its children's state (File.tsx),
   // making it simple doing state changes (eg: onToggleFiles()) to toggle on/off input selection.
-  const registerFile = useCallback((id: string, isChecked: boolean) => {
-    const index = registeredFilesRef.current.findIndex(
-      (item) => item?.id === id
-    );
+  const registerFile = useCallback(
+    (id: string, key: string, isChecked: boolean) => {
+      const index = registeredFilesRef.current.findIndex(
+        (item) => item?.id === id
+      );
 
-    if (index < 0) {
-      registeredFilesRef.current = [
-        ...registeredFilesRef.current,
-        { id, isChecked },
-      ];
+      if (index < 0) {
+        registeredFilesRef.current = [
+          ...registeredFilesRef.current,
+          { id, key, isChecked },
+        ];
+        setRegisteredFiles(registeredFilesRef.current);
+
+        return;
+      }
+
+      const updatedFiles = [...registeredFilesRef.current];
+      updatedFiles[index] = { id, key, isChecked };
+
+      registeredFilesRef.current = updatedFiles;
       setRegisteredFiles(registeredFilesRef.current);
-
-      return;
-    }
-
-    const updatedFiles = [...registeredFilesRef.current];
-    updatedFiles[index] = { id, isChecked };
-
-    registeredFilesRef.current = updatedFiles;
-    setRegisteredFiles(registeredFilesRef.current);
-  }, []);
+    },
+    []
+  );
 
   // runs everytime a component reaches the end of its lifecycle. It filters the registeredFiles list by id
   // and removes the unmounted component.

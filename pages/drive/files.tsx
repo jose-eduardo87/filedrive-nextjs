@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 
 export interface FileInterface {
   id: string;
+  key: string;
   fileName: string;
   size: number;
   url: string;
@@ -43,7 +44,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const loggedUser = await user.login(session.user.id);
 
   const { files } = loggedUser!;
-
   const filesInDrive: typeof files = [];
   const filesInTrash: typeof files = [];
 

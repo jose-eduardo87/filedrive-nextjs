@@ -12,7 +12,7 @@ interface FileProps {
   provided: DraggableProvided;
   toggleState: { isTogglingCheckboxes: boolean; runUseEffect: number };
   trackerFunctions: {
-    registerFile: (id: string, isChecked: boolean) => void;
+    registerFile: (id: string, key: string, isChecked: boolean) => void;
     unregisterFile: (id: string) => void;
   };
 }
@@ -31,7 +31,7 @@ const FileInBin: FC<FileProps> = ({
   const MediaIcon = getMediaIcon(file.fileName);
 
   useEffect(() => {
-    registerFile(file.id, isChecked); // stores file information in Bin.
+    registerFile(file.id, file.key, isChecked); // stores file information in Bin.
 
     return () => unregisterFile(file.id); // cleanup. Removes the current file from Bin when component unmounts.
   }, [runUseEffect, isChecked]);

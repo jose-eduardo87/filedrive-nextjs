@@ -19,7 +19,7 @@ import styles from "../Files/Files.module.css";
 const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
-  const { error, isLoading, sendRequest } = useHttp();
+  const { error, showError, isLoading, sendRequest } = useHttp();
   const { t } = useTranslation("bin");
   const { registeredFilesState, trackerFunctions, toggleState } = useCheckbox();
   const { isTogglingCheckboxes, runUseEffect, onToggleFiles } = toggleState;
@@ -58,9 +58,17 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   ));
 
   const onDeleteFiles = async () => {
-    console.log(registeredFiles);
-    // const markedFiles = Object.keys()
-    // await sendRequest({ url: "/api/files/delete-files", method: "DELETE", body });
+    const checkedFiles = registeredFiles.filter((file) => file?.isChecked);
+
+    const response = await sendRequest({
+      url: "/api/files/delete-files",
+      method: "DELETE",
+      body: { files: checkedFiles },
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.success) {
+    }
   };
 
   return (

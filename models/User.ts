@@ -23,6 +23,7 @@ function User() {
               select: {
                 fileName: true,
                 id: true,
+                key: true,
                 location: true,
                 size: true,
                 url: true,
