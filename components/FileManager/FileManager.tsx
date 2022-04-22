@@ -5,6 +5,7 @@ import { Modal } from "@/components/ui";
 import useHttp from "hooks/use-http";
 import { Important } from "@/components/Icons";
 import { FileInterface } from "pages/drive/files";
+import { modalStyles } from "helpers/constants";
 
 import styles from "./FileManager.module.css";
 
@@ -28,7 +29,7 @@ type DndType = {
 };
 
 const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
-  const { error, isLoading, sendRequest } = useHttp();
+  const { error, showError, isLoading, sendRequest } = useHttp();
   const columns: DndType = {
     [Key.DRIVE]: {
       name: "drive",
@@ -45,12 +46,14 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
     async (fileID: string, locationID: string) => {
       const [, location] = locationID.split("-");
 
-      await sendRequest({
+      const response = await sendRequest({
         url: "/api/files/change-location",
         method: "PATCH",
         body: { id: fileID, location },
         headers: { "Content-Type": "application/json" },
       });
+
+      return response ? true : undefined;
     },
     [sendRequest]
   );
@@ -77,7 +80,14 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         const [removed] = sourceItems.splice(source.index, 1);
         destinationItems.splice(destination.index, 0, removed);
 
-        await updateFileLocation(removed.id, destination.droppableId);
+        const response = await updateFileLocation(
+          removed.id,
+          destination.droppableId
+        );
+
+        if (!response) {
+          return; // if there is no response it means that some asynchronous error happened, execution stops here and no files will be moved.
+        }
 
         setList({
           ...list,
@@ -95,24 +105,18 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
   return (
     <section className={styles.root}>
       {isLoading && (
-        <Modal
-          CSSStyles={{
-            width: "16rem",
-            position: "fixed",
-            top: "10%",
-            left: "50%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Modal CSSStyles={modalStyles}>
           <Important />
-          <p className={styles.loadingMessage}>Moving file...</p>
+          <p className={`${styles.modalMessage} ${styles.loadingMessage}`}>
+            Moving file...
+          </p>
         </Modal>
       )}
-      {error && (
-        <Modal>
-          <p style={{ color: "black" }}>{error}</p>
+      {showError && (
+        <Modal CSSStyles={modalStyles}>
+          <p className={`${styles.modalMessage} ${styles.errorMessage}`}>
+            {error}
+          </p>
         </Modal>
       )}
       <DragDropContext onDragEnd={(result) => onDragEnd(result, list, setList)}>

@@ -62,14 +62,14 @@ const MainPage: NextPage & {
     {
       title: isEnglish ? "Drive Information" : "Informação do Drive",
       Component: StorageInfo,
-      freeSpace: driveSpaceInfo.freeSpace,
-      usedSpace: driveSpaceInfo.usedSpace,
+      freeSpace: driveSpaceInfo.freeSpace.toFixed(2),
+      usedSpace: driveSpaceInfo.usedSpace.toFixed(2),
     },
     {
       title: isEnglish ? "Trash Information" : "Informação da Lixeira",
       Component: StorageInfo,
-      freeSpace: trashSpaceInfo.freeSpace,
-      usedSpace: trashSpaceInfo.usedSpace,
+      freeSpace: trashSpaceInfo.freeSpace.toFixed(2),
+      usedSpace: trashSpaceInfo.usedSpace.toFixed(2),
     },
   ];
 

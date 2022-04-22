@@ -7,15 +7,29 @@ import { NextApiResponse } from "next";
 import ErrorClass, { ErrorType } from "helpers/Error";
 import { RequestWithFile } from "./post-files";
 
+// {
+//   Bucket: "BUCKET_NAME",
+//   Delete: {
+//     Objects: [
+//       {
+//         Key: "KEY_1",
+//       },
+//       {
+//         Key: "KEY_2",
+//       },
+//     ],
+//   },
+// };
+
 const handler = nc<RequestWithFile, NextApiResponse>({
   onError: (err: ErrorType, _req, res) => errorHandler(err, res),
   onNoMatch: (_req, res) => res.status(404).end("Page not found."),
 })
   .use((req: RequestWithFile, _res, next) => useProtectAPI(req, next))
   .delete(async (req, res, next) => {
-    const deletedFiles = await file.deleteMany({});
+    console.log(req.body);
 
-    return res.status(204).json({ success: true });
+    return res.status(200).json({ success: true });
   });
 
 export default handler;

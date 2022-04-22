@@ -23,7 +23,7 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   const { t } = useTranslation("bin");
   const { registeredFilesState, trackerFunctions, toggleState } = useCheckbox();
   const { isTogglingCheckboxes, runUseEffect, onToggleFiles } = toggleState;
-  const { registeredFiles, setRegisteredFiles } = registeredFilesState;
+  const { registeredFiles } = registeredFilesState;
   const hasFilesInBin = files.items.length > 0;
   const hasRegisteredFiles = registeredFiles.some((file) => file?.isChecked);
   const togglingString = isTogglingCheckboxes
@@ -58,7 +58,9 @@ const Bin: FC<{ files: FileInListInterface; id: string }> = ({ files, id }) => {
   ));
 
   const onDeleteFiles = async () => {
-    await sendRequest({ url: "/api/files/delete-files", method: "DELETE" });
+    console.log(registeredFiles);
+    // const markedFiles = Object.keys()
+    // await sendRequest({ url: "/api/files/delete-files", method: "DELETE", body });
   };
 
   return (

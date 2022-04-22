@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 type RequestType = {
   url: string;
@@ -16,8 +16,16 @@ const getErrorMessage = (error: unknown) => {
 };
 
 const useHttp = () => {
+  const timerRef = useRef<NodeJS.Timeout>();
   const [isLoading, setIsLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = timerRef.current;
+
+    return () => clearTimeout(Number(timer));
+  }, []);
 
   const sendRequest = useCallback(async (requestConfig: RequestType) => {
     setIsLoading(true);
@@ -46,9 +54,16 @@ const useHttp = () => {
 
       return data;
     } catch (err) {
+      setShowError(true);
+
       const errorMessage = getErrorMessage(err);
 
       setError(errorMessage);
+
+      const timer = setTimeout(() => setShowError(false), 4000);
+
+      timerRef.current = timer;
+
       setIsLoading(false);
     }
   }, []);
@@ -56,6 +71,7 @@ const useHttp = () => {
   return {
     isLoading,
     error,
+    showError,
     sendRequest,
   };
 };

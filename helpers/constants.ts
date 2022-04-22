@@ -145,3 +145,13 @@ export const DOCUMENT_EXTENSION = [
   "pptx",
   "txt",
 ];
+
+export const modalStyles: CSSProperties = {
+  width: "16rem",
+  position: "fixed",
+  top: "10%",
+  left: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};

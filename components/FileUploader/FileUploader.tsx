@@ -1,10 +1,9 @@
 import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import { Button } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import useHttp from "hooks/use-http";
-import { DragAndDrop } from "@/components/Icons";
-import { Trash } from "@/components/Icons";
+import { DragAndDrop, Important, Trash } from "@/components/Icons";
 import {
   baseStyle,
   focusedStyle,
@@ -12,12 +11,13 @@ import {
   rejectStyle,
 } from "helpers/constants";
 import { roundFileSizeToCorrectUnit } from "helpers/functions";
+import { modalStyles } from "helpers/constants";
 
 import styles from "./FileUploader.module.css";
 
 const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
-  const { isLoading, error, sendRequest } = useHttp();
+  const { isLoading, error, showError, sendRequest } = useHttp();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
@@ -88,16 +88,34 @@ const FileUploader: FC = () => {
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("files", file));
 
-    await sendRequest({
+    const response = await sendRequest({
       url: "/api/files/post-files",
       method: "POST",
       body: formData,
     });
+
+    if (response.success) {
+      setUploadedFiles([]);
+    }
   };
 
   return (
     <>
-      {error && <p>{error}</p>}
+      {isLoading && (
+        <Modal CSSStyles={modalStyles}>
+          <Important />
+          <p className={`${styles.modalMessage} ${styles.loadingMessage}`}>
+            Uploading...
+          </p>
+        </Modal>
+      )}
+      {showError && (
+        <Modal CSSStyles={modalStyles}>
+          <p className={`${styles.modalMessage} ${styles.errorMessage}`}>
+            {error}
+          </p>
+        </Modal>
+      )}
 
       <section>
         <div {...getRootProps({ style })}>
@@ -143,7 +161,7 @@ const FileUploader: FC = () => {
           isDisabled={!hasFiles || isLoading}
           onClick={onUploadFilesHandler}
         >
-          {isLoading ? "Uploading..." : t("btn")}
+          {t("btn")}
         </Button>
       </section>
     </>
