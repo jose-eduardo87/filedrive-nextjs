@@ -3,6 +3,7 @@ export { default as Coffee } from "./Coffee";
 export { default as Dashboard } from "./Dashboard";
 export { default as DocumentFile } from "./DocumentFile";
 export { default as DragAndDrop } from "./DragAndDrop";
+export { default as Error } from "./Error";
 export { default as Filedrive } from "./Filedrive";
 export { default as FileSharingIllustration } from "./FileSharingIllustration";
 export { default as Gear } from "./Gear";

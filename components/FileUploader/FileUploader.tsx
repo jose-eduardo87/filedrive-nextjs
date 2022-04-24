@@ -3,7 +3,7 @@ import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button, Modal } from "@/components/ui";
 import useHttp from "hooks/use-http";
-import { DragAndDrop, Important, Trash } from "@/components/Icons";
+import { DragAndDrop, Important, Error, Trash } from "@/components/Icons";
 import {
   baseStyle,
   focusedStyle,
@@ -94,9 +94,11 @@ const FileUploader: FC = () => {
       body: formData,
     });
 
-    if (response.success) {
-      setUploadedFiles([]);
+    if (!response) {
+      return;
     }
+
+    setUploadedFiles([]);
   };
 
   return (
@@ -111,6 +113,7 @@ const FileUploader: FC = () => {
       )}
       {showError && (
         <Modal CSSStyles={modalStyles}>
+          <Error />
           <p className={`${styles.modalMessage} ${styles.errorMessage}`}>
             {error}
           </p>

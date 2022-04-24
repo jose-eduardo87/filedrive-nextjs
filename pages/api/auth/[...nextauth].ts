@@ -4,7 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import prisma from "lib/prisma";
-import type { NextApiHandler } from 'next';
+import { DEFAULT_AVATAR } from "helpers/constants";
+import type { NextApiHandler } from "next";
 import { Session, User } from "next-auth";
 
 const options = {
@@ -17,8 +18,8 @@ const options = {
         params: {
           prompt: "consent",
           access_type: "offline",
-          response_type: "code"
-        }
+          response_type: "code",
+        },
       },
     }),
     // CredentialsProvider({
@@ -28,12 +29,13 @@ const options = {
     // })
   ],
   callbacks: {
-    async session({ session, user }: { session: Session, user: User }) {
+    async session({ session, user }: { session: Session; user: User }) {
       session.user.id = user.id;
+      session.user.image = session.user.image || DEFAULT_AVATAR;
 
       return session;
-    }
-  }
+    },
+  },
 };
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);

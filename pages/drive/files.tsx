@@ -27,11 +27,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   locale,
 }) => {
-  resetServerContext(); // required to render drag and drop functionality correctly
+  resetServerContext(); // required to render drag and drop functionality correctly on server side.
 
   const session = await getSession({ req });
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
+
+  // in a perfect world, I would transform this piece of code in a middleware, but due to some reasons (getSession needs
+  // req to be of the type IncomingMessage and _middleware.ts has access to req of the type NextRequest), there's not much I
+  // can do about this. Also tried to use Next-auth's own middleware, but currently it only supports JWT session.
   if (!session?.user) {
     return {
       redirect: {
@@ -41,8 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const loggedUser = await user.login(session.user.id);
-
+  const loggedUser = await user.login(session?.user.id);
   const { files } = loggedUser!;
   const filesInDrive: typeof files = [];
   const filesInTrash: typeof files = [];

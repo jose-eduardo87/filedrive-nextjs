@@ -1,5 +1,6 @@
 import { FC, memo } from "react";
 import { useRouter } from "next/router";
+import { saveAs } from "file-saver";
 import useHttp from "hooks/use-http";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
@@ -22,9 +23,8 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
   const { provided } = draggableConfig;
   const MediaIcon = getMediaIcon(file.fileName);
 
-  const onDoubleClickHandler = async () => {
-    alert(file.url);
-  };
+  const onDoubleClickHandler = async (url: string, name: string) =>
+    saveAs(url, name);
 
   return (
     <li
@@ -35,7 +35,7 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
           ? "Double-click me to download this file."
           : "Dê um duplo-clique para fazer o download deste arquivo."
       }
-      onDoubleClick={onDoubleClickHandler}
+      onDoubleClick={() => onDoubleClickHandler(file.url, file.fileName)}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
     >
