@@ -1,10 +1,12 @@
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
 import {
   DocumentFile,
   GenericFile,
   ImageFile,
   VideoFile,
 } from "@/components/Icons";
+import { RegisteredFilesInterface } from "hooks/use-checkbox";
+import { FileInterface } from "pages/drive/files";
 import {
   IMAGE_EXTENSION,
   VIDEO_EXTENSION,
@@ -56,4 +58,13 @@ export const getMediaIcon = (name: string) => {
   }
 
   return GenericFile;
+};
+
+export const getRemovedFiles = (
+  checkedFiles: RegisteredFilesInterface[],
+  files: FileInterface[]
+) => {
+  const removedIDsList = checkedFiles.map((file) => file.id);
+
+  return files.filter((file) => !removedIDsList.includes(file.id));
 };

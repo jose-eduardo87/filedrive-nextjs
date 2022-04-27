@@ -146,7 +146,7 @@ export const DOCUMENT_EXTENSION = [
   "txt",
 ];
 
-export const modalStyles: CSSProperties = {
+export const MODAL_STYLES: CSSProperties = {
   width: "16rem",
   position: "fixed",
   top: "10%",

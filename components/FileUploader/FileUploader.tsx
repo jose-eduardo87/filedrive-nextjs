@@ -1,7 +1,7 @@
 import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import { Button, Modal } from "@/components/ui";
+import { Button, PopupMessage } from "@/components/ui";
 import useHttp from "hooks/use-http";
 import { DragAndDrop, Important, Error, Trash } from "@/components/Icons";
 import {
@@ -11,7 +11,6 @@ import {
   rejectStyle,
 } from "helpers/constants";
 import { roundFileSizeToCorrectUnit } from "helpers/functions";
-import { modalStyles } from "helpers/constants";
 
 import styles from "./FileUploader.module.css";
 
@@ -104,22 +103,19 @@ const FileUploader: FC = () => {
   return (
     <>
       {isLoading && (
-        <Modal CSSStyles={modalStyles}>
-          <Important />
-          <p className={`${styles.modalMessage} ${styles.loadingMessage}`}>
-            Uploading...
-          </p>
-        </Modal>
+        <PopupMessage
+          type="loading"
+          message="Uploading..."
+          SVG={<Important fill="#6A23AD" />}
+        />
       )}
       {showError && (
-        <Modal CSSStyles={modalStyles}>
-          <Error />
-          <p className={`${styles.modalMessage} ${styles.errorMessage}`}>
-            {error}
-          </p>
-        </Modal>
+        <PopupMessage
+          type="error"
+          message={error!}
+          SVG={<Error fill="#7C4343" />}
+        />
       )}
-
       <section>
         <div {...getRootProps({ style })}>
           <input {...getInputProps()} />

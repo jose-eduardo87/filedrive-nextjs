@@ -2,8 +2,8 @@ import { FC } from "react";
 import { useRouter } from "next/router";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInDrive } from "@/components/File";
-import { Filedrive } from "@/components/Icons"; // CHANGE THIS NAME?
-import { FileInListInterface } from "@/components/FileManager";
+import { EmptyFolder, Filedrive } from "@/components/Icons"; // CHANGE THIS NAME?
+import { FileInterface } from "@/components/Files/Files";
 import {
   HEADING_STYLE_IN_DRIVE_BIN,
   ICON_STYLE_IN_DRIVE_BIN,
@@ -12,21 +12,29 @@ import {
 import styles from "../Files/Files.module.css";
 
 const Drive: FC<{
-  files: FileInListInterface;
+  files: FileInterface[];
   id: string;
 }> = ({ files, id }) => {
   const { locale } = useRouter();
   const renderEmptyPanel = (
     <div
-      style={{ width: "100%", height: "100%", backgroundColor: "transparent" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
+      }}
     >
-      <p style={{ textAlign: "center", color: "#A1A1A1" }}>
+      <EmptyFolder fill="#A1A1A1" />
+      <p style={{ textAlign: "center", color: "#A1A1A1", marginLeft: ".7rem" }}>
         {locale === "en" ? "Empty drive." : "Drive vazio."}
       </p>
     </div>
   );
 
-  const renderFilePanel = files.items.map((file, index) => (
+  const renderFilePanel = files.map((file, index) => (
     <Draggable key={file.id} draggableId={file.id} index={index}>
       {(provided) => <FileInDrive draggableConfig={{ provided }} file={file} />}
     </Draggable>
@@ -47,7 +55,7 @@ const Drive: FC<{
             }}
             {...provided.droppableProps}
           >
-            {files.items.length === 0 ? renderEmptyPanel : renderFilePanel}
+            {files.length === 0 ? renderEmptyPanel : renderFilePanel}
             {provided.placeholder}
           </ul>
         </>

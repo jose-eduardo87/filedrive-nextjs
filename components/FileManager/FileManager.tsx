@@ -1,11 +1,10 @@
 import { FC, Dispatch, SetStateAction, useState, useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Files } from "@/components/Files";
-import { Modal } from "@/components/ui";
+import { PopupMessage } from "@/components/ui";
 import useHttp from "hooks/use-http";
-import { Important } from "@/components/Icons";
+import { Important, Error } from "@/components/Icons";
 import { FileInterface } from "pages/drive/files";
-import { modalStyles } from "helpers/constants";
 
 import styles from "./FileManager.module.css";
 
@@ -79,7 +78,6 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         const destinationItems = [...destinationList.items];
         const [removed] = sourceItems.splice(source.index, 1);
         destinationItems.splice(destination.index, 0, removed);
-
         const response = await updateFileLocation(
           removed.id,
           destination.droppableId
@@ -105,19 +103,18 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
   return (
     <section className={styles.root}>
       {isLoading && (
-        <Modal CSSStyles={modalStyles}>
-          <Important />
-          <p className={`${styles.modalMessage} ${styles.loadingMessage}`}>
-            Moving file...
-          </p>
-        </Modal>
+        <PopupMessage
+          type="loading"
+          message="Moving file..."
+          SVG={<Important fill="#6A23AD" />}
+        />
       )}
       {showError && (
-        <Modal CSSStyles={modalStyles}>
-          <p className={`${styles.modalMessage} ${styles.errorMessage}`}>
-            {error}
-          </p>
-        </Modal>
+        <PopupMessage
+          type="error"
+          message={error!}
+          SVG={<Error fill="#7C4343" />}
+        />
       )}
       <DragDropContext onDragEnd={(result) => onDragEnd(result, list, setList)}>
         {Object.entries(list).map(([columnId, column]) => (

@@ -57,15 +57,14 @@ const useCheckbox = () => {
 
   // handler responsible for toggling state for selection. Only problem for now is that when toggling item individually, things get messy.
   const onToggleFiles = useCallback(() => {
-    // utility state to make useEffect in FileInBin run at every click on onToggleFiles.
-    setRunUseEffect((currentState) => currentState + 1);
+    setRunUseEffect((currentState) => currentState + 1); // utility state to make useEffect in FileInBin run at every click on onToggleFiles.
     // in case there is at least one File unchecked, all the files will be checked.
     // Otherwise, all the files will be unchecked.
     const hasUncheckedFile = registeredFilesRef.current.some(
       (file) => !file?.isChecked
     );
 
-    setIsTogglingCheckboxes(hasUncheckedFile ? true : false);
+    setIsTogglingCheckboxes(hasUncheckedFile);
 
     const updatedRegisteredFiles = [...registeredFilesRef.current];
     updatedRegisteredFiles.forEach(
@@ -98,8 +97,6 @@ export default useCheckbox;
 
 // ================================ ABOUT THIS HOOK ================================ //
 
-// Implementing this custom hook was a very rewarding experience.
-
 // My goal was to have a central place where I could manage checkbox states from
 // different parts of my application. Being more specific, I have this parent
 // component "Bin" which renders "N" child components "FileInBin". The latter would
@@ -122,4 +119,4 @@ export default useCheckbox;
 // unique particularities. During this time, I learned important things like the useEffect
 // being limited to have the surrounding states with the values when the useEffect initially
 // ran, the impossibility of using hooks inside loops, conditionals and nested functions and
-// most importantly: I am moved for good challenges.
+// most importantly: my brain can't settle while I don't solve a problem.
