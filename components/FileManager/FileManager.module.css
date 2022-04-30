@@ -3,14 +3,12 @@
   display: flex;
   width: 100%;
   height: 500px;
-  /* position: relative; */
 }
 
 .root div {
   width: 50%;
   height: 100%;
   padding: 2rem;
-  /* overflow: auto; */
 }
 
 .root div:first-of-type {

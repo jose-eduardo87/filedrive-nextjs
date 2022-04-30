@@ -1,6 +1,7 @@
 export { default as Checked } from "./Checked";
 export { default as Coffee } from "./Coffee";
 export { default as Dashboard } from "./Dashboard";
+export { default as Delete } from "./Delete";
 export { default as DocumentFile } from "./DocumentFile";
 export { default as Download } from "./Download";
 export { default as DragAndDrop } from "./DragAndDrop";

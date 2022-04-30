@@ -55,7 +55,7 @@ const useCheckbox = () => {
     setRegisteredFiles(filteredRegisteredFiles);
   }, []);
 
-  // handler responsible for toggling state for selection. Only problem for now is that when toggling item individually, things get messy.
+  // handler responsible for toggling state for selection.
   const onToggleFiles = useCallback(() => {
     setRunUseEffect((currentState) => currentState + 1); // utility state to make useEffect in FileInBin run at every click on onToggleFiles.
     // in case there is at least one File unchecked, all the files will be checked.

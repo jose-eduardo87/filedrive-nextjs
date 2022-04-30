@@ -1,5 +1,6 @@
 import { FC, Dispatch, SetStateAction, useState, useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import FileProvider from "store/file-context";
 import { Files } from "@/components/Files";
 import { PopupMessage } from "@/components/ui";
 import useHttp from "hooks/use-http";
@@ -23,7 +24,7 @@ export interface FileInListInterface {
   items: FileInterface[];
 }
 
-type DndType = {
+export type DndType = {
   [key in Key]: FileInListInterface;
 };
 
@@ -84,7 +85,8 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         );
 
         if (!response) {
-          return; // if there is no response it means that some asynchronous error happened, execution stops here and no files will be moved.
+          // if there is no response it means that some asynchronous error happened, execution stops here and no files will be moved.
+          return;
         }
 
         setList({
@@ -117,11 +119,17 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         />
       )}
       <DragDropContext onDragEnd={(result) => onDragEnd(result, list, setList)}>
-        {Object.entries(list).map(([columnId, column]) => (
-          <div key={columnId}>
-            <Files id={columnId} files={column} />
-          </div>
-        ))}
+        <FileProvider
+          itemsDrive={list["list-drive"].items}
+          itemsTrash={list["list-trash"].items}
+          dispatch={setList}
+        >
+          {Object.entries(list).map(([columnId, column]) => (
+            <div key={columnId}>
+              <Files id={columnId} files={column} />
+            </div>
+          ))}
+        </FileProvider>
       </DragDropContext>
     </section>
   );

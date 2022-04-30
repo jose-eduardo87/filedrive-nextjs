@@ -10,7 +10,7 @@ import styles from "./SettingsForm.module.css";
 
 const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
   const { t } = useTranslation("settingsform");
-  const { error, isLoading, sendRequest } = useHttp();
+  const { error, showError, isLoading, sendRequest } = useHttp();
 
   const {
     value: nameValue,
@@ -53,15 +53,28 @@ const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
   const setVisibility = (hasError: boolean) =>
     hasError ? "visible" : "hidden";
 
-  const onSubmitHandler = (e: FormEvent) => {
+  const onSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(
-      nameValue,
-      currentPasswordValue,
-      passwordValue,
-      passwordConfirmValue
-    );
+    const data = await sendRequest({
+      url: "/api/users",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        name: nameValue,
+        currentPassword: currentPasswordValue,
+        password: passwordValue,
+      },
+    });
+
+    console.log(data);
+
+    // console.log(
+    //   nameValue,
+    //   currentPasswordValue,
+    //   passwordValue,
+    //   passwordConfirmValue
+    // );
   };
 
   return (

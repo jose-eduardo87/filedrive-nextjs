@@ -79,7 +79,7 @@ const FileUploader: FC = () => {
     setUploadedFiles((currentState) =>
       currentState.filter((file) => file.name !== name)
     );
-  const onUploadFilesHandler = async () => {
+  const uploadFilesHandler = async () => {
     if (!hasFiles) {
       return;
     }
@@ -158,7 +158,7 @@ const FileUploader: FC = () => {
               : t("btn-title-disabled")
           }
           isDisabled={!hasFiles || isLoading}
-          onClick={onUploadFilesHandler}
+          onClick={uploadFilesHandler}
         >
           {t("btn")}
         </Button>

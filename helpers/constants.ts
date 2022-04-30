@@ -37,6 +37,15 @@ export const HEADING_STYLE_IN_DASHBOARD: CSSProperties = {
   color: "#2093C3",
 };
 
+export const PANEL_STYLES: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "transparent",
+};
+
 export const HEADING_STYLE_IN_DRIVE_BIN: CSSProperties = {
   color: "#7E7E7E",
   fontSize: "1.2rem",

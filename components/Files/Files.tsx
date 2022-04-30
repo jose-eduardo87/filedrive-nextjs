@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { FileInListInterface } from "@/components/FileManager";
+import FileProvider from "store/file-context";
 import { Drive } from "@/components/Drive";
 import { Bin } from "@/components/Bin";
 
@@ -11,20 +12,11 @@ export interface FileInterface {
   url: string;
 }
 
-interface PropsInterface {
-  files: FileInListInterface;
-  id: string;
-}
-
-const Files: FC<PropsInterface> = ({ files, id }) => {
-  const properties = { files: files.items, id }; // ACHO QUE TER DESTRUTURADO files NÃO ESTÁ CAUSANDO Bin RERENDER A CADA MUDANÇA. CHECAR. SE FOR, UMA POSSÍVEL SOLUÇÃO É
-  // CRIAR UM STATE DENTRO DE Files E PASSAR O STATE PARA Drive E Bin.
-
-  return files.name === "drive" ? (
-    <Drive {...properties} />
-  ) : (
-    <Bin {...properties} />
-  );
+const Files: FC<{ files: FileInListInterface; id: string }> = ({
+  files,
+  id,
+}) => {
+  return files.name === "drive" ? <Drive id={id} /> : <Bin id={id} />;
 };
 
 export default Files;
