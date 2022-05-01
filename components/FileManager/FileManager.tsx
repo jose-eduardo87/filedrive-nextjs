@@ -85,8 +85,7 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         );
 
         if (!response) {
-          // if there is no response it means that some asynchronous error happened, execution stops here and no files will be moved.
-          return;
+          return; // if there is no response it means that some asynchronous error happened, execution stops here and no files will be moved.
         }
 
         setList({
@@ -126,7 +125,7 @@ const FileManager: FC<FMProps> = ({ filesInDrive, filesInTrash }) => {
         >
           {Object.entries(list).map(([columnId, column]) => (
             <div key={columnId}>
-              <Files id={columnId} files={column} />
+              <Files id={columnId} location={column.name} />
             </div>
           ))}
         </FileProvider>

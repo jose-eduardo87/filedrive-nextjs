@@ -5,5 +5,9 @@
   "placeholder-curr-pwd": "Senha Atual",
   "placeholder-new-pwd": "Nova Senha",
   "placeholder-confirm-pwd": "Confirmar Nova Senha",
+  "title-curr-pwd-google-acc": "Por favor digite a sua senha atual.",
+  "title-new-pwd-google-acc": "Escolha uma senha forte com pelo menos seis caracteres.",
+  "title-pwd-confirm-google-acc": "Por favor confirme sua nova senha digitando-a novamente.",
+  "title-pwd-!google-acc": "Você não pode alterar sua senha do Google.",
   "btn-form": "Salvar alterações"
 }

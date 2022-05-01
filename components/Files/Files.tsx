@@ -1,6 +1,4 @@
-import { FC, useState } from "react";
-import { FileInListInterface } from "@/components/FileManager";
-import FileProvider from "store/file-context";
+import { FC } from "react";
 import { Drive } from "@/components/Drive";
 import { Bin } from "@/components/Bin";
 
@@ -12,11 +10,11 @@ export interface FileInterface {
   url: string;
 }
 
-const Files: FC<{ files: FileInListInterface; id: string }> = ({
-  files,
+const Files: FC<{ id: string; location: "drive" | "trash" }> = ({
   id,
+  location,
 }) => {
-  return files.name === "drive" ? <Drive id={id} /> : <Bin id={id} />;
+  return location === "drive" ? <Drive id={id} /> : <Bin id={id} />;
 };
 
 export default Files;

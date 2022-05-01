@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Head from "next/head";
 import {
   GetServerSideProps,
@@ -32,10 +32,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session.user.id);
+  const isAccountFromGoogle = loggedUser.password === null;
+  // const userPreferences;
 
   return {
     props: {
       name: loggedUser.name,
+      isAccountFromGoogle,
       ...(await serverSideTranslations(locale!, [
         "common",
         "settingsform",
@@ -47,7 +50,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const Settings: NextPage & {
   LayoutDrive: FC;
-} = ({ name }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+} = ({
+  name,
+  isAccountFromGoogle,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [userName, setUserName] = useState<string>(name);
   const { locale } = useRouter();
   const isEnglish = locale === "en";
 
@@ -73,7 +80,11 @@ const Settings: NextPage & {
           flexDirection: "row",
         }}
       >
-        <SettingsForm userName={name} />
+        <SettingsForm
+          userName={userName}
+          updateName={setUserName}
+          isAccountFromGoogle={isAccountFromGoogle}
+        />
         <SettingsOptions />
       </Card>
     </>

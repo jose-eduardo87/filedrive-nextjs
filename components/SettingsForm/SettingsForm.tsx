@@ -1,4 +1,4 @@
-import { FC, FormEvent } from "react";
+import { Dispatch, FC, FormEvent, SetStateAction } from "react";
 import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui/";
@@ -8,7 +8,11 @@ import { nameValidator, passwordValidator } from "helpers/functions";
 
 import styles from "./SettingsForm.module.css";
 
-const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
+const SettingsForm: FC<{
+  userName: string;
+  updateName: Dispatch<SetStateAction<string>>;
+  isAccountFromGoogle: boolean;
+}> = ({ userName, updateName, isAccountFromGoogle }) => {
   const { t } = useTranslation("settingsform");
   const { error, showError, isLoading, sendRequest } = useHttp();
 
@@ -68,13 +72,6 @@ const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
     });
 
     console.log(data);
-
-    // console.log(
-    //   nameValue,
-    //   currentPasswordValue,
-    //   passwordValue,
-    //   passwordConfirmValue
-    // );
   };
 
   return (
@@ -101,6 +98,12 @@ const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
         <Input
           type="password"
           placeholder={t("placeholder-curr-pwd")}
+          title={
+            isAccountFromGoogle
+              ? t("title-pwd-!google-acc")
+              : t("title-curr-pwd-google-acc")
+          }
+          disabled={isAccountFromGoogle}
           value={currentPasswordValue}
           onBlur={onCurrentPasswordBlur}
           onChange={onCurrentPasswordChange}
@@ -119,6 +122,12 @@ const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
         <Input
           type="password"
           placeholder={t("placeholder-new-pwd")}
+          title={
+            isAccountFromGoogle
+              ? t("title-pwd-!google-acc")
+              : t("title-new-pwd-google-acc")
+          }
+          disabled={isAccountFromGoogle}
           value={passwordValue}
           onBlur={onPasswordBlur}
           onChange={onPasswordChange}
@@ -137,6 +146,12 @@ const SettingsForm: FC<{ userName: string }> = ({ userName }) => {
         <Input
           type="password"
           placeholder={t("placeholder-confirm-pwd")}
+          title={
+            isAccountFromGoogle
+              ? t("title-pwd-!google-acc")
+              : t("title-pwd-confirm-google-acc")
+          }
+          disabled={isAccountFromGoogle}
           value={passwordConfirmValue}
           onBlur={onPasswordConfirmBlur}
           onChange={onPasswordConfirmChange}
