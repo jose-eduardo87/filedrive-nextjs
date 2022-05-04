@@ -2,8 +2,10 @@ import { FC, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { Selector } from "@/components/ui";
+import { Selector, PopupMessage } from "@/components/ui";
+import { Important, Error } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
+import useHttp from "hooks/use-http";
 
 import styles from "./SettingsOptions.module.css";
 
@@ -27,10 +29,22 @@ const SettingsOptions: FC = () => {
   const router = useRouter();
   const { locale, pathname, asPath, query } = router;
   const { t } = useTranslation("settingsoptions");
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark, setIsDark } = useTheme();
   const isEnglish = locale === "en";
+  const { error, isLoading, sendRequest, showError } = useHttp();
 
-  const toggleThemeHandler = useCallback(() => toggleTheme(), [toggleTheme]);
+  const toggleThemeHandler = useCallback(async () => {
+    const response = await sendRequest({
+      url: "/api/users",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: { isDark: !isDark },
+    });
+
+    if (response) {
+      setIsDark((currentState) => !currentState);
+    }
+  }, [sendRequest, isDark, setIsDark]);
   const toggleLanguageHandler = useCallback(() => {
     router.push({ pathname, query }, asPath, {
       locale: isEnglish ? "pt-BR" : "en",
@@ -39,6 +53,20 @@ const SettingsOptions: FC = () => {
 
   return (
     <div className={styles.root}>
+      {isLoading && (
+        <PopupMessage
+          type="loading"
+          message="Saving theme..."
+          SVG={<Important fill="#D11A2A" />}
+        />
+      )}
+      {showError && (
+        <PopupMessage
+          type="error"
+          message={error!}
+          SVG={<Error fill="#7C4343" />}
+        />
+      )}
       <h2>{t("heading")}</h2>
 
       <div className={styles.selectionGroup}>

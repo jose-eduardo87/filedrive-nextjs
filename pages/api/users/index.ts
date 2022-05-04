@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import file from "models/File";
+import user from "models/User";
 import errorHandler from "helpers/errorHandler";
 import useProtectAPI from "hooks/use-protect-api";
 import { NextApiResponse } from "next";
@@ -11,12 +11,43 @@ const handler = nc<RequestWithFile, NextApiResponse>({
   onNoMatch: (_req, res) => res.status(404).end("Page not found."),
 })
   .use((req, _res, next) => useProtectAPI(req, next))
+  .get(async (req, res, next) => {
+    const loggedUser = await user.findUnique({
+      where: {
+        id: req.userID,
+      },
+    });
+
+    if (!loggedUser) {
+      return next(
+        new ErrorClass("There is no user with the specified ID.", 500)
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      isThemeDark: loggedUser.theme === "DARK" ? true : false,
+    });
+  })
   .patch(async (req, res, next) => {
     // endpoint responsible for updating user's data.
+    const { isDark } = req.body;
+    if (isDark === undefined) {
+      return next(new ErrorClass("Missing property on request.", 500));
+    }
 
-    console.log(req.body);
+    const theme = isDark ? "DARK" : "CLEAR";
 
-    return res.status(200).json({ success: true });
+    const updatedTheme = await user.update({
+      where: {
+        id: req.userID,
+      },
+      data: {
+        theme,
+      },
+    });
+
+    return res.status(200).json({ success: true, data: updatedTheme });
   });
 
 export default handler;

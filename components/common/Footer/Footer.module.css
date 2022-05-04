@@ -3,10 +3,11 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #f6f9fc;
+  background-color: #7D4F92;
 }
 
 .footer a {
-  font-weight: 600;
-  color: #0a85ff;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #89e789;
 }

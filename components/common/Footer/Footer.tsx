@@ -8,11 +8,9 @@ import styles from "./Footer.module.css";
 const Footer: FC = () => {
   const { t } = useTranslation("common");
   const { isDark } = useTheme();
+
   return (
-    <footer
-      className={styles.footer}
-      style={{ backgroundColor: isDark ? "#212f45" : "" }}
-    >
+    <footer className={styles.footer}>
       <small>
         {t("footer-small-part1")}
         <a

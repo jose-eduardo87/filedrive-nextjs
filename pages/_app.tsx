@@ -3,7 +3,6 @@ import Head from "next/head";
 import { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
-import ThemeProvider from "store/theme-context";
 
 import "../styles/globals.css";
 
@@ -19,18 +18,16 @@ function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <ThemeProvider>
-        <Layout>
-          <Head>
-            <title>Capybara Drive - Your files, everywhere!</title>
-            <meta
-              name="viewport"
-              content="initial-scale=1.0, width=device-width"
-            />
-          </Head>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
+      <Layout>
+        <Head>
+          <title>Capybara Drive - Your files, everywhere!</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
+        <Component {...pageProps} />
+      </Layout>
     </SessionProvider>
   );
 }

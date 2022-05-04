@@ -33,12 +33,12 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const loggedUser = await user.login(session.user.id);
   const isAccountFromGoogle = loggedUser.password === null;
-  // const userPreferences;
 
   return {
     props: {
       name: loggedUser.name,
       isAccountFromGoogle,
+      isDarkTheme: loggedUser.theme === "DARK" ? true : false,
       ...(await serverSideTranslations(locale!, [
         "common",
         "settingsform",
@@ -53,6 +53,7 @@ const Settings: NextPage & {
 } = ({
   name,
   isAccountFromGoogle,
+  isDarkTheme,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [userName, setUserName] = useState<string>(name);
   const { locale } = useRouter();

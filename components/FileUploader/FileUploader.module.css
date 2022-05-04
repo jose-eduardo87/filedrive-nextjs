@@ -4,6 +4,22 @@
   margin-bottom: 0.5rem;
   overflow: auto;
   background-color: #e7ffff;
+  /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #8f8891 #ffffff;
+}
+/* Chrome, Edge, and Safari */
+.filesContainer::-webkit-scrollbar {
+width: 12px;
+}
+.filesContainer::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.filesContainer::-webkit-scrollbar-thumb {
+  background-color: #8f8891;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
 }
 
 .filesContainer ul {

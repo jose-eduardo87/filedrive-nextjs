@@ -5,6 +5,22 @@
   margin-top: 2rem;
   border-top: 1px solid #cecece;
   overflow: auto;
+  /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #8f8891 #ffffff;
+}
+/* Chrome, Edge, and Safari */
+.root::-webkit-scrollbar {
+width: 12px;
+}
+.root::-webkit-scrollbar-track {
+  background: #E7E7E7;
+}
+
+.root::-webkit-scrollbar-thumb {
+  background-color: #bcb8bd;
+  border-radius: 10px;
+  border: 2px solid #FFFFFF;
 }
 
 .buttonsGroup {

@@ -1,25 +1,45 @@
-import { FC, createContext, useContext, useEffect, useState } from "react";
+import {
+  FC,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
+import useHttp from "hooks/use-http";
 
 interface ThemeInterface {
   readonly isDark: boolean;
-  toggleTheme: () => void;
+  setIsDark: Dispatch<SetStateAction<boolean>>;
 }
 
 const ThemeContext = createContext<ThemeInterface>({
   isDark: false,
-  toggleTheme: () => {},
+  setIsDark: (state) => {},
 });
 
 const ThemeProvider: FC = ({ children }) => {
   const [isDark, setIsDark] = useState<boolean>(false);
-  const toggleTheme = () => setIsDark((currentState) => !currentState);
+  const { sendRequest } = useHttp();
 
   useEffect(() => {
-    // FETCH PROCESS TO GET USER'S THEMING PREFERENCE, LET'S FAKE IT UNTIL WE HAVE A WORKING BACKEND:
-    const isDarkFromBackend = true;
+    const fetchData = async () => {
+      const response = await sendRequest({ url: "/api/users/" });
 
-    setIsDark(isDarkFromBackend);
-  }, []);
+      if (!response) {
+        return setIsDark(false);
+      }
+
+      const { isThemeDark } = response;
+
+      if (isThemeDark !== isDark) {
+        setIsDark(isThemeDark);
+      }
+    };
+
+    fetchData();
+  }, [isDark, sendRequest]);
 
   useEffect(() => {
     if (isDark) {
@@ -34,7 +54,7 @@ const ThemeProvider: FC = ({ children }) => {
   }, [isDark]);
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDark, setIsDark }}>
       {children}
     </ThemeContext.Provider>
   );

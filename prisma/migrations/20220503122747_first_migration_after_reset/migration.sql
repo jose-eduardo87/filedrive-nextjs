@@ -4,6 +4,12 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 -- CreateEnum
 CREATE TYPE "Location" AS ENUM ('DRIVE', 'TRASH');
 
+-- CreateEnum
+CREATE TYPE "Theme" AS ENUM ('CLEAR', 'DARK');
+
+-- CreateEnum
+CREATE TYPE "Language" AS ENUM ('en', 'ptBR');
+
 -- CreateTable
 CREATE TABLE "accounts" (
     "id" TEXT NOT NULL,
@@ -40,9 +46,11 @@ CREATE TABLE "users" (
     "name" TEXT,
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
-    "password" TEXT NOT NULL,
-    "passwordConfirm" TEXT NOT NULL,
+    "password" TEXT,
+    "passwordConfirm" TEXT,
     "image" TEXT,
+    "active" BOOLEAN DEFAULT true,
+    "preferenceId" TEXT NOT NULL,
     "role" "Role" DEFAULT E'USER',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -56,13 +64,24 @@ CREATE TABLE "verificationtokens" (
 );
 
 -- CreateTable
+CREATE TABLE "Preference" (
+    "id" TEXT NOT NULL,
+    "theme" "Theme" DEFAULT E'CLEAR',
+    "language" "Language" DEFAULT E'en',
+
+    CONSTRAINT "Preference_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "File" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "fileName" VARCHAR(255) NOT NULL,
-    "size" DECIMAL(10,2) NOT NULL,
+    "size" INTEGER NOT NULL,
+    "url" TEXT NOT NULL,
     "location" "Location" DEFAULT E'DRIVE',
-    "ownerId" TEXT NOT NULL
+    "ownerId" TEXT NOT NULL,
+    "key" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -73,6 +92,9 @@ CREATE UNIQUE INDEX "sessions_session_token_key" ON "sessions"("session_token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_preferenceId_key" ON "users"("preferenceId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "verificationtokens_token_key" ON "verificationtokens"("token");
@@ -90,4 +112,7 @@ ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "File" ADD CONSTRAINT "File_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_preferenceId_fkey" FOREIGN KEY ("preferenceId") REFERENCES "Preference"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "File" ADD CONSTRAINT "File_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

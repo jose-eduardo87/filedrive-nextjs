@@ -19,12 +19,6 @@ function User() {
             id,
           },
           include: {
-            preferences: {
-              select: {
-                language: true,
-                theme: true,
-              },
-            },
             files: {
               select: {
                 fileName: true,

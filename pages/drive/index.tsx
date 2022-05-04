@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import {
@@ -9,6 +9,7 @@ import {
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
+import { useTheme } from "store/theme-context";
 import { Grid, Card } from "@/components/ui";
 import { Slider } from "@/components/ui";
 import { FileUploader } from "@/components/FileUploader";
@@ -45,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       driveSpaceInfo,
       trashSpaceInfo,
+      isDarkTheme: loggedUser.theme === "DARK" ? true : false,
       ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
     },
   };
@@ -55,9 +57,13 @@ const MainPage: NextPage & {
 } = ({
   driveSpaceInfo,
   trashSpaceInfo,
+  isDarkTheme,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
+  const { setIsDark } = useTheme();
+  setIsDark(isDarkTheme);
+
   const sliderComponents = [
     {
       title: isEnglish ? "Drive Information" : "Informação do Drive",
