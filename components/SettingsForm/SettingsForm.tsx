@@ -48,6 +48,7 @@ const SettingsForm: FC<{
     isValid: isPasswordConfirmValid,
     hasError: passwordConfirmHasError,
   } = useInput(passwordValidator);
+
   const errorMessage = t("error-message");
   const passwordConfirmIsValid =
     !passwordConfirmHasError && passwordValue === passwordConfirmValue;
@@ -72,7 +73,6 @@ const SettingsForm: FC<{
     });
 
     if (success) {
-      console.log("INSIDE IF:", nameValue);
       setUserName(nameValue);
       resetPassword();
       resetCurrentPassword();
@@ -100,8 +100,9 @@ const SettingsForm: FC<{
       <div className={styles.formContainer}>
         <Input
           type="text"
-          placeholder={t("placeholder-name")}
-          value={nameValue}
+          // placeholder={t("placeholder-name")}
+          placeholder={userName}
+          // value={userName}
           onBlur={onNameBlur}
           onChange={onNameChange}
           required

@@ -77,6 +77,7 @@ const MainPage: NextPage & {
   const { toggleTheme } = useTheme();
   const { setUserName, setProfileImage } = useInterface();
 
+  // changes to locale according to user's preference.
   useEffect(() => {
     router.replace(router.pathname, router.pathname, {
       locale: (language === "ptBR" && "pt-BR") || language,
