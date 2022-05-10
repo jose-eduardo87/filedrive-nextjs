@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import {
@@ -73,10 +73,16 @@ const MainPage: NextPage & {
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  router.locale = (language === "ptBR" && "pt-BR") || language;
   const isEnglish = language === "en";
   const { toggleTheme } = useTheme();
   const { setUserName, setProfileImage } = useInterface();
+
+  useEffect(() => {
+    router.replace(router.pathname, router.pathname, {
+      locale: (language === "ptBR" && "pt-BR") || language,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   toggleTheme(isDarkTheme);
   setUserName(name);

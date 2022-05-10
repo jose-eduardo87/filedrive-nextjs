@@ -16,7 +16,7 @@ import styles from "./SettingsOptions.module.css";
 
 const SettingsOptions: FC = () => {
   const router = useRouter();
-  const { locale, pathname, asPath, query } = router;
+  const { locale, pathname } = router;
   const isEnglish = locale === "en";
   const [selectedOption, setSelectedOption] =
     useState<Partial<{ value: string; label: string; disabled: boolean }>>();
@@ -73,13 +73,13 @@ const SettingsOptions: FC = () => {
     });
 
     if (response) {
-      router.push({ pathname, query }, asPath, {
+      router.replace(pathname, pathname, {
         locale: toggledLanguage.value,
       });
 
       setSelectedOption(toggledLanguage);
     }
-  }, [asPath, isEnglish, pathname, query, router, sendRequest]);
+  }, [isEnglish, pathname, router, sendRequest]);
 
   return (
     <div className={styles.root}>
