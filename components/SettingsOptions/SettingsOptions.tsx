@@ -1,69 +1,99 @@
-import { FC, useCallback } from "react";
+import { FC, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import Select from "react-select";
 import { Selector, PopupMessage } from "@/components/ui";
 import { Important, Error } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
 import useHttp from "hooks/use-http";
+import {
+  SELECTOR_STYLES,
+  ICONS_STYLES_SETTINGS_OPTIONS,
+} from "helpers/constants";
 
 import styles from "./SettingsOptions.module.css";
-
-const selectorStyles = {
-  height: 30,
-  width: 66,
-  handleDiameter: 20,
-  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.6)",
-  activeBoxShadow: "0px 0px 1px 10px rgba(0, 0, 0, 0.2)",
-  onHandleColor: "#2693E6",
-  onColor: "#E7FFFF",
-  offColor: "#FDE4E8",
-};
-
-const iconsStyles = {
-  fontSize: ".8rem",
-  fontWeight: 600,
-};
 
 const SettingsOptions: FC = () => {
   const router = useRouter();
   const { locale, pathname, asPath, query } = router;
-  const { t } = useTranslation("settingsoptions");
-  const { isDark, setIsDark } = useTheme();
   const isEnglish = locale === "en";
-  const { error, isLoading, sendRequest, showError } = useHttp();
+  const [selectedOption, setSelectedOption] =
+    useState<Partial<{ value: string; label: string; disabled: boolean }>>();
+  const { t } = useTranslation("settingsoptions");
+  const { isDark, toggleTheme } = useTheme();
+  const LANGUAGE_OPTIONS = [
+    {
+      value: "en",
+      label: isEnglish ? "English" : "Inglês",
+      disabled: isEnglish ? true : false,
+    },
+    {
+      value: "pt-BR",
+      label: isEnglish ? "Portuguese" : "Português",
+      disabled: !isEnglish ? true : false,
+    },
+  ];
+  const {
+    error: errorTheme,
+    isLoading: isLoadingTheme,
+    sendRequest,
+    showError: showErrorTheme,
+  } = useHttp();
+  const {
+    error: errorLanguage,
+    isLoading: isLoadingLanguage,
+    showError: showErrorLanguage,
+  } = useHttp();
 
-  const toggleThemeHandler = useCallback(async () => {
+  const toggleThemeHandler = async () => {
     const response = await sendRequest({
-      url: "/api/users",
+      url: "/api/users/preferences/theme",
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: { isDark: !isDark },
     });
 
     if (response) {
-      setIsDark((currentState) => !currentState);
+      return toggleTheme(!isDark);
     }
-  }, [sendRequest, isDark, setIsDark]);
-  const toggleLanguageHandler = useCallback(() => {
-    router.push({ pathname, query }, asPath, {
-      locale: isEnglish ? "pt-BR" : "en",
+  };
+
+  const toggleLanguageHandler = useCallback(async () => {
+    const toggledLanguage = {
+      value: isEnglish ? "pt-BR" : "en",
+      label: isEnglish ? "Portuguese" : "Português",
+    };
+
+    const response = await sendRequest({
+      url: "/api/users/preferences/language",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: { language: toggledLanguage.value },
     });
-  }, [asPath, isEnglish, pathname, query, router]);
+
+    if (response) {
+      router.push({ pathname, query }, asPath, {
+        locale: toggledLanguage.value,
+      });
+
+      setSelectedOption(toggledLanguage);
+    }
+  }, [asPath, isEnglish, pathname, query, router, sendRequest]);
 
   return (
     <div className={styles.root}>
-      {isLoading && (
+      {(isLoadingTheme || isLoadingLanguage) && (
         <PopupMessage
           type="loading"
-          message="Saving theme..."
+          message="Saving preference..."
           SVG={<Important fill="#D11A2A" />}
         />
       )}
-      {showError && (
+      {(showErrorTheme || showErrorLanguage) && (
         <PopupMessage
           type="error"
-          message={error!}
+          message={errorTheme! || errorLanguage!}
           SVG={<Error fill="#7C4343" />}
         />
       )}
@@ -74,23 +104,25 @@ const SettingsOptions: FC = () => {
         <Selector
           isChecked={!isDark}
           icons={{
-            checked: <p style={{ ...iconsStyles }}>{t("theme-light")}</p>,
-            unchecked: <p style={{ ...iconsStyles }}>{t("theme-dark")}</p>,
+            checked: (
+              <p style={ICONS_STYLES_SETTINGS_OPTIONS}>{t("theme-light")}</p>
+            ),
+            unchecked: (
+              <p style={ICONS_STYLES_SETTINGS_OPTIONS}>{t("theme-dark")}</p>
+            ),
           }}
           onChange={toggleThemeHandler}
-          {...selectorStyles}
+          {...SELECTOR_STYLES}
         />
       </div>
       <div className={styles.selectionGroup}>
         {t("language-selector")}
-        <Selector
-          isChecked={isEnglish}
-          icons={{
-            checked: <p style={{ ...iconsStyles }}>{t("language-en")}</p>,
-            unchecked: <p style={{ ...iconsStyles }}>{t("language-ptbr")}</p>,
-          }}
+        <Select
+          defaultValue={selectedOption}
+          isSearchable={false}
+          isOptionDisabled={({ disabled }) => disabled!}
           onChange={toggleLanguageHandler}
-          {...selectorStyles}
+          options={LANGUAGE_OPTIONS}
         />
       </div>
 

@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "store/theme-context";
+import { useInterface } from "store/interface-context";
 import { Home, Dashboard, Filedrive, Gear, Logout } from "@/components/Icons";
 import { DEFAULT_AVATAR } from "helpers/constants";
 
@@ -15,10 +15,9 @@ const getIconStyles = (isDark: boolean) => {
 };
 
 const Usernav: FC = () => {
-  const { data: session, status } = useSession();
   const { t } = useTranslation("common");
+  const { userName, profileImage } = useInterface();
   const { isDark } = useTheme();
-  const isAuthenticated = status === "authenticated";
 
   return (
     <div
@@ -27,22 +26,18 @@ const Usernav: FC = () => {
     >
       <div className={styles.upperGroup}>
         <div className={styles.profileImg}>
-          {isAuthenticated && (
-            <Image
-              alt={`${session?.user?.name} profile image`}
-              width={150}
-              height={150}
-              layout="responsive"
-              quality={60}
-              objectFit="cover"
-              src={session!.user!.image || DEFAULT_AVATAR}
-              priority
-            />
-          )}
+          <Image
+            alt={`${userName} profile image`}
+            width={150}
+            height={150}
+            layout="responsive"
+            quality={60}
+            objectFit="cover"
+            src={profileImage || DEFAULT_AVATAR}
+            priority
+          />
         </div>
-        <small>
-          {isAuthenticated ? session!.user!.name : <em>Loading...</em>}
-        </small>
+        <small>{userName}</small>
         <nav>
           <ul className={styles.navLinks}>
             <Link passHref href="/">

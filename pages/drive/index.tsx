@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import {
@@ -15,6 +15,7 @@ import { Slider } from "@/components/ui";
 import { FileUploader } from "@/components/FileUploader";
 import { StorageInfo } from "@/components/StorageInfo";
 import { LayoutDrive } from "@/components/common";
+import { useInterface } from "store/interface-context";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -24,6 +25,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   const session = await getSession({ req });
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
+
+  // in a perfect world, I would transform this entire piece of code in a middleware, but due to some reasons (getSession needs
+  // req to be of the type IncomingMessage and _middleware.ts has access to req of the type NextRequest), there's not much I
+  // can do about this. Also tried to use Next-auth's own middleware, but currently it only supports JWT session.
   if (!session?.user) {
     return {
       redirect: {
@@ -34,8 +39,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session!.user.id);
-  const { files } = loggedUser;
-  const driveSpaceInfo = loggedUser.getAvailableSpace(
+  const { files, image, name, theme, getAvailableSpace } = loggedUser;
+
+  const driveSpaceInfo = getAvailableSpace(
     files.filter((file) => file.location === "DRIVE")
   );
   const trashSpaceInfo = loggedUser.getAvailableSpace(
@@ -44,9 +50,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      name,
+      image,
+      isDarkTheme: theme === "DARK" ? true : false,
       driveSpaceInfo,
       trashSpaceInfo,
-      isDarkTheme: loggedUser.theme === "DARK" ? true : false,
       ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
     },
   };
@@ -55,14 +63,20 @@ export const getServerSideProps: GetServerSideProps = async ({
 const MainPage: NextPage & {
   LayoutDrive: FC;
 } = ({
+  name,
+  image,
+  isDarkTheme,
   driveSpaceInfo,
   trashSpaceInfo,
-  isDarkTheme,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
-  const { setIsDark } = useTheme();
-  setIsDark(isDarkTheme);
+  const { toggleTheme } = useTheme();
+  const { setUserName, setProfileImage } = useInterface();
+
+  toggleTheme(isDarkTheme);
+  setUserName(name);
+  setProfileImage(image);
 
   const sliderComponents = [
     {

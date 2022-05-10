@@ -6,40 +6,22 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from "react";
-import useHttp from "hooks/use-http";
 
 interface ThemeInterface {
   readonly isDark: boolean;
-  setIsDark: Dispatch<SetStateAction<boolean>>;
+  toggleTheme: Dispatch<SetStateAction<boolean>>;
 }
 
 const ThemeContext = createContext<ThemeInterface>({
   isDark: false,
-  setIsDark: (state) => {},
+  toggleTheme: (state) => {},
 });
 
 const ThemeProvider: FC = ({ children }) => {
   const [isDark, setIsDark] = useState<boolean>(false);
-  const { sendRequest } = useHttp();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await sendRequest({ url: "/api/users/" });
-
-      if (!response) {
-        return setIsDark(false);
-      }
-
-      const { isThemeDark } = response;
-
-      if (isThemeDark !== isDark) {
-        setIsDark(isThemeDark);
-      }
-    };
-
-    fetchData();
-  }, [isDark, sendRequest]);
+  const toggleTheme = useCallback((state) => setIsDark(state), []);
 
   useEffect(() => {
     if (isDark) {
@@ -54,7 +36,7 @@ const ThemeProvider: FC = ({ children }) => {
   }, [isDark]);
 
   return (
-    <ThemeContext.Provider value={{ isDark, setIsDark }}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

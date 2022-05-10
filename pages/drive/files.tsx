@@ -12,8 +12,10 @@ import user from "models/User";
 import { Card } from "@/components/ui";
 import { FileManager } from "@/components/FileManager";
 import { LayoutDrive } from "@/components/common";
+import { useInterface } from "store/interface-context";
 import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
 import { useRouter } from "next/router";
+import { useTheme } from "store/theme-context";
 
 export interface FileInterface {
   id: string;
@@ -33,9 +35,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
 
-  // in a perfect world, I would transform this piece of code in a middleware, but due to some reasons (getSession needs
-  // req to be of the type IncomingMessage and _middleware.ts has access to req of the type NextRequest), there's not much I
-  // can do about this. Also tried to use Next-auth's own middleware, but currently it only supports JWT session.
   if (!session?.user) {
     return {
       redirect: {
@@ -46,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session?.user.id);
-  const { files } = loggedUser!;
+  const { files, image, name, theme } = loggedUser!;
   const filesInDrive: typeof files = [];
   const filesInTrash: typeof files = [];
 
@@ -59,6 +58,9 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      image,
+      name,
+      isDarkTheme: theme === "DARK" ? true : false,
       filesInDrive,
       filesInTrash,
       ...(await serverSideTranslations(locale!, ["common", "bin"])),
@@ -67,11 +69,20 @@ export const getServerSideProps: GetServerSideProps = async ({
 };
 
 const Files: NextPage & { LayoutDrive: FC } = ({
+  name,
+  image,
+  isDarkTheme,
   filesInDrive,
   filesInTrash,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { locale } = useRouter();
   const isEnglish = locale === "en";
+  const { setUserName, setProfileImage } = useInterface();
+  const { toggleTheme } = useTheme();
+
+  setUserName(name);
+  setProfileImage(image);
+  toggleTheme(isDarkTheme);
 
   return (
     <>

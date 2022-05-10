@@ -33,7 +33,7 @@ const Drive: FC<{ id: string }> = ({ id }) => {
     <Droppable droppableId={id}>
       {(provided, snapshot) => (
         <>
-          <h2 style={{ ...HEADING_STYLE_IN_DRIVE_BIN }}>
+          <h2 style={HEADING_STYLE_IN_DRIVE_BIN}>
             <Filedrive {...ICON_STYLE_IN_DRIVE_BIN} /> Filedrive
           </h2>
           <ul

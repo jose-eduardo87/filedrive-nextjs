@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import {
   GetServerSideProps,
@@ -9,6 +9,8 @@ import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
+import { useInterface } from "store/interface-context";
+import { useTheme } from "store/theme-context";
 import { Card } from "@/components/ui";
 import { SettingsForm } from "@/components/SettingsForm";
 import { SettingsOptions } from "@/components/SettingsOptions";
@@ -32,13 +34,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session.user.id);
-  const isAccountFromGoogle = loggedUser.password === null;
+  const { image, name, theme } = loggedUser;
 
   return {
     props: {
-      name: loggedUser.name,
-      isAccountFromGoogle,
-      isDarkTheme: loggedUser.theme === "DARK" ? true : false,
+      name,
+      image,
+      isDark: theme === "DARK" ? true : false,
+      isAccountFromGoogle: loggedUser.password === null,
       ...(await serverSideTranslations(locale!, [
         "common",
         "settingsform",
@@ -52,12 +55,27 @@ const Settings: NextPage & {
   LayoutDrive: FC;
 } = ({
   name,
+  image,
+  isDark,
   isAccountFromGoogle,
-  isDarkTheme,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [userName, setUserName] = useState<string>(name);
+  const [isMounted, setIsMounted] = useState(false);
   const { locale } = useRouter();
   const isEnglish = locale === "en";
+  const { setUserName, setProfileImage } = useInterface();
+  const { toggleTheme } = useTheme();
+
+  // this useEffect is required because if user switches theme this page will rerender and
+  // thus running toggleTheme with outdated 'isDark' property coming from props. By letting
+  // toggleTheme to be applied once, we avoid unnecessary updates to isDark property in
+  // theme-context.
+  useEffect(() => {
+    toggleTheme(isDark);
+    setUserName(name);
+    setProfileImage(image);
+
+    return () => setIsMounted(true);
+  }, [image, isDark, name, setProfileImage, setUserName, toggleTheme]);
 
   return (
     <>
@@ -69,7 +87,7 @@ const Settings: NextPage & {
         />
       </Head>
       <h1 style={HEADING_STYLE_IN_DASHBOARD}>
-        {locale === "en" ? "Settings" : "Configurações"}
+        {isEnglish ? "Settings" : "Configurações"}
       </h1>
 
       <Card
@@ -81,11 +99,7 @@ const Settings: NextPage & {
           flexDirection: "row",
         }}
       >
-        <SettingsForm
-          userName={userName}
-          updateName={setUserName}
-          isAccountFromGoogle={isAccountFromGoogle}
-        />
+        <SettingsForm isAccountFromGoogle={isAccountFromGoogle} />
         <SettingsOptions />
       </Card>
     </>

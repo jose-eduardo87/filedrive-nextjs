@@ -1,9 +1,9 @@
 {
   "heading": "Preferences",
-  "theme-selector": "Choose theme: ",
+  "theme-selector": "Theme: ",
   "theme-light": "LIGHT",
   "theme-dark": "DARK",
-  "language-selector": "Choose language: ",
+  "language-selector": "Language: ",
   "language-en": "EN",
   "language-ptbr": "PT",
   "upgrade-link": "Upgrade plans"

@@ -17,7 +17,7 @@ const ModalOverlay: FC<Pick<Props, "CSSStyles">> = ({
   CSSStyles,
 }) => {
   return (
-    <div className={styles.modal} style={{ ...CSSStyles }}>
+    <div className={styles.modal} style={CSSStyles}>
       {children}
     </div>
   );

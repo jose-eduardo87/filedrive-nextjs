@@ -1,9 +1,9 @@
 {
   "heading": "Preferências",
-  "theme-selector": "Escolher tema: ",
+  "theme-selector": "Tema: ",
   "theme-light": "CLARO",
   "theme-dark": "ESCURO",
-  "language-selector": "Escolher idioma: ",
+  "language-selector": "Idioma: ",
   "language-en": "EN",
   "language-ptbr": "PT",
   "upgrade-link": "Planos de upgrade"

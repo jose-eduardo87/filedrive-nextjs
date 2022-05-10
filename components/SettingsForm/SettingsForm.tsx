@@ -1,26 +1,26 @@
-import { Dispatch, FC, FormEvent, SetStateAction } from "react";
+import { FC, FormEvent } from "react";
 import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
-import { Button } from "@/components/ui/";
+import { PopupMessage, Button } from "@/components/ui/";
+import { Error, Important } from "@/components/Icons";
 import useInput from "hooks/use-input";
 import useHttp from "hooks/use-http";
+import { useInterface } from "store/interface-context";
 import { nameValidator, passwordValidator } from "helpers/functions";
 
 import styles from "./SettingsForm.module.css";
 
 const SettingsForm: FC<{
-  userName: string;
-  updateName: Dispatch<SetStateAction<string>>;
   isAccountFromGoogle: boolean;
-}> = ({ userName, updateName, isAccountFromGoogle }) => {
+}> = ({ isAccountFromGoogle }) => {
   const { t } = useTranslation("settingsform");
   const { error, showError, isLoading, sendRequest } = useHttp();
+  const { userName, setUserName } = useInterface();
 
   const {
     value: nameValue,
     onBlur: onNameBlur,
     onChange: onNameChange,
-    reset: resetName,
     isValid: isNameValid,
     hasError: nameHasError,
   } = useInput(nameValidator, userName);
@@ -60,22 +60,42 @@ const SettingsForm: FC<{
   const onSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const data = await sendRequest({
+    const { success } = await sendRequest({
       url: "/api/users",
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: {
         name: nameValue,
-        currentPassword: currentPasswordValue,
         password: passwordValue,
+        passwordConfirm: passwordConfirmValue,
       },
     });
 
-    console.log(data);
+    if (success) {
+      console.log("INSIDE IF:", nameValue);
+      setUserName(nameValue);
+      resetPassword();
+      resetCurrentPassword();
+      resetPasswordConfirm();
+    }
   };
 
   return (
     <form className={styles.form} onSubmit={onSubmitHandler}>
+      {isLoading && (
+        <PopupMessage
+          type="loading"
+          message="Updating information..."
+          SVG={<Important fill="#D11A2A" />}
+        />
+      )}
+      {showError && (
+        <PopupMessage
+          type="error"
+          message={error!}
+          SVG={<Error fill="#7C4343" />}
+        />
+      )}
       <h2>{t("heading")}</h2>
       <div className={styles.formContainer}>
         <Input

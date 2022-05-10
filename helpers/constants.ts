@@ -164,3 +164,19 @@ export const MODAL_STYLES: CSSProperties = {
   justifyContent: "center",
   alignItems: "center",
 };
+
+export const SELECTOR_STYLES = {
+  height: 30,
+  width: 66,
+  handleDiameter: 20,
+  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.6)",
+  activeBoxShadow: "0px 0px 1px 10px rgba(0, 0, 0, 0.2)",
+  onHandleColor: "#2693E6",
+  onColor: "#E7FFFF",
+  offColor: "#FDE4E8",
+};
+
+export const ICONS_STYLES_SETTINGS_OPTIONS = {
+  fontSize: ".8rem",
+  fontWeight: 600,
+};

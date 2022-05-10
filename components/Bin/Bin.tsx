@@ -102,7 +102,7 @@ const Bin: FC<{ id: string }> = ({ id }) => {
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <>
-            <h2 style={{ ...HEADING_STYLE_IN_DRIVE_BIN }}>
+            <h2 style={HEADING_STYLE_IN_DRIVE_BIN}>
               <Trash {...ICON_STYLE_IN_DRIVE_BIN} /> {t("heading")}
             </h2>
             <ul

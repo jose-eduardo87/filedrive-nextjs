@@ -33,22 +33,12 @@ const Selector: FC<SelectorProps> = ({
   onChange,
   ...selectorStyles
 }) => {
-  const [, setChecked] = useState(isChecked);
-
-  const changeHandler = () => {
-    // send request to save current option
-
-    setChecked((currentState) => !currentState);
-
-    onChange();
-  };
-
   return (
     <Switch
-      onChange={changeHandler}
+      onChange={onChange}
       checked={isChecked}
-      checkedIcon={<div style={{ ...iconStyle }}>{icons.checked}</div>}
-      uncheckedIcon={<div style={{ ...iconStyle }}>{icons.unchecked}</div>}
+      checkedIcon={<div style={iconStyle}>{icons.checked}</div>}
+      uncheckedIcon={<div style={iconStyle}>{icons.unchecked}</div>}
       className="react-switch"
       {...selectorStyles}
     />

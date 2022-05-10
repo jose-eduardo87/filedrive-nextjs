@@ -11,43 +11,43 @@ const handler = nc<RequestWithFile, NextApiResponse>({
   onNoMatch: (_req, res) => res.status(404).end("Page not found."),
 })
   .use((req, _res, next) => useProtectAPI(req, next))
-  .get(async (req, res, next) => {
-    const loggedUser = await user.findUnique({
-      where: {
-        id: req.userID,
-      },
-    });
-
-    if (!loggedUser) {
-      return next(
-        new ErrorClass("There is no user with the specified ID.", 500)
-      );
-    }
-
-    return res.status(200).json({
-      success: true,
-      isThemeDark: loggedUser.theme === "DARK" ? true : false,
-    });
-  })
   .patch(async (req, res, next) => {
-    // endpoint responsible for updating user's data.
-    const { isDark } = req.body;
-    if (isDark === undefined) {
-      return next(new ErrorClass("Missing property on request.", 500));
+    const updateBody: {
+      name?: string;
+      password?: string;
+      passwordConfirm?: string;
+    } = Object.fromEntries(
+      Object.entries(req.body).filter(([_, value]) => value !== "")
+    );
+
+    const updateKeys = Object.keys(updateBody);
+
+    if (updateKeys.length === 1 && updateKeys.includes("name")) {
+      //   // user is updating name
+      const updatedUser = await user.update({
+        where: {
+          id: req.userID,
+        },
+        data: {
+          name: updateBody.name,
+        },
+      });
+
+      if (!updatedUser) {
+        return next(
+          new ErrorClass(
+            "There was an internal error uploading information.",
+            500
+          )
+        );
+      }
+
+      return res.status(200).json({ success: true });
     }
-
-    const theme = isDark ? "DARK" : "CLEAR";
-
-    const updatedTheme = await user.update({
-      where: {
-        id: req.userID,
-      },
-      data: {
-        theme,
-      },
-    });
-
-    return res.status(200).json({ success: true, data: updatedTheme });
+    if (updateKeys.includes("password" && "passwordConfirm")) {
+      //   // user is updating password
+      //   // IMPLEMENT IT WHEN USER SIGN IN IS DONE
+    }
   });
 
 export default handler;
