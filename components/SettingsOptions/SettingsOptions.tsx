@@ -55,7 +55,7 @@ const SettingsOptions: FC = () => {
     });
 
     if (response) {
-      return toggleTheme(!isDark);
+      toggleTheme(!isDark);
     }
   };
 
@@ -125,10 +125,18 @@ const SettingsOptions: FC = () => {
           options={LANGUAGE_OPTIONS}
         />
       </div>
-
-      <Link passHref href="/drive/upgrade">
-        <p className={styles.upgradeLink}>{t("upgrade-link")}</p>
-      </Link>
+      <div>
+        <Link passHref href="/drive/upgrade">
+          <p className={`${styles.link} ${styles.upgradeLink}`}>
+            {t("upgrade-link")}
+          </p>
+        </Link>
+        <Link passHref href="/drive/upgrade">
+          <p className={`${styles.link} ${styles.removeLink}`}>
+            {t("delete-account")}
+          </p>
+        </Link>
+      </div>
     </div>
   );
 };

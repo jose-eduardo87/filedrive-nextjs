@@ -39,19 +39,21 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session!.user.id);
-  const { files, image, name, theme, getAvailableSpace } = loggedUser;
+  const { files, getAvailableSpace, image, language, name, theme } = loggedUser;
 
+  // getAvailableSpace is a method only available to logged in users. It calculates the available space in the storage.
   const driveSpaceInfo = getAvailableSpace(
-    files.filter((file) => file.location === "DRIVE")
+    files.filter(({ location }) => location === "DRIVE")
   );
-  const trashSpaceInfo = loggedUser.getAvailableSpace(
-    files.filter((file) => file.location === "TRASH")
+  const trashSpaceInfo = getAvailableSpace(
+    files.filter(({ location }) => location === "TRASH")
   );
 
   return {
     props: {
       name,
       image,
+      language,
       isDarkTheme: theme === "DARK" ? true : false,
       driveSpaceInfo,
       trashSpaceInfo,
@@ -65,12 +67,14 @@ const MainPage: NextPage & {
 } = ({
   name,
   image,
+  language,
   isDarkTheme,
   driveSpaceInfo,
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
+  const router = useRouter();
+  router.locale = (language === "ptBR" && "pt-BR") || language;
+  const isEnglish = language === "en";
   const { toggleTheme } = useTheme();
   const { setUserName, setProfileImage } = useInterface();
 

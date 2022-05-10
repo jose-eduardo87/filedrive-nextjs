@@ -22,9 +22,16 @@
   width: 210px;
 }
 
-.upgradeLink {
+.link {
   text-align: right;
   cursor: pointer;
-  color: #8d8bfa;
   font-weight: 400;
+}
+
+.upgradeLink {
+  color: #8d8bfa;
+}
+
+.removeLink {
+  color: #ff4646;
 }

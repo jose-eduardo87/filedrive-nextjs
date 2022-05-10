@@ -1,4 +1,4 @@
-import { FC, useState, memo } from "react";
+import { FC, memo } from "react";
 import Switch from "react-switch";
 
 interface SelectorProps {

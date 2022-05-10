@@ -59,7 +59,7 @@ const Settings: NextPage & {
   isDark,
   isAccountFromGoogle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [, setIsMounted] = useState(false);
   const { locale } = useRouter();
   const isEnglish = locale === "en";
   const { setUserName, setProfileImage } = useInterface();
