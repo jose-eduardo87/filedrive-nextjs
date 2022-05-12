@@ -21,7 +21,7 @@ export default function Welcome() {
       <div className={styles.infoContainer}>
         <div className={styles.rowItems}>
           <div className={styles.leftPanel}>
-            <h2>{t("heading")}</h2>
+            <h1>{t("heading")}</h1>
             <p>{t("main-text")}</p>
             <div className={styles.buttonsGroup}>
               <Button

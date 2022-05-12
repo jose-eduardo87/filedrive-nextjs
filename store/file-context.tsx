@@ -47,14 +47,14 @@ export const useFile = () => useContext(FileContext);
 // ================================ ABOUT THIS CONTEXT ================================ //
 
 // Before creating this context, files were passed to Drive and Bin via props.
-// Everything worked well, including drag and drop. I, however, faced a problem when
-// I started implementing file deletion: when DELETE response was successfull, I wanted the
+// Everything worked well, including drag and drop functionality. I, however, faced a problem
+// when I started implementing file deletion: when DELETE response was successfull, I wanted the
 // deleted files to disappear from the Trash panel. I initially tried some hacky stuff,
 // like cloning the prop files inside Bin and then manipulating the state. Even though
 // it somehow worked, the said "solution" bled my eyes everytime I had to look at the
 // code. It just looked so ugly having that 'filesCopy' staring at me. So, in order to make
 // the code work the right way, I created this context. It shares files data for both Drive
-// and Bin components. FileProvider receives three piece of information = the itemsDrive
+// and Bin components. FileProvider receives three piece of information - the itemsDrive
 // and itemsTrash array (the actual files) and a dispatch function. The former two are just
 // passed to the value property in FileContext.Provider and the latter is used in
 // onDeletedFiles, also exposed in Provider, to filter out the deleted files.

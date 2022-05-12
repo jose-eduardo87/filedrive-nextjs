@@ -12,7 +12,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 })
   .use((req: RequestWithFile, _res, next) => useProtectAPI(req, next))
   .patch(async (req, res, next) => {
-    // endpoint responsible for changing file's location from 'drive' to 'trash'.
+    // endpoint responsible for changing file's location from 'drive' to 'trash' and vice-versa.
     if (!req.body.location) {
       return next(
         new ErrorClass(
@@ -33,7 +33,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 
     if (!updatedFile) {
       new ErrorClass(
-        `There was an internal error moving the file to ${req.body.location.toLowerCase()}`,
+        `There was an internal error moving the file to ${req.body.location.toLowerCase()}.`,
         500
       );
     }

@@ -22,17 +22,13 @@ const StorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace, title }) => {
       {
         data: [freeSpace, usedSpace],
         backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
-        borderColor: isDark ? "#CECECE" : "#FFFFFF",
+        borderColor: isDark ? "#FF8B3D" : "#FFFFFF",
       },
     ],
   };
   return (
     <>
-      <small
-        style={{ textAlign: "center", marginBottom: "1rem", color: "#000000" }}
-      >
-        {title}
-      </small>
+      <small style={{ textAlign: "center" }}>{title}</small>
       <Pie data={DATA} />
     </>
   );

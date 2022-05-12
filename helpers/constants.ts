@@ -8,10 +8,8 @@ export const baseStyle: CSSProperties = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: "#eeeeee",
   borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
+  color: "#BDBDBD",
   outline: "none",
   cursor: "pointer",
   transition: "border .24s ease-in-out",
@@ -31,13 +29,7 @@ export const rejectStyle: CSSProperties = {
 
 export const DEFAULT_AVATAR = "/images/default-avatar.webp";
 
-export const HEADING_STYLE_IN_DASHBOARD: CSSProperties = {
-  fontWeight: 100,
-  marginBottom: "3rem",
-  color: "#2093C3",
-};
-
-export const PANEL_STYLES: CSSProperties = {
+export const PANEL_STYLES_IN_DRIVE_BIN: CSSProperties = {
   width: "100%",
   height: "100%",
   display: "flex",

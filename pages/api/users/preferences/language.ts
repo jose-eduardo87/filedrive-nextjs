@@ -45,7 +45,13 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       },
     });
 
-    return res.status(200).json({ success: true, data: updatedLanguage });
+    if (!updatedLanguage) {
+      return next(
+        new ErrorClass("There was an error updating the language.", 500)
+      );
+    }
+
+    return res.status(200).json({ success: true });
   });
 
 export default handler;

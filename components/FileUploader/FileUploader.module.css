@@ -3,7 +3,6 @@
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   overflow: auto;
-  background-color: #e7ffff;
   /* Firefox */
   scrollbar-width: auto;
   scrollbar-color: #8f8891 #ffffff;
@@ -13,13 +12,12 @@
 width: 12px;
 }
 .filesContainer::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: #000000;
 }
 
 .filesContainer::-webkit-scrollbar-thumb {
-  background-color: #8f8891;
-  border-radius: 10px;
-  border: 3px solid #ffffff;
+  background-color: #313131;
+  border-radius: 12.5px;
 }
 
 .filesContainer ul {
@@ -55,7 +53,8 @@ width: 12px;
 }
 
 .filesContainer li:hover {
-  background-color: #fdfddf;
+  background-color: #202020;
+  color: #fcfcfc;
 }
 
 .filesContainer li:hover .fileSize {

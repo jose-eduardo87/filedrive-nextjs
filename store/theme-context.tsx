@@ -25,7 +25,7 @@ const ThemeProvider: FC = ({ children }) => {
 
   useEffect(() => {
     if (isDark) {
-      document.body.style.backgroundColor = "#28282B";
+      document.body.style.backgroundColor = "#121212";
       document.body.style.color = "#FFFFFF";
 
       return;

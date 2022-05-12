@@ -20,6 +20,7 @@ const SettingsForm: FC<{
   const {
     value: nameValue,
     onBlur: onNameBlur,
+    reset: resetName,
     onChange: onNameChange,
     isValid: isNameValid,
     hasError: nameHasError,
@@ -74,6 +75,7 @@ const SettingsForm: FC<{
 
     if (success) {
       setUserName(nameValue);
+      resetName();
       resetPassword();
       resetCurrentPassword();
       resetPasswordConfirm();

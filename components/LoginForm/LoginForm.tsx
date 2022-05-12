@@ -1,5 +1,6 @@
 import { FC, FormEvent } from "react";
 import { useTranslation } from "next-i18next";
+import { signIn } from "next-auth/react";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/ui";
 import useInput from "hooks/use-input";
@@ -74,7 +75,11 @@ const LoginForm: FC = () => {
         {errorMessage}
       </p>
 
-      <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
+      <Button
+        style={{ width: "100%" }}
+        isDisabled={!isFormValid}
+        onClick={() => console.log("Clicked.")}
+      >
         Login
       </Button>
     </form>

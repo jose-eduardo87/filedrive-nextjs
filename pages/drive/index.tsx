@@ -10,13 +10,12 @@ import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
 import { useTheme } from "store/theme-context";
-import { Grid, Card } from "@/components/ui";
-import { Slider } from "@/components/ui";
+import { useInterface } from "store/interface-context";
 import { FileUploader } from "@/components/FileUploader";
 import { StorageInfo } from "@/components/StorageInfo";
 import { LayoutDrive } from "@/components/common";
-import { useInterface } from "store/interface-context";
-import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
+import { Card, Grid, Slider } from "@/components/ui";
+import { getHeadingStyles, getCardStyles } from "helpers/functions";
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -113,21 +112,26 @@ const MainPage: NextPage & {
           content="Capybara Dashboard. Upload your files here, have access to your drive/bin information in one place!"
         />
       </Head>
-      <h1 style={HEADING_STYLE_IN_DASHBOARD}>
+      <h1 style={getHeadingStyles()}>
         {isEnglish
           ? "Welcome to your Dashboard."
           : "Bem-vindo ao seu Dashboard."}
       </h1>
 
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
-        <Card style={{ width: "400px" }}>
+        <Card
+          style={{
+            width: "400px",
+            ...getCardStyles(isDarkTheme),
+          }}
+        >
           <Slider components={sliderComponents} />
         </Card>
-        <Card>
+        <Card style={getCardStyles(isDarkTheme)}>
           <FileUploader />
         </Card>
-        <Card>
-          <small style={{ textAlign: "center", color: "#000000" }}>Test</small>
+        <Card style={getCardStyles(isDarkTheme)}>
+          <small style={{ textAlign: "center" }}>Test</small>
         </Card>
       </Grid>
     </>

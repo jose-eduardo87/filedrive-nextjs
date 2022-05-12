@@ -1,21 +1,22 @@
 import { FC, useState, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
-import { useInterface } from "store/interface-context";
 import { useTheme } from "store/theme-context";
-import { Card } from "@/components/ui";
+import { useInterface } from "store/interface-context";
 import { SettingsForm } from "@/components/SettingsForm";
 import { SettingsOptions } from "@/components/SettingsOptions";
 import { LayoutDrive } from "@/components/common";
-import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
+import { Card } from "@/components/ui";
+import { getHeadingStyles } from "helpers/functions";
+import { getCardStyles } from "helpers/functions";
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -59,23 +60,33 @@ const Settings: NextPage & {
   isDark,
   isAccountFromGoogle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { locale } = useRouter();
   const isEnglish = locale === "en";
   const { setUserName, setProfileImage } = useInterface();
-  const { toggleTheme } = useTheme();
+  const { isDark: isDarkTheme, toggleTheme } = useTheme();
 
   // this useEffect is required because if user switches theme this page will rerender and
   // thus running toggleTheme with outdated 'isDark' property coming from props. By letting
   // toggleTheme to be applied once, we avoid unnecessary updates to isDark property in
   // theme-context.
   useEffect(() => {
-    toggleTheme(isDark);
-    setUserName(name);
-    setProfileImage(image);
+    if (!isMounted) {
+      toggleTheme(isDark);
+      setUserName(name);
+      setProfileImage(image);
+    }
 
     return () => setIsMounted(true);
-  }, [image, isDark, name, setProfileImage, setUserName, toggleTheme]);
+  }, [
+    image,
+    isDark,
+    isMounted,
+    name,
+    setProfileImage,
+    setUserName,
+    toggleTheme,
+  ]);
 
   return (
     <>
@@ -86,7 +97,7 @@ const Settings: NextPage & {
           content="Manage your user account preferences. Change theme or language. Cancel your account."
         />
       </Head>
-      <h1 style={HEADING_STYLE_IN_DASHBOARD}>
+      <h1 style={getHeadingStyles()}>
         {isEnglish ? "Settings" : "Configurações"}
       </h1>
 
@@ -97,6 +108,7 @@ const Settings: NextPage & {
           margin: "0 auto",
           display: "flex",
           flexDirection: "row",
+          ...getCardStyles(isDarkTheme),
         }}
       >
         <SettingsForm isAccountFromGoogle={isAccountFromGoogle} />

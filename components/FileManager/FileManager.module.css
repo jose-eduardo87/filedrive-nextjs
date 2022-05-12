@@ -11,14 +11,6 @@
   padding: 2rem;
 }
 
-.root div:first-of-type {
-  background-color: #e7ffff;
-}
-
-.root div:last-of-type {
-  background-color: #fde4e8;
-}
-
 .filesPanel,
 .trashPanel {
   width: 50%;

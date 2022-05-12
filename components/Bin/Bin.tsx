@@ -19,7 +19,7 @@ import { getButtonStyleInBin } from "helpers/functions";
 import {
   HEADING_STYLE_IN_DRIVE_BIN,
   ICON_STYLE_IN_DRIVE_BIN,
-  PANEL_STYLES,
+  PANEL_STYLES_IN_DRIVE_BIN,
 } from "helpers/constants";
 
 import styles from "../Files/Files.module.css";
@@ -44,7 +44,7 @@ const Bin: FC<{ id: string }> = ({ id }) => {
     : "marcar";
 
   const renderEmptyPanel = (
-    <div style={PANEL_STYLES}>
+    <div style={PANEL_STYLES_IN_DRIVE_BIN}>
       <Party fill="#A1A1A1" />
       <p style={{ textAlign: "center", color: "#A1A1A1", marginLeft: ".7rem" }}>
         {t("empty_bin_message")}
@@ -109,7 +109,7 @@ const Bin: FC<{ id: string }> = ({ id }) => {
               ref={provided.innerRef}
               className={styles.root}
               style={{
-                backgroundColor: snapshot.isDraggingOver ? "#EBFCED" : "",
+                backgroundColor: snapshot.isDraggingOver ? "#404040" : "",
                 border: snapshot.isDraggingOver ? "2px dotted #CECECE" : "",
               }}
               {...provided.droppableProps}
@@ -126,7 +126,10 @@ const Bin: FC<{ id: string }> = ({ id }) => {
                   : t("btn-toggle-title-false")
               }
               isDisabled={!hasFilesInBin}
-              style={getButtonStyleInBin("toggle")}
+              style={{
+                backgroundColor: isTogglingCheckboxes ? "#FFAF7A" : "#FF7F50",
+                ...getButtonStyleInBin("toggle"),
+              }}
               onClick={onToggleFiles}
             >
               {isTogglingCheckboxes ? <Unchecked /> : <Checked />}
@@ -139,7 +142,10 @@ const Bin: FC<{ id: string }> = ({ id }) => {
               }
               isDisabled={!hasRegisteredFiles}
               onClick={deleteFilesHandler}
-              style={getButtonStyleInBin()}
+              style={{
+                backgroundColor: hasRegisteredFiles ? "#FF7F50" : "#FFAF7A",
+                ...getButtonStyleInBin(),
+              }}
             >
               {t("btn-clear")}
             </Button>

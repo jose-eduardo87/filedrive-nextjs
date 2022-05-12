@@ -29,7 +29,6 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 
     if (deletedFilesAWS.Errors!.length === 0) {
       // delete file record(s) on database
-
       const deletedFilesDB = await file.deleteMany({
         where: {
           id: {

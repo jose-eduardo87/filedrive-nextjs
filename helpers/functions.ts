@@ -8,6 +8,7 @@ import {
 import { RegisteredFilesInterface } from "hooks/use-checkbox";
 import { FileInterface } from "pages/drive/files";
 import {
+  baseStyle,
   IMAGE_EXTENSION,
   VIDEO_EXTENSION,
   DOCUMENT_EXTENSION,
@@ -30,16 +31,38 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
   return `${value.toFixed(2)} B`;
 };
 
+export const getHeadingStyles = () => {
+  return {
+    fontSize: "2.8rem",
+    fontWeight: 900,
+    marginBottom: "3rem",
+  };
+};
+
+export const getCardStyles = (isDarkTheme: boolean) => {
+  return {
+    backgroundColor: isDarkTheme ? "#2A2B2E" : "#F9F9F9",
+    border: isDarkTheme ? "2px solid #404040" : "",
+    borderRadius: "12.5px",
+  };
+};
+
+export const getBaseStyle = (isDarkTheme: boolean): CSSProperties => {
+  return {
+    backgroundColor: isDarkTheme ? "#000000" : "#FAFAFA",
+    borderColor: isDarkTheme ? "#404040" : "#EEEEEE",
+    ...baseStyle,
+  };
+};
+
 export const getButtonStyleInBin = (type?: string): CSSProperties => {
   const isToggle = type === "toggle";
 
   return {
     width: isToggle ? "15%" : "85%",
-    backgroundColor: isToggle ? "#F2D2BD" : "#FFFFE0",
-    color: isToggle ? "#B3B3B3" : "#CECECE",
     verticalAlign: isToggle ? "middle" : "",
     border: "none",
-    padding: isToggle ? 0 : "",
+    // padding: isToggle ? 0 : "",
   };
 };
 

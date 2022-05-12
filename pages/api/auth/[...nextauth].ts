@@ -2,11 +2,11 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import prisma from "lib/prisma";
-import { DEFAULT_AVATAR } from "helpers/constants";
+import user from "models/User";
 import type { NextApiHandler } from "next";
 import { Session, User } from "next-auth";
+import { DEFAULT_AVATAR } from "helpers/constants";
 
 const options = {
   adapter: PrismaAdapter(prisma),
@@ -22,11 +22,30 @@ const options = {
         },
       },
     }),
-    // CredentialsProvider({
-    //   async authorize(credentials, req) {
-    //     console.log(credentials);
-    //   }
-    // })
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "E-mail", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const authorizedUser = await user.findUnique({
+          where: { email: credentials!.email },
+        });
+
+        if (
+          !authorizedUser ||
+          !(await user.verifyPassword(
+            credentials!.password,
+            authorizedUser.password!
+          ))
+        ) {
+          throw new Error("No user found or wrong password.");
+        }
+
+        return { email: authorizedUser.email };
+      },
+    }),
   ],
   callbacks: {
     async session({ session, user }: { session: Session; user: User }) {

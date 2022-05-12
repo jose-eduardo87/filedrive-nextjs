@@ -7,7 +7,7 @@ import { useFile } from "store/file-context";
 import {
   HEADING_STYLE_IN_DRIVE_BIN,
   ICON_STYLE_IN_DRIVE_BIN,
-  PANEL_STYLES,
+  PANEL_STYLES_IN_DRIVE_BIN,
 } from "helpers/constants";
 
 import styles from "../Files/Files.module.css";
@@ -16,7 +16,7 @@ const Drive: FC<{ id: string }> = ({ id }) => {
   const { locale } = useRouter();
   const { itemsDrive } = useFile();
   const renderEmptyPanel = (
-    <div style={PANEL_STYLES}>
+    <div style={PANEL_STYLES_IN_DRIVE_BIN}>
       <EmptyFolder fill="#A1A1A1" />
       <p style={{ textAlign: "center", color: "#A1A1A1", marginLeft: ".7rem" }}>
         {locale === "en" ? "Empty drive." : "Drive vazio."}
@@ -40,7 +40,7 @@ const Drive: FC<{ id: string }> = ({ id }) => {
             ref={provided.innerRef}
             className={styles.root}
             style={{
-              backgroundColor: snapshot.isDraggingOver ? "#EBFCED" : "",
+              backgroundColor: snapshot.isDraggingOver ? "#404040" : "",
               border: snapshot.isDraggingOver ? "2px dotted #CECECE" : "",
             }}
             {...provided.droppableProps}

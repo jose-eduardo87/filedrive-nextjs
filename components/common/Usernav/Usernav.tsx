@@ -22,7 +22,7 @@ const Usernav: FC = () => {
   return (
     <div
       className={styles.usernav}
-      style={{ backgroundColor: isDark ? "#272640" : "#FFFFFF" }}
+      style={{ backgroundColor: isDark ? "#181818" : "#FAF9F6" }}
     >
       <div className={styles.upperGroup}>
         <div className={styles.profileImg}>

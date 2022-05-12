@@ -3,13 +3,10 @@ import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button, PopupMessage } from "@/components/ui";
 import useHttp from "hooks/use-http";
+import { useTheme } from "store/theme-context";
 import { DragAndDrop, Important, Error, Trash } from "@/components/Icons";
-import {
-  baseStyle,
-  focusedStyle,
-  acceptStyle,
-  rejectStyle,
-} from "helpers/constants";
+import { getBaseStyle } from "helpers/functions";
+import { focusedStyle, acceptStyle, rejectStyle } from "helpers/constants";
 import { roundFileSizeToCorrectUnit } from "helpers/functions";
 
 import styles from "./FileUploader.module.css";
@@ -17,6 +14,7 @@ import styles from "./FileUploader.module.css";
 const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
   const { isLoading, error, showError, sendRequest } = useHttp();
+  const { isDark } = useTheme();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
@@ -43,12 +41,12 @@ const FileUploader: FC = () => {
   } = useDropzone({ maxSize: 10000000, onDropAccepted });
   const style = useMemo(
     (): CSSProperties => ({
-      ...baseStyle,
+      ...getBaseStyle(isDark),
       ...(isFocused ? focusedStyle : {}),
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isFocused, isDragAccept, isDragReject]
+    [isDark, isFocused, isDragAccept, isDragReject]
   );
   let totalSize: number = 0;
 
@@ -147,11 +145,18 @@ const FileUploader: FC = () => {
             * {roundFileSizeToCorrectUnit(totalSize)}
           </small>
         )}
-        <aside className={styles.filesContainer}>
+        <aside
+          className={styles.filesContainer}
+          style={{ backgroundColor: isDark ? "#404040" : "#E7FFFF" }}
+        >
           <ul>{renderFiles}</ul>
         </aside>
         <Button
-          style={{ width: "100%", backgroundColor: "#FF6691", border: "none" }}
+          style={{
+            width: "100%",
+            backgroundColor: !hasFiles || isLoading ? "#FFAF7A" : "#FF7F50",
+            border: "none",
+          }}
           title={
             hasFiles
               ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s!" : "!"}`

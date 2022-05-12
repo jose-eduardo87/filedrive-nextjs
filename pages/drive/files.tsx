@@ -1,21 +1,21 @@
 import { FC } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import {
+  GetServerSideProps,
   InferGetServerSidePropsType,
   NextPage,
-  GetServerSideProps,
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
 import user from "models/User";
-import { Card } from "@/components/ui";
-import { FileManager } from "@/components/FileManager";
-import { LayoutDrive } from "@/components/common";
-import { useInterface } from "store/interface-context";
-import { HEADING_STYLE_IN_DASHBOARD } from "helpers/constants";
-import { useRouter } from "next/router";
 import { useTheme } from "store/theme-context";
+import { useInterface } from "store/interface-context";
+import { FileManager } from "@/components/FileManager";
+import { Card } from "@/components/ui";
+import { LayoutDrive } from "@/components/common";
+import { getHeadingStyles, getCardStyles } from "helpers/functions";
 
 export interface FileInterface {
   id: string;
@@ -93,11 +93,11 @@ const Files: NextPage & { LayoutDrive: FC } = ({
           content="File Manager. Move your files from the drive to the bin and vice-versa. Delete them permanently or maybe download them. You are on the control."
         />
       </Head>
-      <h1 style={HEADING_STYLE_IN_DASHBOARD}>
+      <h1 style={getHeadingStyles()}>
         {isEnglish ? "Manage your files." : "Gerencie seus arquivos."}
       </h1>
 
-      <Card>
+      <Card style={getCardStyles(isDarkTheme)}>
         <FileManager filesInDrive={filesInDrive} filesInTrash={filesInTrash} />
       </Card>
     </>
