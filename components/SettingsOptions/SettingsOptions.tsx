@@ -2,15 +2,12 @@ import { FC, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import Select from "react-select";
-import { Selector, PopupMessage } from "@/components/ui";
-import { Important, Error } from "@/components/Icons";
+import { Dropdown, Selector, PopupMessage } from "@/components/ui";
+import { Options } from "@/components/ui/Dropdown/Dropdown";
+import { Error, Important } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
 import useHttp from "hooks/use-http";
-import {
-  SELECTOR_STYLES,
-  ICONS_STYLES_SETTINGS_OPTIONS,
-} from "helpers/constants";
+import { SELECTOR_STYLES } from "helpers/constants";
 
 import styles from "./SettingsOptions.module.css";
 
@@ -18,22 +15,13 @@ const SettingsOptions: FC = () => {
   const router = useRouter();
   const { locale, pathname } = router;
   const isEnglish = locale === "en";
-  const [selectedOption, setSelectedOption] =
-    useState<Partial<{ value: string; label: string; disabled: boolean }>>();
+  const [selectedOption, setSelectedOption] = useState<Options>({
+    value: isEnglish ? "en" : "pt-BR",
+    label: isEnglish ? "English" : "Português",
+    disabled: false,
+  });
   const { t } = useTranslation("settingsoptions");
   const { isDark, toggleTheme } = useTheme();
-  const LANGUAGE_OPTIONS = [
-    {
-      value: "en",
-      label: isEnglish ? "English" : "Inglês",
-      disabled: isEnglish ? true : false,
-    },
-    {
-      value: "pt-BR",
-      label: isEnglish ? "Portuguese" : "Português",
-      disabled: !isEnglish ? true : false,
-    },
-  ];
   const {
     error: errorTheme,
     isLoading: isLoadingTheme,
@@ -63,6 +51,7 @@ const SettingsOptions: FC = () => {
     const toggledLanguage = {
       value: isEnglish ? "pt-BR" : "en",
       label: isEnglish ? "Portuguese" : "Português",
+      disabled: false,
     };
 
     const response = await sendRequest({
@@ -101,28 +90,13 @@ const SettingsOptions: FC = () => {
 
       <div className={styles.selectionGroup}>
         <p>{t("theme-selector")}</p>
-        <Selector
-          isChecked={!isDark}
-          icons={{
-            checked: (
-              <p style={ICONS_STYLES_SETTINGS_OPTIONS}>{t("theme-light")}</p>
-            ),
-            unchecked: (
-              <p style={ICONS_STYLES_SETTINGS_OPTIONS}>{t("theme-dark")}</p>
-            ),
-          }}
-          onChange={toggleThemeHandler}
-          {...SELECTOR_STYLES}
-        />
+        <Selector onChange={toggleThemeHandler} {...SELECTOR_STYLES} />
       </div>
       <div className={styles.selectionGroup}>
         {t("language-selector")}
-        <Select
+        <Dropdown
           defaultValue={selectedOption}
-          isSearchable={false}
-          isOptionDisabled={({ disabled }) => disabled!}
           onChange={toggleLanguageHandler}
-          options={LANGUAGE_OPTIONS}
         />
       </div>
       <div>

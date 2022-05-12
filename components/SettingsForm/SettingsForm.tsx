@@ -191,7 +191,13 @@ const SettingsForm: FC<{
           {errorMessage}
         </p>
 
-        <Button style={{ width: "100%" }} isDisabled={!isFormValid}>
+        <Button
+          style={{
+            width: "100%",
+            backgroundColor: isFormValid ? "#FF7F50" : "#FFAf7A",
+          }}
+          isDisabled={!isFormValid}
+        >
           {t("btn-form")}
         </Button>
       </div>

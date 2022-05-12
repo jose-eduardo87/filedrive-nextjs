@@ -1,14 +1,19 @@
 import { FC } from "react";
 import { useTranslation } from "next-i18next";
+import { useTheme } from "store/theme-context";
 import { Coffee } from "@/components/Icons";
 
 import styles from "./Footer.module.css";
 
 const Footer: FC = () => {
   const { t } = useTranslation("common");
+  const { isDark } = useTheme();
 
   return (
-    <footer className={styles.footer}>
+    <footer
+      className={styles.footer}
+      style={{ backgroundColor: isDark ? "#181818" : "#FAF9F6" }}
+    >
       <small>
         {t("footer-small-part1")}
         <a

@@ -33,9 +33,9 @@ export const roundFileSizeToCorrectUnit = (value: number) => {
 
 export const getHeadingStyles = () => {
   return {
-    fontSize: "2.8rem",
+    fontSize: "3rem",
     fontWeight: 900,
-    marginBottom: "3rem",
+    marginBottom: "4rem",
   };
 };
 

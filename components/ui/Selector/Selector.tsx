@@ -1,12 +1,10 @@
 import { FC, memo } from "react";
+import { useRouter } from "next/router";
 import Switch from "react-switch";
+import { useTheme } from "store/theme-context";
+import { ICONS_STYLES_SETTINGS_OPTIONS } from "helpers/constants";
 
 interface SelectorProps {
-  isChecked: boolean;
-  icons: {
-    checked: JSX.Element;
-    unchecked: JSX.Element;
-  };
   onChange: () => void;
   onColor?: string;
   offColor?: string;
@@ -27,16 +25,28 @@ const iconStyle = {
   paddingRight: 2,
 };
 
-const Selector: FC<SelectorProps> = ({
-  isChecked,
-  icons,
-  onChange,
-  ...selectorStyles
-}) => {
+const Selector: FC<SelectorProps> = ({ onChange, ...selectorStyles }) => {
+  const { locale } = useRouter();
+  const isEnglish = locale === "en";
+  const { isDark } = useTheme();
+
+  const icons = {
+    checked: (
+      <p style={ICONS_STYLES_SETTINGS_OPTIONS}>
+        {isEnglish ? "LIGHT" : "CLARO"}
+      </p>
+    ),
+    unchecked: (
+      <p style={ICONS_STYLES_SETTINGS_OPTIONS}>
+        {isEnglish ? "DARK" : "ESCURO"}
+      </p>
+    ),
+  };
+
   return (
     <Switch
       onChange={onChange}
-      checked={isChecked}
+      checked={!isDark}
       checkedIcon={<div style={iconStyle}>{icons.checked}</div>}
       uncheckedIcon={<div style={iconStyle}>{icons.unchecked}</div>}
       className="react-switch"

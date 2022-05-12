@@ -171,4 +171,5 @@ export const SELECTOR_STYLES = {
 export const ICONS_STYLES_SETTINGS_OPTIONS = {
   fontSize: ".8rem",
   fontWeight: 600,
+  color: "#000000",
 };
