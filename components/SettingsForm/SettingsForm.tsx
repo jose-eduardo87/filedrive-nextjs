@@ -63,7 +63,7 @@ const SettingsForm: FC<{
     e.preventDefault();
 
     const { success } = await sendRequest({
-      url: "/api/users",
+      url: "/api/users/update-account",
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: {

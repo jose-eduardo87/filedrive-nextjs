@@ -48,6 +48,11 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       //   // user is updating password
       //   // IMPLEMENT IT WHEN USER SIGN IN IS DONE
     }
+  })
+  .post(async (req, res, next) => {
+    const { name, email, password, passwordConfirm } = req.body;
+
+    return res.status(200).json({ name, email, password, passwordConfirm });
   });
 
 export default handler;

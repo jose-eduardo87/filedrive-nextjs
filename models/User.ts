@@ -13,10 +13,11 @@ type FileFrontend = {
 function User() {
   return Object.assign(prisma.user, {
     // computed field added to the prisma.user object. This is the closest alternative we have to Statics in mongoose
-
     // returns if password provided is correct or not.
     async verifyPassword(candidatePassword: string, userPassword: string) {
-      return compare(candidatePassword, userPassword);
+      console.log(candidatePassword);
+      console.log(userPassword);
+      return await compare(candidatePassword, userPassword);
     },
     // logs user by finding it by ID.
     async login(id: string) {

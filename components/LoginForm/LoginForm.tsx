@@ -1,4 +1,5 @@
 import { FC, FormEvent } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/Input";
@@ -9,6 +10,7 @@ import { emailValidator, passwordValidator } from "helpers/functions";
 import styles from "./LoginForm.module.css";
 
 const LoginForm: FC = () => {
+  const { locale } = useRouter();
   const { t } = useTranslation("loginform");
   const {
     value: emailValue,
@@ -31,10 +33,15 @@ const LoginForm: FC = () => {
   const errorMessage = t("error-message");
   const setVisibility = (hasError: boolean) =>
     hasError ? "visible" : "hidden";
-  const onSubmitHandler = (e: FormEvent) => {
+  const onSubmitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(emailValue, passwordValue);
+    await signIn("credentials", {
+      redirect: true,
+      email: emailValue,
+      password: passwordValue,
+      callbackUrl: `${window.location.origin}/${locale}/drive`,
+    });
   };
 
   return (
@@ -78,7 +85,7 @@ const LoginForm: FC = () => {
       <Button
         style={{ width: "100%" }}
         isDisabled={!isFormValid}
-        onClick={() => console.log("Clicked.")}
+        // onClick={() => console.log("Clicked.")}
       >
         Login
       </Button>

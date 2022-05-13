@@ -25,25 +25,23 @@ const options = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "E-mail", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { type: "text" },
+        password: { type: "password" },
       },
       async authorize(credentials) {
         const authorizedUser = await user.findUnique({
           where: { email: credentials!.email },
         });
+        const isVerified = await user.verifyPassword(
+          credentials!.password,
+          authorizedUser!.password!
+        );
 
-        if (
-          !authorizedUser ||
-          !(await user.verifyPassword(
-            credentials!.password,
-            authorizedUser.password!
-          ))
-        ) {
-          throw new Error("No user found or wrong password.");
-        }
+        // if (!authorizedUser || !isVerified) {
+        //   throw new Error("No user found or wrong password.");
+        // }
 
-        return { email: authorizedUser.email };
+        return { email: authorizedUser!.email };
       },
     }),
   ],
