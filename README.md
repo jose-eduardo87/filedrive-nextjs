@@ -21,15 +21,15 @@ All in all, I am pretty proud of what I have done on this project. It works, and
 
 ## 2. Features
 
-Built with NextJS
-Typescript
-PostgreSQL
-Prisma
-Next Auth using Google Provider (will add more in the future)
-Drag and drop
-i18n
-AWS S3
-Cloudinary
+Built with NextJS  
+Typescript  
+PostgreSQL  
+Prisma  
+Next Auth using Google Provider (will add more in the future)  
+Drag and drop  
+i18n  
+AWS S3  
+Cloudinary  
 Error handling on both frontend and backend
 
 ## 3. Missing Improvements
