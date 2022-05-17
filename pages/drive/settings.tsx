@@ -11,8 +11,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
 import { useTheme } from "store/theme-context";
 import { useInterface } from "store/interface-context";
-import { SettingsForm } from "@/components/SettingsForm";
-import { SettingsOptions } from "@/components/SettingsOptions";
+import { BasicSettings } from "@/components/BasicSettings";
+import { PreferenceSettings } from "@/components/PreferenceSettings";
 import { LayoutDrive } from "@/components/common";
 import { Card } from "@/components/ui";
 import { getHeadingStyles } from "helpers/functions";
@@ -42,11 +42,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       name,
       image,
       isDark: theme === "DARK" ? true : false,
-      isAccountFromGoogle: loggedUser.password === null,
       ...(await serverSideTranslations(locale!, [
         "common",
-        "settingsform",
-        "settingsoptions",
+        "basicsettings",
+        "preferencesettings",
       ])),
     },
   };
@@ -58,7 +57,6 @@ const Settings: NextPage & {
   name,
   image,
   isDark,
-  isAccountFromGoogle,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isMounted, setIsMounted] = useState(false);
   const { locale } = useRouter();
@@ -111,8 +109,8 @@ const Settings: NextPage & {
           ...getCardStyles(isDarkTheme),
         }}
       >
-        <SettingsForm isAccountFromGoogle={isAccountFromGoogle} />
-        <SettingsOptions />
+        <BasicSettings />
+        <PreferenceSettings />
       </Card>
     </>
   );

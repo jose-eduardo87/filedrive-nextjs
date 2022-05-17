@@ -16,6 +16,16 @@ const StorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace, title }) => {
   const { locale } = useRouter();
   const { isDark } = useTheme();
   const labels = locale === "en" ? ["Free", "Used"] : ["Livre", "Usado"];
+  const OPTIONS = {
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: isDark ? "#BDBDBD" : "#000000",
+        },
+      },
+    },
+  };
   const DATA = {
     labels,
     datasets: [
@@ -23,13 +33,19 @@ const StorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace, title }) => {
         data: [freeSpace, usedSpace],
         backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
         borderColor: isDark ? "#FF8B3D" : "#FFFFFF",
+        borderWidth: 1.2,
       },
     ],
   };
+
   return (
     <>
-      <small style={{ textAlign: "center" }}>{title}</small>
-      <Pie data={DATA} />
+      <small
+        style={{ textAlign: "center", color: isDark ? "#BDBDBD" : "#000000" }}
+      >
+        {title}
+      </small>
+      <Pie redraw={true} options={OPTIONS} data={DATA} />
     </>
   );
 };

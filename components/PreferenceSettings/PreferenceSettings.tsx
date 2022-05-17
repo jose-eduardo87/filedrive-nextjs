@@ -9,9 +9,9 @@ import { useTheme } from "store/theme-context";
 import useHttp from "hooks/use-http";
 import { SELECTOR_STYLES } from "helpers/constants";
 
-import styles from "./SettingsOptions.module.css";
+import styles from "./PreferenceSettings.module.css";
 
-const SettingsOptions: FC = () => {
+const PreferenceSettings: FC = () => {
   const router = useRouter();
   const { locale, pathname } = router;
   const isEnglish = locale === "en";
@@ -20,7 +20,7 @@ const SettingsOptions: FC = () => {
     label: isEnglish ? "English" : "Português",
     disabled: false,
   });
-  const { t } = useTranslation("settingsoptions");
+  const { t } = useTranslation("preferencesettings");
   const { isDark, toggleTheme } = useTheme();
   const {
     error: errorTheme,
@@ -115,4 +115,4 @@ const SettingsOptions: FC = () => {
   );
 };
 
-export default SettingsOptions;
+export default PreferenceSettings;

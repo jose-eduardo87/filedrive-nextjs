@@ -1,8 +1,0 @@
-{
-  "error-message": "Invalid field.",
-  "placeholder-name": "Name",
-  "placeholder-email": "E-mail",
-  "placeholder-pwd": "Password",
-  "placeholder-confirm-pwd": "Confirm Password",
-  "btn": "Signup"
-}

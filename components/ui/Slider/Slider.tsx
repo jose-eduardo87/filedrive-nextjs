@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useRouter } from "next/router";
 import { Carousel } from "react-responsive-carousel";
 import { StorageInfoProps } from "@/components/StorageInfo/StorageInfo";
 
@@ -14,13 +15,16 @@ interface SliderProps {
 }
 
 const Slider: FC<SliderProps> = ({ components }) => {
+  const { locale } = useRouter();
+
   return (
     <Carousel
       autoPlay={true}
-      interval={4000}
+      interval={3500}
       showThumbs={false}
       showStatus={false}
       showArrows={false}
+      showIndicators={false}
       emulateTouch={true}
       infiniteLoop={true}
     >
@@ -33,8 +37,14 @@ const Slider: FC<SliderProps> = ({ components }) => {
               title={title}
             />
           }
-          <small style={{ fontSize: ".6rem", color: "gray" }}>
-            <em>Values shown in MB.</em>
+          <small
+            style={{ fontSize: ".6rem", color: "#FF7F50", textAlign: "right" }}
+          >
+            <em>
+              {locale === "en"
+                ? "* Values shown in MB."
+                : "* Valores exibidos em MB."}
+            </em>
           </small>
         </div>
       ))}

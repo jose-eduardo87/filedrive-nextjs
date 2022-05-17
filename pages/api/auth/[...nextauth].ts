@@ -37,9 +37,9 @@ const options = {
           authorizedUser!.password!
         );
 
-        // if (!authorizedUser || !isVerified) {
-        //   throw new Error("No user found or wrong password.");
-        // }
+        if (!authorizedUser || !isVerified) {
+          throw new Error("No user found or wrong password.");
+        }
 
         return { email: authorizedUser!.email };
       },

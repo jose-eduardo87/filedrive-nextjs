@@ -19,8 +19,6 @@ export const nameValidator = (name: string) => name.trim() !== "";
 export const emailValidator = (email: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
-export const passwordValidator = (password: string) => password.length >= 6;
-
 export const roundFileSizeToCorrectUnit = (value: number) => {
   if (value >= 1048576) {
     return `${(value / 1048576).toFixed(2)} MB`;

@@ -27,6 +27,7 @@ const Usernav: FC = () => {
       <div className={styles.upperGroup}>
         <div className={styles.profileImg}>
           <Image
+            priority
             alt={`${userName} profile image`}
             width={150}
             height={150}
@@ -34,7 +35,6 @@ const Usernav: FC = () => {
             quality={60}
             objectFit="cover"
             src={profileImage || DEFAULT_AVATAR}
-            priority
           />
         </div>
         <small>{userName}</small>

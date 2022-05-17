@@ -1,4 +1,3 @@
-import { compare } from "bcryptjs";
 import prisma from "lib/prisma";
 import type { Location } from "prisma/prisma-client";
 
@@ -13,12 +12,7 @@ type FileFrontend = {
 function User() {
   return Object.assign(prisma.user, {
     // computed field added to the prisma.user object. This is the closest alternative we have to Statics in mongoose
-    // returns if password provided is correct or not.
-    async verifyPassword(candidatePassword: string, userPassword: string) {
-      console.log(candidatePassword);
-      console.log(userPassword);
-      return await compare(candidatePassword, userPassword);
-    },
+
     // logs user by finding it by ID.
     async login(id: string) {
       return Object.assign(
@@ -39,8 +33,10 @@ function User() {
             },
           },
         }),
-        // computed fields available only to logged in users. Useful because it would not be interesting to have this method available in prisma.user.
-        // This is the closest alternative we have to Methods in mongoose.
+        // computed fields available only to logged in users. Useful because it's not my interest to have this method exposed in prisma.user.
+        // This is the closest alternative we have to Methods in mongoose but with one little caveat: we can specify properties/methods to selected documents.
+        // While it is possible to assign methods to new instances of models in mongoose (using Model.methods object), assigning methods only to specified
+        // documents is simply not possible AFAIK in mongoose.
         {
           getAvailableSpace(filesArray: FileFrontend) {
             // Returns available space information.

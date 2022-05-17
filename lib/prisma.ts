@@ -1,36 +1,33 @@
 import { PrismaClient } from "@prisma/client";
-import { hash } from "bcryptjs";
 
-let prisma: PrismaClient;
+declare global {
+  // allow global `var` declarations
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
+}
 
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  let globalWithPrisma = global as typeof globalThis & {
-    prisma: PrismaClient;
-  };
+const prisma = global.prisma || new PrismaClient();
 
-  if (!globalWithPrisma.prisma) {
-    globalWithPrisma.prisma = new PrismaClient();
-  }
-
-  prisma = globalWithPrisma.prisma;
+if (process.env.NODE_ENV !== "production") {
+  global.prisma = prisma;
 }
 
 // middlewares:
 
-// this middleware checks if it is a 'create' action in params.action and if it belongs to the
-// 'User' model and then hashes password before saving it in the database.
-prisma.$use(async (params, next) => {
-  if (params.model === "User" && params.action === "create") {
-    const hashedPassword = await hash(params.args.data.password, 12);
-    console.log(hashedPassword);
+// Password hashing before info gets persisted in database.
+// prisma.$use(async (params, next) => {
+//   // checks if model belongs to 'User' and to 'create' action
+//   if (params.model === "User" && params.action === "create") {
+//     // all the logic BEFORE 'await next(params)' will run before the creation of the document. This is comparable to the '.pre()' middleware in mongoose.
+//     const hashedPassword = await hash(params.args.data.password, 12);
+//     console.log("running!", hashedPassword);
 
-    params.args.data.password = hashedPassword;
-  }
-  const result = await next(params);
+//     params.args.data.password = hashedPassword;
+//   }
+//   const result = await next(params);
+//   // all the logic AFTER this point will run after the creation of the document. Comparable to the '.post()' middleware in mongoose.
 
-  return result;
-});
+//   return await next(params);
+// });
 
 export default prisma;

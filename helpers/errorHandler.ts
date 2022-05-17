@@ -1,11 +1,17 @@
 // error handler to catch all the possible errors related to backend in the app.
 
 import { NextApiResponse } from "next";
-import type { ErrorType } from "./Error";
+import ErrorClass, { ErrorType } from "./Error";
+
+// Error handlers
+
+// The only 'unique' field that can be provided by users in the entire database is the 'e-mail' field, therefore this message as return.
+const duplicateFieldError = () =>
+  new ErrorClass("E-mail provided is already in use.", 400);
 
 // send errors in development environment. In this case, all the possible details will be returned.
 const sendErrorDev = (err: ErrorType, res: NextApiResponse) => {
-  console.error(err);
+  console.error("ERROR: ", err);
 
   return res.status(err.statusCode).json({
     success: false,
@@ -38,10 +44,18 @@ const errorHandler = (err: ErrorType, res: NextApiResponse) => {
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, res);
   }
-  if (process.env.NODE_ENV === "production") {
-    // * ADD CONDITIONALS * //
 
-    sendErrorProd(err, res);
+  if (process.env.NODE_ENV === "production") {
+    let error = { ...err };
+
+    // perform check to nail down the error type and provide more user-friendly messages to users.
+
+    // CODE === 'P2002' => user provided some value marked as 'unique' that already exists in the database.
+    if (error.code === "P2002") {
+      error = duplicateFieldError();
+    }
+
+    sendErrorProd(error, res);
   }
 };
 

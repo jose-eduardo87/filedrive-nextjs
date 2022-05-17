@@ -12,47 +12,27 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 })
   .use((req, _res, next) => useProtectAPI(req, next))
   .patch(async (req, res, next) => {
-    const updateBody: {
-      name?: string;
-      password?: string;
-      passwordConfirm?: string;
-    } = Object.fromEntries(
-      Object.entries(req.body).filter(([_, value]) => value !== "")
-    );
+    const { name } = req.body;
 
-    const updateKeys = Object.keys(updateBody);
+    const updatedUser = await user.update({
+      where: {
+        id: req.userID,
+      },
+      data: {
+        name,
+      },
+    });
 
-    if (updateKeys.length === 1 && updateKeys.includes("name")) {
-      //   // user is updating name
-      const updatedUser = await user.update({
-        where: {
-          id: req.userID,
-        },
-        data: {
-          name: updateBody.name,
-        },
-      });
-
-      if (!updatedUser) {
-        return next(
-          new ErrorClass(
-            "There was an internal error uploading information.",
-            500
-          )
-        );
-      }
-
-      return res.status(200).json({ success: true });
+    if (!updatedUser) {
+      return next(
+        new ErrorClass(
+          "There was an internal error uploading information.",
+          500
+        )
+      );
     }
-    if (updateKeys.includes("password" && "passwordConfirm")) {
-      //   // user is updating password
-      //   // IMPLEMENT IT WHEN USER SIGN IN IS DONE
-    }
-  })
-  .post(async (req, res, next) => {
-    const { name, email, password, passwordConfirm } = req.body;
 
-    return res.status(200).json({ name, email, password, passwordConfirm });
+    return res.status(200).json({ success: true });
   });
 
 export default handler;
