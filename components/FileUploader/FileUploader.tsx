@@ -4,10 +4,10 @@ import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button, PopupMessage } from "@/components/ui";
 import useHttp from "hooks/use-http";
 import { useTheme } from "store/theme-context";
+import { useStorage } from "store/storage-context";
 import { DragAndDrop, Important, Error, Trash } from "@/components/Icons";
-import { getBaseStyle } from "helpers/functions";
+import { getBaseStyle, roundFileSizeToCorrectUnit } from "helpers/functions";
 import { focusedStyle, acceptStyle, rejectStyle } from "helpers/constants";
-import { roundFileSizeToCorrectUnit } from "helpers/functions";
 
 import styles from "./FileUploader.module.css";
 
@@ -15,6 +15,7 @@ const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
   const { isLoading, error, showError, sendRequest } = useHttp();
   const { isDark } = useTheme();
+  const { driveInformation, setDriveInformation } = useStorage();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
@@ -50,7 +51,7 @@ const FileUploader: FC = () => {
   );
   let totalSize: number = 0;
 
-  const renderFiles = uploadedFiles.map((file: FileWithPath): ReactNode => {
+  const renderFiles = uploadedFiles.map((file): ReactNode => {
     totalSize += file.size;
 
     return (
@@ -82,6 +83,10 @@ const FileUploader: FC = () => {
       return;
     }
 
+    if (totalSize > driveInformation.freeSpace) {
+      return; // return a better message to the user
+    }
+
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("files", file));
 
@@ -92,8 +97,17 @@ const FileUploader: FC = () => {
     });
 
     if (!response) {
-      return;
+      return; // return a better server error message
     }
+
+    setDriveInformation((currentState) => {
+      const updatedDriveInformation = {
+        freeSpace: currentState.freeSpace - totalSize,
+        usedSpace: currentState.usedSpace + totalSize,
+      };
+
+      return updatedDriveInformation;
+    });
 
     setUploadedFiles([]);
   };
@@ -159,7 +173,7 @@ const FileUploader: FC = () => {
           }}
           title={
             hasFiles
-              ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s!" : "!"}`
+              ? `${t("btn-title")}${uploadedFiles.length > 1 ? "s." : "."}`
               : t("btn-title-disabled")
           }
           isDisabled={!hasFiles || isLoading}

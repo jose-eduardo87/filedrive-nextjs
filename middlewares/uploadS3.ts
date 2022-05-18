@@ -3,7 +3,7 @@ import multerS3 from "multer-s3";
 import S3Client from "lib/S3Client";
 import { RequestWithFile } from "pages/api/files/post-files";
 
-const upload = multer({
+const uploadS3 = multer({
   storage: multerS3({
     s3: S3Client,
     bucket: process.env.AWS_BUCKET!,
@@ -20,4 +20,4 @@ const upload = multer({
   }),
 });
 
-export default upload;
+export default uploadS3;

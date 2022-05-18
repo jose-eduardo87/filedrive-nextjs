@@ -23,4 +23,3 @@ export { default as SignIn } from "./SignIn";
 export { default as Trash } from "./Trash";
 export { default as Unchecked } from "./Unchecked";
 export { default as VideoFile } from "./VideoFile";
-export { default as Wave } from "./Wave";

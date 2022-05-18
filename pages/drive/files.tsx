@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -11,11 +10,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
 import user from "models/User";
 import { useTheme } from "store/theme-context";
-import { useInterface } from "store/interface-context";
+import { useUserInfo } from "store/userinfo-context";
 import { FileManager } from "@/components/FileManager";
 import { Card } from "@/components/ui";
 import { LayoutDrive } from "@/components/common";
-import { getHeadingStyles, getCardStyles } from "helpers/functions";
+import { getLocale, getHeadingStyles, getCardStyles } from "helpers/functions";
 
 export interface FileInterface {
   id: string;
@@ -25,10 +24,7 @@ export interface FileInterface {
   url: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  locale,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   resetServerContext(); // required to render drag and drop functionality correctly on server side.
 
   const session = await getSession({ req });
@@ -45,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session?.user.id);
-  const { files, image, name, theme } = loggedUser!;
+  const { files, image, language, name, theme } = loggedUser!;
   const filesInDrive: typeof files = [];
   const filesInTrash: typeof files = [];
 
@@ -60,10 +56,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       image,
       name,
+      language,
       isDarkTheme: theme === "DARK" ? true : false,
       filesInDrive,
       filesInTrash,
-      ...(await serverSideTranslations(locale!, ["common", "bin"])),
+      ...(await serverSideTranslations(getLocale(language!), [
+        "common",
+        "bin",
+      ])),
     },
   };
 };
@@ -71,13 +71,13 @@ export const getServerSideProps: GetServerSideProps = async ({
 const Files: NextPage & { LayoutDrive: FC } = ({
   name,
   image,
+  language,
   isDarkTheme,
   filesInDrive,
   filesInTrash,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
-  const { setUserName, setProfileImage } = useInterface();
+  const isEnglish = language === "en";
+  const { setUserName, setProfileImage } = useUserInfo();
   const { toggleTheme } = useTheme();
 
   setUserName(name);

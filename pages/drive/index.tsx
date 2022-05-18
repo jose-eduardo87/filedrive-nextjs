@@ -1,6 +1,5 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -10,17 +9,15 @@ import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
 import { useTheme } from "store/theme-context";
-import { useInterface } from "store/interface-context";
+import { useUserInfo } from "store/userinfo-context";
+import { useStorage } from "store/storage-context";
 import { FileUploader } from "@/components/FileUploader";
 import { StorageInfo } from "@/components/StorageInfo";
 import { LayoutDrive } from "@/components/common";
 import { Card, Grid, Slider } from "@/components/ui";
-import { getHeadingStyles, getCardStyles } from "helpers/functions";
+import { getLocale, getHeadingStyles, getCardStyles } from "helpers/functions";
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  locale,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.
@@ -56,7 +53,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       isDarkTheme: theme === "DARK" ? true : false,
       driveSpaceInfo,
       trashSpaceInfo,
-      ...(await serverSideTranslations(locale!, ["common", "fileuploader"])),
+      ...(await serverSideTranslations(getLocale(language!), [
+        "common",
+        "fileuploader",
+      ])),
     },
   };
 };
@@ -71,35 +71,30 @@ const MainPage: NextPage & {
   driveSpaceInfo,
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
   const isEnglish = language === "en";
   const { toggleTheme } = useTheme();
-  const { setUserName, setProfileImage } = useInterface();
-
-  // changes to locale according to user's preference.
-  useEffect(() => {
-    router.replace(router.pathname, router.pathname, {
-      locale: (language === "ptBR" && "pt-BR") || language,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { setUserName, setProfileImage } = useUserInfo();
+  const { driveInformation, setDriveInformation } = useStorage();
 
   toggleTheme(isDarkTheme);
   setUserName(name);
   setProfileImage(image);
+  setDriveInformation(driveSpaceInfo);
 
   const sliderComponents = [
     {
+      type: "Pie",
       title: isEnglish ? "Drive Information" : "Informação do Drive",
       Component: StorageInfo,
-      freeSpace: driveSpaceInfo.freeSpace.toFixed(2),
-      usedSpace: driveSpaceInfo.usedSpace.toFixed(2),
+      freeSpace: +(driveInformation.freeSpace * 0.00000095367432).toFixed(2), // values converted from bytes to Mb.
+      usedSpace: +(driveInformation.usedSpace * 0.00000095367432).toFixed(2),
     },
     {
+      type: "Doughnut",
       title: isEnglish ? "Trash Information" : "Informação da Lixeira",
       Component: StorageInfo,
-      freeSpace: trashSpaceInfo.freeSpace.toFixed(2),
-      usedSpace: trashSpaceInfo.usedSpace.toFixed(2),
+      freeSpace: +(trashSpaceInfo.freeSpace * 0.00000095367432).toFixed(2),
+      usedSpace: +(trashSpaceInfo.usedSpace * 0.00000095367432).toFixed(2),
     },
   ];
 

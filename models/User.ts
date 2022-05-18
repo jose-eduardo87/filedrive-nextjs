@@ -46,9 +46,8 @@ function User() {
             );
 
             return {
-              // values are converted from B to MB.
-              freeSpace: (10485760 - usedSpace) * 0.00000095367432,
-              usedSpace: usedSpace * 0.00000095367432,
+              freeSpace: 10485760 - usedSpace,
+              usedSpace: usedSpace,
             };
           },
         }

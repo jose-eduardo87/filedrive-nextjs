@@ -46,7 +46,7 @@ const Bin: FC<{ id: string }> = ({ id }) => {
   const renderEmptyPanel = (
     <div style={PANEL_STYLES_IN_DRIVE_BIN}>
       <Party fill="#A1A1A1" />
-      <p style={{ textAlign: "center", color: "#A1A1A1", marginLeft: ".7rem" }}>
+      <p style={{ color: "#A1A1A1", marginLeft: ".7rem" }}>
         {t("empty_bin_message")}
       </p>
     </div>

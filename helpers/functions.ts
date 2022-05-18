@@ -14,6 +14,9 @@ import {
   DOCUMENT_EXTENSION,
 } from "./constants";
 
+export const getLocale = (language: string) =>
+  language === "ptBR" ? "pt-BR" : "en";
+
 export const nameValidator = (name: string) => name.trim() !== "";
 
 export const emailValidator = (email: string) =>

@@ -39,22 +39,20 @@ model Session {
 }
 
 model User {
-    id              String    @id @default(cuid())
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-    name            String?
-    email           String?   @unique
-    emailVerified   DateTime? @map("email_verified")
-    password        String?
-    passwordConfirm String?
-    image           String?
-    active          Boolean?  @default(true)
-    theme           Theme?    @default(CLEAR)
-    language        Language? @default(en)
-    accounts        Account[]
-    sessions        Session[]
-    role            Role?     @default(USER)
-    files           File[]
+    id            String    @id @default(cuid())
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime? @map("email_verified")
+    image         String?
+    active        Boolean?  @default(true)
+    theme         Theme?    @default(CLEAR)
+    language      Language? @default(en)
+    accounts      Account[]
+    sessions      Session[]
+    role          Role?     @default(USER)
+    files         File[]
 
     @@map("users")
 }

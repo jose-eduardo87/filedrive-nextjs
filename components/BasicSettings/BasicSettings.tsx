@@ -5,7 +5,7 @@ import { PopupMessage, Button } from "@/components/ui/";
 import { Error, Important } from "@/components/Icons";
 import useInput from "hooks/use-input";
 import useHttp from "hooks/use-http";
-import { useInterface } from "store/interface-context";
+import { useUserInfo } from "store/userinfo-context";
 import { nameValidator } from "helpers/functions";
 
 import styles from "./BasicSettings.module.css";
@@ -14,7 +14,7 @@ const BasicSettings: FC = () => {
   const inputFile = useRef<HTMLInputElement>(null);
   const { t } = useTranslation("basicsettings");
   const { error, showError, isLoading, sendRequest } = useHttp();
-  const { userName, setUserName } = useInterface();
+  const { userName, setUserName } = useUserInfo();
   const {
     value: nameValue,
     onBlur: onNameBlur,
@@ -31,11 +31,12 @@ const BasicSettings: FC = () => {
   };
   const onChangeInput = () => {
     // https://www.youtube.com/watch?v=7lhUsK-FxYI&ab_channel=ColbyFayock
+    // `api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`
     if (inputFile.current !== null && inputFile.current.files !== null) {
       const formData = new FormData();
       formData.append("file", inputFile.current.files[0]);
 
-      console.log(formData.get("file"));
+      // POST call to send image to Cloudinary server.
     }
   };
 

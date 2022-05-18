@@ -1,18 +1,24 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import { Doughnut, Pie } from "react-chartjs-2";
 import { useTheme } from "store/theme-context";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export interface StorageInfoProps {
+  type: string;
   freeSpace: number;
   usedSpace: number;
   title: string;
 }
 
-const StorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace, title }) => {
+const StorageInfo: FC<StorageInfoProps> = ({
+  type,
+  freeSpace,
+  usedSpace,
+  title,
+}) => {
   const { locale } = useRouter();
   const { isDark } = useTheme();
   const labels = locale === "en" ? ["Free", "Used"] : ["Livre", "Usado"];
@@ -45,7 +51,11 @@ const StorageInfo: FC<StorageInfoProps> = ({ freeSpace, usedSpace, title }) => {
       >
         {title}
       </small>
-      <Pie redraw={true} options={OPTIONS} data={DATA} />
+      {type === "Pie" ? (
+        <Pie redraw={true} options={OPTIONS} data={DATA} />
+      ) : (
+        <Doughnut redraw={true} options={OPTIONS} data={DATA} />
+      )}
     </>
   );
 };

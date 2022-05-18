@@ -4,9 +4,7 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "store/theme-context";
-import { useInterface } from "store/interface-context";
 import { Home, Dashboard, Filedrive, Gear, Logout } from "@/components/Icons";
-import { DEFAULT_AVATAR } from "helpers/constants";
 
 import styles from "./Usernav.module.css";
 
@@ -14,9 +12,11 @@ const getIconStyles = (isDark: boolean) => {
   return { width: 20, fill: isDark ? "#FF7F50" : "#000000" };
 };
 
-const Usernav: FC = () => {
+const Usernav: FC<{ profileImage: string; userName: string }> = ({
+  profileImage,
+  userName,
+}) => {
   const { t } = useTranslation("common");
-  const { userName, profileImage } = useInterface();
   const { isDark } = useTheme();
 
   return (
@@ -34,7 +34,7 @@ const Usernav: FC = () => {
             layout="responsive"
             quality={60}
             objectFit="cover"
-            src={profileImage || DEFAULT_AVATAR}
+            src={profileImage}
           />
         </div>
         <small>{userName}</small>

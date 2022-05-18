@@ -3,7 +3,7 @@ import file from "models/File";
 import useProtectAPI from "hooks/use-protect-api";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import upload from "middlewares/upload";
+import uploadS3 from "middlewares/uploadS3";
 import ErrorClass, { ErrorType } from "helpers/Error";
 
 export interface RequestWithFile extends NextApiRequest {
@@ -17,7 +17,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 })
   .use(
     (req: RequestWithFile, _res, next) => useProtectAPI(req, next),
-    upload.array("files")
+    uploadS3.array("files")
   )
   .post(async (req, res, next) => {
     // endpoint responsible for creating a database record whenever new file(s) is(are) added.

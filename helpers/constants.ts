@@ -34,7 +34,7 @@ export const PANEL_STYLES_IN_DRIVE_BIN: CSSProperties = {
   height: "100%",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
+  alignItems: "flex-start",
   backgroundColor: "transparent",
 };
 

@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -10,13 +9,12 @@ import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
 import { useTheme } from "store/theme-context";
-import { useInterface } from "store/interface-context";
+import { useUserInfo } from "store/userinfo-context";
 import { BasicSettings } from "@/components/BasicSettings";
 import { PreferenceSettings } from "@/components/PreferenceSettings";
 import { LayoutDrive } from "@/components/common";
 import { Card } from "@/components/ui";
-import { getHeadingStyles } from "helpers/functions";
-import { getCardStyles } from "helpers/functions";
+import { getLocale, getHeadingStyles, getCardStyles } from "helpers/functions";
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -35,14 +33,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const loggedUser = await user.login(session.user.id);
-  const { image, name, theme } = loggedUser;
+  const { image, language, name, theme } = loggedUser;
 
   return {
     props: {
       name,
       image,
+      language,
       isDark: theme === "DARK" ? true : false,
-      ...(await serverSideTranslations(locale!, [
+      ...(await serverSideTranslations(getLocale(language!), [
         "common",
         "basicsettings",
         "preferencesettings",
@@ -56,12 +55,12 @@ const Settings: NextPage & {
 } = ({
   name,
   image,
+  language,
   isDark,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isMounted, setIsMounted] = useState(false);
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
-  const { setUserName, setProfileImage } = useInterface();
+  const isEnglish = language === "en";
+  const { setUserName, setProfileImage } = useUserInfo();
   const { isDark: isDarkTheme, toggleTheme } = useTheme();
 
   // this useEffect is required because if user switches theme this page will rerender and

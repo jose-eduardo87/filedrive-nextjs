@@ -11,6 +11,7 @@ interface SliderProps {
     freeSpace: number;
     usedSpace: number;
     title: string;
+    type: string;
   }[];
 }
 
@@ -28,26 +29,33 @@ const Slider: FC<SliderProps> = ({ components }) => {
       emulateTouch={true}
       infiniteLoop={true}
     >
-      {components.map(({ Component, freeSpace, usedSpace, title }, index) => (
-        <div key={index}>
-          {
-            <Component
-              freeSpace={freeSpace}
-              usedSpace={usedSpace}
-              title={title}
-            />
-          }
-          <small
-            style={{ fontSize: ".6rem", color: "#FF7F50", textAlign: "right" }}
-          >
-            <em>
-              {locale === "en"
-                ? "* Values shown in MB."
-                : "* Valores exibidos em MB."}
-            </em>
-          </small>
-        </div>
-      ))}
+      {components.map(
+        ({ Component, type, freeSpace, usedSpace, title }, index) => (
+          <div key={index}>
+            {
+              <Component
+                type={type}
+                freeSpace={freeSpace}
+                usedSpace={usedSpace}
+                title={title}
+              />
+            }
+            <small
+              style={{
+                fontSize: ".6rem",
+                color: "#FF7F50",
+                textAlign: "right",
+              }}
+            >
+              <em>
+                {locale === "en"
+                  ? "* Values shown in MB."
+                  : "* Valores exibidos em MB."}
+              </em>
+            </small>
+          </div>
+        )
+      )}
     </Carousel>
   );
 };
