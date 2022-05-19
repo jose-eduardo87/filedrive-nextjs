@@ -31,7 +31,7 @@ const ThemeProvider: FC = ({ children }) => {
       return;
     }
 
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.body.style.backgroundColor = "#EDEADE";
     document.body.style.color = "#000000";
   }, [isDark]);
 

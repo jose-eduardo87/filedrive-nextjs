@@ -12,7 +12,7 @@ const Footer: FC = () => {
   return (
     <footer
       className={styles.footer}
-      style={{ backgroundColor: isDark ? "#181818" : "#FAF9F6" }}
+      style={{ backgroundColor: isDark ? "#181818" : "#F9F6EE" }}
     >
       <small>
         {t("footer-small-part1")}

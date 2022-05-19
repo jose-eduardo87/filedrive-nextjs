@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import { Carousel } from "react-responsive-carousel";
 import { StorageInfoProps } from "@/components/StorageInfo/StorageInfo";
 
@@ -16,7 +16,7 @@ interface SliderProps {
 }
 
 const Slider: FC<SliderProps> = ({ components }) => {
-  const { locale } = useRouter();
+  const { language } = useUserInfo();
 
   return (
     <Carousel
@@ -48,7 +48,7 @@ const Slider: FC<SliderProps> = ({ components }) => {
               }}
             >
               <em>
-                {locale === "en"
+                {language === "en"
                   ? "* Values shown in MB."
                   : "* Valores exibidos em MB."}
               </em>

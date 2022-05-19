@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import Select, { StylesConfig } from "react-select";
 
 interface DropdownInterface {
@@ -33,8 +33,8 @@ const customStyles: StylesConfig = {
 };
 
 const Dropdown: FC<DropdownInterface> = ({ defaultValue, onChange }) => {
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
+  const { language } = useUserInfo();
+  const isEnglish = language === "en";
   const LANGUAGE_OPTIONS: Options[] = [
     {
       value: "en",

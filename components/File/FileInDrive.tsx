@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useState, useRef } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import { saveAs } from "file-saver";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { PopupMessage } from "@/components/ui";
@@ -19,7 +19,7 @@ interface FileProps {
 }
 
 const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
-  const { locale } = useRouter();
+  const { language } = useUserInfo();
   const { provided } = draggableConfig;
   const timerRef = useRef<NodeJS.Timeout>();
   const [showMessage, setShowMessage] = useState(false);
@@ -54,7 +54,7 @@ const FileInDrive: FC<FileProps> = ({ file, draggableConfig }) => {
         ref={provided.innerRef}
         className={styles.root}
         title={
-          locale === "en"
+          language === "en"
             ? "Double-click me to download this file."
             : "Dê um duplo-clique para fazer o download deste arquivo."
         }

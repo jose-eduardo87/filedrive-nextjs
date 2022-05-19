@@ -6,15 +6,19 @@
   }
   
   .error {
-    color: #7c4343;
+    color: #7C4343;
   }
 
   .loading {
-    color: #6a23ad;
+    color: #6A23AD;
+  }
+
+  .warning {
+    color: #529C52;
   }
   
   .download {
-      color: #529C52;
+      color: #9A529C;
   }
   
   @keyframes fade-in {

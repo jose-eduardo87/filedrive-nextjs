@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState, memo } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import { DraggableProvided } from "react-beautiful-dnd";
 import { FileInterface } from "pages/drive/files";
 import { getMediaIcon, roundFileSizeToCorrectUnit } from "helpers/functions";
@@ -23,7 +23,7 @@ const FileInBin: FC<FileProps> = ({
   toggleState,
   trackerFunctions,
 }) => {
-  const { locale } = useRouter();
+  const { language } = useUserInfo();
   const [isChecked, setIsChecked] = useState(false);
   const [hasToggledBefore, setHasToggledBefore] = useState(false);
   const { isTogglingCheckboxes, runUseEffect } = toggleState;
@@ -49,7 +49,7 @@ const FileInBin: FC<FileProps> = ({
       ref={provided.innerRef}
       className={styles.root}
       title={
-        locale === "en"
+        language === "en"
           ? "Drag this file to the drive panel in order to download it."
           : "Arraste este arquivo para o painel do drive para realizar o download."
       }

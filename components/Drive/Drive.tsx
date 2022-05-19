@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInDrive } from "@/components/File";
 import { EmptyFolder, Filedrive } from "@/components/Icons";
@@ -13,13 +13,13 @@ import {
 import styles from "../Files/Files.module.css";
 
 const Drive: FC<{ id: string }> = ({ id }) => {
-  const { locale } = useRouter();
+  const { language } = useUserInfo();
   const { itemsDrive } = useFile();
   const renderEmptyPanel = (
     <div style={PANEL_STYLES_IN_DRIVE_BIN}>
       <EmptyFolder fill="#A1A1A1" />
       <p style={{ color: "#A1A1A1", marginLeft: ".7rem" }}>
-        {locale === "en" ? "Empty drive." : "Drive vazio."}
+        {language === "en" ? "Empty drive." : "Drive vazio."}
       </p>
     </div>
   );

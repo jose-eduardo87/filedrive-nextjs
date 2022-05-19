@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import { useTranslation } from "next-i18next";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInBin } from "@/components/File";
@@ -25,8 +25,8 @@ import {
 import styles from "../Files/Files.module.css";
 
 const Bin: FC<{ id: string }> = ({ id }) => {
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
+  const { language } = useUserInfo();
+  const isEnglish = language === "en";
   const { itemsTrash, onDeleteFiles } = useFile();
   const { error, showError, isLoading, sendRequest } = useHttp();
   const { t } = useTranslation("bin");

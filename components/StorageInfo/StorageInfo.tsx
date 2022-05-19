@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { useRouter } from "next/router";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
 import { useTheme } from "store/theme-context";
+import { useUserInfo } from "store/userinfo-context";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,9 +19,9 @@ const StorageInfo: FC<StorageInfoProps> = ({
   usedSpace,
   title,
 }) => {
-  const { locale } = useRouter();
+  const { language } = useUserInfo();
   const { isDark } = useTheme();
-  const labels = locale === "en" ? ["Free", "Used"] : ["Livre", "Usado"];
+  const labels = language === "en" ? ["Free", "Used"] : ["Livre", "Usado"];
   const OPTIONS = {
     plugins: {
       legend: {

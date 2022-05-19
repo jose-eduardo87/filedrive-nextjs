@@ -73,13 +73,14 @@ const MainPage: NextPage & {
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const isEnglish = language === "en";
   const { toggleTheme } = useTheme();
-  const { setUserName, setProfileImage } = useUserInfo();
+  const { setUserName, setProfileImage, setLanguage } = useUserInfo();
   const { driveInformation, setDriveInformation } = useStorage();
 
   toggleTheme(isDarkTheme);
   setUserName(name);
   setProfileImage(image);
   setDriveInformation(driveSpaceInfo);
+  setLanguage(language);
 
   const sliderComponents = [
     {

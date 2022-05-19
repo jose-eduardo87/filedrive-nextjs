@@ -17,6 +17,7 @@ const FileUploader: FC = () => {
   const { isDark } = useTheme();
   const { driveInformation, setDriveInformation } = useStorage();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
+  const [showWarning, setShowWarning] = useState(false);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
     setUploadedFiles((currentState) => {
       const filesArray = [...currentState, ...acceptedFiles];
@@ -84,7 +85,10 @@ const FileUploader: FC = () => {
     }
 
     if (totalSize > driveInformation.freeSpace) {
-      return; // return a better message to the user
+      setShowWarning(true);
+
+      setInterval(() => setShowWarning(false), 3000);
+      return;
     }
 
     const formData = new FormData();
@@ -97,7 +101,7 @@ const FileUploader: FC = () => {
     });
 
     if (!response) {
-      return; // return a better server error message
+      return;
     }
 
     setDriveInformation((currentState) => {
@@ -119,6 +123,13 @@ const FileUploader: FC = () => {
           type="loading"
           message="Uploading..."
           SVG={<Important fill="#6A23AD" />}
+        />
+      )}
+      {showWarning && (
+        <PopupMessage
+          type="warning"
+          message="You do not have space available to upload the file(s). Please remove some files and try again."
+          SVG={<Important fill="#529C52" />}
         />
       )}
       {showError && (

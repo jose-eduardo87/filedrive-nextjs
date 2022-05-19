@@ -1,5 +1,5 @@
 import { FC, memo } from "react";
-import { useRouter } from "next/router";
+import { useUserInfo } from "store/userinfo-context";
 import Switch from "react-switch";
 import { useTheme } from "store/theme-context";
 import { ICONS_STYLES_SETTINGS_OPTIONS } from "helpers/constants";
@@ -26,8 +26,8 @@ const iconStyle = {
 };
 
 const Selector: FC<SelectorProps> = ({ onChange, ...selectorStyles }) => {
-  const { locale } = useRouter();
-  const isEnglish = locale === "en";
+  const { language } = useUserInfo();
+  const isEnglish = language === "en";
   const { isDark } = useTheme();
 
   const icons = {

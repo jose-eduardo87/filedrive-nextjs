@@ -5,7 +5,7 @@ import { MODAL_STYLES } from "helpers/constants";
 import styles from "./PopupMessage.module.css";
 
 interface PopupMessageInterface {
-  type: "error" | "loading" | "download";
+  type: "error" | "loading" | "warning" | "download";
   message: string;
   SVG: JSX.Element;
 }
