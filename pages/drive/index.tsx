@@ -8,11 +8,11 @@ import {
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import user from "models/User";
+import file from "models/File";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
 import { useStorage } from "store/storage-context";
 import { FileUploader } from "@/components/FileUploader";
-import { StorageInfo } from "@/components/StorageInfo";
 import { LayoutDrive } from "@/components/common";
 import { Card, Grid, Slider } from "@/components/ui";
 import { getLocale, getHeadingStyles, getCardStyles } from "helpers/functions";
@@ -35,6 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   const loggedUser = await user.login(session!.user.id);
+  const sortedFiles = await file.sortBySize(session!.user.id);
   const { files, getAvailableSpace, image, language, name, theme } = loggedUser;
 
   // getAvailableSpace is a method only available to logged in users. It calculates the available space in the storage.
@@ -51,6 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       image,
       language,
       isDarkTheme: theme === "DARK" ? true : false,
+      sortedFiles,
       driveSpaceInfo,
       trashSpaceInfo,
       ...(await serverSideTranslations(getLocale(language!), [
@@ -68,6 +70,7 @@ const MainPage: NextPage & {
   image,
   language,
   isDarkTheme,
+  sortedFiles,
   driveSpaceInfo,
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -80,22 +83,27 @@ const MainPage: NextPage & {
   setUserName(name);
   setProfileImage(image);
   setDriveInformation(driveSpaceInfo);
-  setLanguage(language);
+  setLanguage(language === "ptBR" ? "pt-BR" : "en");
 
-  const sliderComponents = [
+  const sliderStorageChart = [
     {
       type: "Pie",
       title: isEnglish ? "Drive Information" : "Informação do Drive",
-      Component: StorageInfo,
       freeSpace: +(driveInformation.freeSpace * 0.00000095367432).toFixed(2), // values converted from bytes to Mb.
       usedSpace: +(driveInformation.usedSpace * 0.00000095367432).toFixed(2),
     },
     {
       type: "Doughnut",
       title: isEnglish ? "Trash Information" : "Informação da Lixeira",
-      Component: StorageInfo,
       freeSpace: +(trashSpaceInfo.freeSpace * 0.00000095367432).toFixed(2),
       usedSpace: +(trashSpaceInfo.usedSpace * 0.00000095367432).toFixed(2),
+    },
+  ];
+  const sliderFileChart = [
+    {
+      type: "PolarArea",
+      title: isEnglish ? "Top5 biggest files" : "Top5 maiores arquivos",
+      files: sortedFiles.slice(0, 5),
     },
   ];
 
@@ -113,7 +121,6 @@ const MainPage: NextPage & {
           ? "Welcome to your Dashboard."
           : "Bem-vindo ao seu Dashboard."}
       </h1>
-
       <Grid column={"1fr 2fr 1fr"} columnGap=".8rem" rowGap=".8rem">
         <Card
           style={{
@@ -121,13 +128,21 @@ const MainPage: NextPage & {
             ...getCardStyles(isDarkTheme),
           }}
         >
-          <Slider components={sliderComponents} />
+          <Slider
+            chartInfo={sliderStorageChart}
+            axis="horizontal"
+            chartType="storage"
+          />
         </Card>
         <Card style={getCardStyles(isDarkTheme)}>
           <FileUploader />
         </Card>
-        <Card style={getCardStyles(isDarkTheme)}>
-          <small style={{ textAlign: "center" }}>Test</small>
+        <Card style={{ width: "400px", ...getCardStyles(isDarkTheme) }}>
+          <Slider
+            chartInfo={sliderFileChart}
+            axis="vertical"
+            chartType="file"
+          />
         </Card>
       </Grid>
     </>

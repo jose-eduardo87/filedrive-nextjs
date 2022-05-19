@@ -23,6 +23,7 @@ function User() {
           include: {
             files: {
               select: {
+                ownerId: true,
                 fileName: true,
                 id: true,
                 key: true,

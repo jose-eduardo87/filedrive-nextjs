@@ -1,3 +1,7 @@
+// this context provides access of userName, profileImage and language states to all the components inside LayoutDrive.
+// By providing access to the mentioned states, every time there is a update to the server the changes will be reflected
+// instantly on the app.
+
 import {
   FC,
   createContext,

@@ -6,14 +6,14 @@ import { useUserInfo } from "store/userinfo-context";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export interface StorageInfoProps {
+export interface StorageChartProps {
   type: string;
   freeSpace: number;
   usedSpace: number;
   title: string;
 }
 
-const StorageInfo: FC<StorageInfoProps> = ({
+const StorageChart: FC<StorageChartProps> = ({
   type,
   freeSpace,
   usedSpace,
@@ -23,6 +23,7 @@ const StorageInfo: FC<StorageInfoProps> = ({
   const { isDark } = useTheme();
   const labels = language === "en" ? ["Free", "Used"] : ["Livre", "Usado"];
   const OPTIONS = {
+    responsive: true,
     plugins: {
       legend: {
         display: true,
@@ -60,4 +61,4 @@ const StorageInfo: FC<StorageInfoProps> = ({
   );
 };
 
-export default StorageInfo;
+export default StorageChart;

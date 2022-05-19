@@ -1,3 +1,5 @@
+// layout configuration for the main page.
+
 import { FC } from "react";
 import { Navbar, Footer } from "@/components/common";
 

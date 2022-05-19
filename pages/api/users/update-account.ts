@@ -12,6 +12,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 })
   .use((req, _res, next) => useProtectAPI(req, next))
   .patch(async (req, res, next) => {
+    // currently it only updates user name, but it can later be used to any other type of user update.
     const { name } = req.body;
 
     const updatedUser = await user.update({

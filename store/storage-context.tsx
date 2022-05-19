@@ -1,3 +1,7 @@
+// this context provides access of drive storage information for all the components inside LayoutDrive.
+// Only created in final stages of building this app, this context is useful as updates the pie chart in
+// the dashboard whenever there is a new update.
+
 import {
   createContext,
   useContext,

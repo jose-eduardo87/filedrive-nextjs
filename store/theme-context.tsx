@@ -1,3 +1,5 @@
+// this context provides access to the theme configuration to all the components inside of LayoutDrive.
+
 import {
   FC,
   createContext,

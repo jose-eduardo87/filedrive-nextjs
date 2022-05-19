@@ -16,10 +16,7 @@ import { LayoutDrive } from "@/components/common";
 import { Card } from "@/components/ui";
 import { getLocale, getHeadingStyles, getCardStyles } from "helpers/functions";
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  locale,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
   // protected page. In case an unauthenticated user tries to access this page, they will be redirected to the home page.

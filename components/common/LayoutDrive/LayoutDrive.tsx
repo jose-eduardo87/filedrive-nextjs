@@ -1,3 +1,5 @@
+// layout configuration for the pages inside of /drive.
+
 import { FC } from "react";
 import Panel from "@/components/Panel";
 import StorageProvider from "store/storage-context";

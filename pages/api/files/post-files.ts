@@ -42,6 +42,8 @@ const handler = nc<RequestWithFile, NextApiResponse>({
     return res.status(201).json({ success: true });
   });
 
+// NextJS allows us to export a config object with settings. In order to POST files, it is mandatory to
+// disabled bodyParser.
 export const config = {
   api: {
     bodyParser: false,
