@@ -1,5 +1,11 @@
 import { CSSProperties } from "react";
 
+// =========== constants used in FileUploader.tsx for styling drag and drop components ===========
+
+export const acceptStyle: CSSProperties = {
+  borderColor: "#00e676",
+};
+
 export const baseStyle: CSSProperties = {
   flex: 1,
   display: "flex",
@@ -19,17 +25,48 @@ export const focusedStyle: CSSProperties = {
   borderColor: "#2196f3",
 };
 
-export const acceptStyle: CSSProperties = {
-  borderColor: "#00e676",
-};
-
 export const rejectStyle: CSSProperties = {
   borderColor: "#ff1744",
 };
 
-export const DEFAULT_AVATAR = "/images/default-avatar.webp";
+// ===============================================================================================
+
+export const DEFAULT_AVATAR = "/images/default-avatar.webp"; // used in userinfo-context.tsx for giving profileImage a default image
+
+export const HEADING_STYLE_IN_DRIVE_BIN: CSSProperties = {
+  // used in Bin.tsx and Drive.tsx for styling heading
+  color: "#7E7E7E",
+  fontSize: "1.2rem",
+  fontWeight: 400,
+  letterSpacing: "1px",
+};
+
+export const ICON_STYLE_IN_DRIVE_BIN: CSSProperties = {
+  // used in Bin.tsx and Drive.tsx for styling icons
+  width: "1.2rem",
+  fill: "#999999",
+};
+
+export const ICONS_STYLES_SETTINGS_OPTIONS = {
+  // used in Selector.tsx for styling theme switch
+  fontSize: ".8rem",
+  fontWeight: 600,
+  color: "#000000",
+};
+
+export const MODAL_STYLES: CSSProperties = {
+  // used n PopupMessage.tsx for styling popup modal
+  width: "16rem",
+  position: "fixed",
+  top: "10%",
+  left: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 
 export const PANEL_STYLES_IN_DRIVE_BIN: CSSProperties = {
+  // used in Bin.tsx and Drive.tsx for styling empty panel
   width: "100%",
   height: "100%",
   display: "flex",
@@ -38,17 +75,70 @@ export const PANEL_STYLES_IN_DRIVE_BIN: CSSProperties = {
   backgroundColor: "transparent",
 };
 
-export const HEADING_STYLE_IN_DRIVE_BIN: CSSProperties = {
-  color: "#7E7E7E",
-  fontSize: "1.2rem",
-  fontWeight: 400,
-  letterSpacing: "1px",
+export const SELECTOR_STYLES = {
+  // spread out in Selector component inside of PreferenceSettings.tsx
+  height: 30,
+  width: 66,
+  handleDiameter: 20,
+  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.6)",
+  activeBoxShadow: "0px 0px 1px 10px rgba(0, 0, 0, 0.2)",
+  onHandleColor: "#2693E6",
+  onColor: "#E7FFFF",
+  offColor: "#FDE4E8",
 };
 
-export const ICON_STYLE_IN_DRIVE_BIN: CSSProperties = {
-  width: "1.2rem",
-  fill: "#999999",
-};
+// =========== used in functions.ts to return document, image or video icon ===========
+
+export const DOCUMENT_EXTENSION = [
+  "doc",
+  "docx",
+  "htm",
+  "html",
+  "odt",
+  "pdf",
+  "xls",
+  "xlsx",
+  "ods",
+  "ppt",
+  "pptx",
+  "txt",
+];
+
+export const IMAGE_EXTENSION = [
+  "jpg",
+  "jpeg",
+  "jpe",
+  "jif",
+  "jfif",
+  "jfi",
+  "png",
+  "webp",
+  "tiff",
+  "tif",
+  "psd",
+  "raw",
+  "arw",
+  "cr2",
+  "nrw",
+  "k25",
+  "bmp",
+  "dib",
+  "heif",
+  "heic",
+  "indd",
+  "ind",
+  "indt",
+  "jp2",
+  "j2k",
+  "jpf",
+  "jpx",
+  "jpm",
+  "mj2",
+  "svg",
+  "svgz",
+  "ai",
+  "eps",
+];
 
 export const VIDEO_EXTENSION = [
   "webm",
@@ -96,80 +186,4 @@ export const VIDEO_EXTENSION = [
   "f4b",
 ];
 
-export const IMAGE_EXTENSION = [
-  "jpg",
-  "jpeg",
-  "jpe",
-  "jif",
-  "jfif",
-  "jfi",
-  "png",
-  "webp",
-  "tiff",
-  "tif",
-  "psd",
-  "raw",
-  "arw",
-  "cr2",
-  "nrw",
-  "k25",
-  "bmp",
-  "dib",
-  "heif",
-  "heic",
-  "indd",
-  "ind",
-  "indt",
-  "jp2",
-  "j2k",
-  "jpf",
-  "jpx",
-  "jpm",
-  "mj2",
-  "svg",
-  "svgz",
-  "ai",
-  "eps",
-];
-
-export const DOCUMENT_EXTENSION = [
-  "doc",
-  "docx",
-  "htm",
-  "html",
-  "odt",
-  "pdf",
-  "xls",
-  "xlsx",
-  "ods",
-  "ppt",
-  "pptx",
-  "txt",
-];
-
-export const MODAL_STYLES: CSSProperties = {
-  width: "16rem",
-  position: "fixed",
-  top: "10%",
-  left: "50%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-export const SELECTOR_STYLES = {
-  height: 30,
-  width: 66,
-  handleDiameter: 20,
-  boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.6)",
-  activeBoxShadow: "0px 0px 1px 10px rgba(0, 0, 0, 0.2)",
-  onHandleColor: "#2693E6",
-  onColor: "#E7FFFF",
-  offColor: "#FDE4E8",
-};
-
-export const ICONS_STYLES_SETTINGS_OPTIONS = {
-  fontSize: ".8rem",
-  fontWeight: 600,
-  color: "#000000",
-};
+// =================================================================

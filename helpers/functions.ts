@@ -14,39 +14,8 @@ import {
   DOCUMENT_EXTENSION,
 } from "./constants";
 
-export const getLocale = (language: string) =>
-  language === "ptBR" ? "pt-BR" : "en";
-
-export const nameValidator = (name: string) => name.trim() !== "";
-
 export const emailValidator = (email: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-
-export const roundFileSizeToCorrectUnit = (value: number) => {
-  if (value >= 1048576) {
-    return `${(value / 1048576).toFixed(2)} MB`;
-  } else if (value >= 1024 && value < 1048576) {
-    return `${(value / 1024).toFixed(2)} KB`;
-  }
-
-  return `${value.toFixed(2)} B`;
-};
-
-export const getHeadingStyles = () => {
-  return {
-    fontSize: "3rem",
-    fontWeight: 900,
-    marginBottom: "4rem",
-  };
-};
-
-export const getCardStyles = (isDarkTheme: boolean) => {
-  return {
-    backgroundColor: isDarkTheme ? "#2A2B2E" : "#F9F9F9",
-    border: isDarkTheme ? "2px solid #404040" : "",
-    borderRadius: "12.5px",
-  };
-};
 
 export const getBaseStyle = (isDarkTheme: boolean): CSSProperties => {
   return {
@@ -63,9 +32,27 @@ export const getButtonStyleInBin = (type?: string): CSSProperties => {
     width: isToggle ? "15%" : "85%",
     verticalAlign: isToggle ? "middle" : "",
     border: "none",
-    // padding: isToggle ? 0 : "",
   };
 };
+
+export const getCardStyles = (isDarkTheme: boolean) => {
+  return {
+    backgroundColor: isDarkTheme ? "#2A2B2E" : "#FAF9F6",
+    border: isDarkTheme ? "2px solid #404040" : "",
+    borderRadius: "12.5px",
+  };
+};
+
+export const getHeadingStyles = () => {
+  return {
+    fontSize: "3rem",
+    fontWeight: 900,
+    marginBottom: "4rem",
+  };
+};
+
+export const getLocale = (language: string) =>
+  language === "ptBR" ? "pt-BR" : "en";
 
 export const getMediaIcon = (name: string) => {
   const regex = new RegExp("[^.]+$");
@@ -91,4 +78,16 @@ export const getRemovedFiles = (
   const removedIDsList = checkedFiles.map((file) => file.id);
 
   return files.filter((file) => !removedIDsList.includes(file.id));
+};
+
+export const nameValidator = (name: string) => name.trim() !== "";
+
+export const roundFileSizeToCorrectUnit = (value: number) => {
+  if (value >= 1048576) {
+    return `${(value / 1048576).toFixed(2)} MB`;
+  } else if (value >= 1024 && value < 1048576) {
+    return `${(value / 1024).toFixed(2)} KB`;
+  }
+
+  return `${value.toFixed(2)} B`;
 };
