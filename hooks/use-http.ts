@@ -29,8 +29,8 @@ const useHttp = () => {
 
   const sendRequest = useCallback(async (requestConfig: RequestType) => {
     setIsLoading(true);
-    setError(null);
-    // check if body is empty and if not, check if it is prototype of FormData (used when uploading files) or not (for anything else).
+    setError(null); // if there is any previous error message saved, reset it to null
+    // check if body is empty and if not, check if it is prototype of FormData (used when uploading files) or not (for anything else)
     const body = requestConfig.body
       ? FormData.prototype.isPrototypeOf(requestConfig.body)
         ? requestConfig.body
@@ -46,7 +46,7 @@ const useHttp = () => {
 
       const data = await response.json();
 
-      if (!data.success) {
+      if (!data) {
         throw new Error(data.message);
       }
 

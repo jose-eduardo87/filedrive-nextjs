@@ -195,4 +195,4 @@ export const BAR_COLORS = [
   "rgba(75, 192, 192, 0.5)",
   "rgba(153, 102, 255, 0.5)",
   "rgba(255, 159, 64, 0.5)",
-]; // used in FileChart.tsx for providing bar colors
+]; // used in FileChart.tsx and StorageChart.tsx for providing bar colors to charts

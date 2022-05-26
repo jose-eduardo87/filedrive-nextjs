@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
+import { BAR_COLORS } from "helpers/constants";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -38,7 +39,7 @@ const StorageChart: FC<StorageChartProps> = ({
     datasets: [
       {
         data: [freeSpace, usedSpace],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+        backgroundColor: BAR_COLORS.slice(0, 2),
         borderColor: isDark ? "#FF8B3D" : "#FFFFFF",
         borderWidth: 1.2,
       },

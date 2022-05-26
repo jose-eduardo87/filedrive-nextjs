@@ -54,7 +54,7 @@ const Slider: FC<SliderProps> = ({ axis, chartType, chartInfo }) => {
   } else {
     renderChart = chartInfo.map(({ title, type, files }, index) => (
       <div key={index}>
-        {<FileChart type={type} title={title} files={files!} />}
+        {<FileChart title={title} files={files!} />}
         <small
           style={{
             fontSize: ".6rem",

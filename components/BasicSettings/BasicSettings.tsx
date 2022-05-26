@@ -14,6 +14,12 @@ const BasicSettings: FC = () => {
   const inputFile = useRef<HTMLInputElement>(null);
   const { t } = useTranslation("basicsettings");
   const { error, showError, isLoading, sendRequest } = useHttp();
+  const {
+    error: errorPhotoRequest,
+    showError: showPhotoError,
+    isLoading: isLoadingPhoto,
+    sendRequest: sendPhotoRequest,
+  } = useHttp();
   const { userName, setUserName } = useUserInfo();
   const {
     value: nameValue,
@@ -24,19 +30,40 @@ const BasicSettings: FC = () => {
     hasError: nameHasError,
   } = useInput(nameValidator, userName);
 
+  const getSignature = async () => {
+    const response = await sendPhotoRequest({ url: "/api/users/upload-photo" });
+
+    if (!response) {
+      console.log("There was a problem.");
+    }
+
+    return response;
+  };
+
   const onClickUploadPhoto = () => {
     if (inputFile.current !== null) {
       inputFile.current.click();
     }
   };
-  const onChangeInput = () => {
-    // https://www.youtube.com/watch?v=7lhUsK-FxYI&ab_channel=ColbyFayock
-    // `api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`
+
+  const onChangeInput = async () => {
     if (inputFile.current !== null && inputFile.current.files !== null) {
+      const { signature, timestamp, publicId } = await getSignature();
       const formData = new FormData();
       formData.append("file", inputFile.current.files[0]);
+      formData.append("signature", signature);
+      formData.append("timestamp", timestamp);
+      formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+      formData.append("folder", "profile_pics");
+      formData.append("public_id", publicId);
+      formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
 
-      // POST call to send image to Cloudinary server.
+      await sendPhotoRequest({
+        url: `https://api.cloudinary.com/v1_1/${process.env
+          .NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!}/image/upload`,
+        method: "POST",
+        body: formData,
+      });
     }
   };
 
@@ -66,20 +93,22 @@ const BasicSettings: FC = () => {
     <div className={styles.wrapper}>
       <h2>{t("heading")}</h2>
       <form className={styles.form} onSubmit={onSubmitHandler}>
-        {isLoading && (
-          <PopupMessage
-            type="loading"
-            message="Updating information..."
-            SVG={<Important fill="#D11A2A" />}
-          />
-        )}
-        {showError && (
-          <PopupMessage
-            type="error"
-            message={error!}
-            SVG={<Error fill="#7C4343" />}
-          />
-        )}
+        {isLoading ||
+          (isLoadingPhoto && (
+            <PopupMessage
+              type="loading"
+              message="Updating information..."
+              SVG={<Important fill="#D11A2A" />}
+            />
+          ))}
+        {showError ||
+          (showPhotoError && (
+            <PopupMessage
+              type="error"
+              message={error! || errorPhotoRequest!}
+              SVG={<Error fill="#7C4343" />}
+            />
+          ))}
         <div className={styles.formContainer}>
           <Input
             type="text"

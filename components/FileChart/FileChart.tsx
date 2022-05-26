@@ -18,21 +18,32 @@ export interface FilesChart {
 }
 
 export interface FileChartProps {
-  type: string;
   files: FilesChart[];
   title: string;
 }
 
-const FileChart: FC<FileChartProps> = ({ type, files, title }) => {
+const FileChart: FC<FileChartProps> = ({ files, title }) => {
   const { isDark } = useTheme();
   const labels: string[] = [];
   const data: number[] = [];
 
   // populate labels and data by looping into files props
-  files.map(({ fileName, size }) => {
+  files.forEach(({ fileName, size }) => {
     labels.push(fileName);
     data.push(+(size * 0.00000095367432).toFixed(2));
   });
+
+  const OPTIONS = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          color: isDark ? "#BDBDBD" : "#000000",
+        },
+      },
+    },
+  };
 
   const DATA = {
     labels,
@@ -40,6 +51,8 @@ const FileChart: FC<FileChartProps> = ({ type, files, title }) => {
       {
         data,
         backgroundColor: BAR_COLORS.slice(0, files.length),
+        borderColor: isDark ? "#FF8B3D" : "#FFFFFF",
+        borderWidth: 1.2,
       },
     ],
     borderWidth: 1,
@@ -52,11 +65,7 @@ const FileChart: FC<FileChartProps> = ({ type, files, title }) => {
       >
         {title}
       </small>
-      {type === "PolarArea" ? (
-        <PolarArea redraw={true} data={DATA} />
-      ) : (
-        <PolarArea redraw={true} data={DATA} />
-      )}
+      <PolarArea redraw={true} options={OPTIONS} data={DATA} />
     </>
   );
 };
