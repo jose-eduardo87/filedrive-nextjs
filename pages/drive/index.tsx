@@ -84,6 +84,7 @@ const MainPage: NextPage & {
     setTopFiveBiggestFiles,
   } = useFilesInfo();
 
+  console.log("Render.");
   // this useEffect will only run when user first sees this page. It will update the states inside the if check. This is especially useful as it avoids
   // unnecessary re-rendering of page because of state updates.
   useEffect(
@@ -102,8 +103,6 @@ const MainPage: NextPage & {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-
-  console.log("index");
 
   const sliderStorageChart = [
     {

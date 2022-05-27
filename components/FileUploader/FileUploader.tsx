@@ -1,4 +1,5 @@
 import { FC, ReactNode, CSSProperties, useState, useMemo, memo } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button, PopupMessage } from "@/components/ui";
@@ -111,17 +112,22 @@ const FileUploader: FC = () => {
       url: "/api/files/top-five-biggest-files",
     });
 
-    setTopFiveBiggestFiles(sortedFiles);
-    setDriveInformation((currentState) => {
-      const updatedDriveInformation = {
-        freeSpace: currentState.freeSpace - totalSize,
-        usedSpace: currentState.usedSpace + totalSize,
-      };
+    // due to React 17 and earlier nature, where if you do a state setter within a promise they are actually done piecemeal,
+    // so in this particular case, 'topFiveBiggestFiles' gets updates but not for 'driveInformation'. That's why I used
+    // unstable_batchedUpdates, to force batching updates. Fortunately this is not a problem anymore with React 18.
+    unstable_batchedUpdates(() => {
+      setTopFiveBiggestFiles(sortedFiles);
+      setDriveInformation((currentState) => {
+        const updatedDriveInformation = {
+          freeSpace: currentState.freeSpace - totalSize,
+          usedSpace: currentState.usedSpace + totalSize,
+        };
 
-      return updatedDriveInformation;
+        return updatedDriveInformation;
+      });
+
+      setUploadedFiles([]);
     });
-
-    setUploadedFiles([]);
   };
 
   return (
