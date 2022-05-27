@@ -3,8 +3,7 @@ import { useTranslation } from "next-i18next";
 import { Input } from "@/components/Input";
 import { PopupMessage, Button } from "@/components/ui/";
 import { Error, Important } from "@/components/Icons";
-import useInput from "hooks/use-input";
-import useHttp from "hooks/use-http";
+import { useHttp, useInput } from "@/hooks/index";
 import { useUserInfo } from "store/userinfo-context";
 import { nameValidator } from "helpers/functions";
 

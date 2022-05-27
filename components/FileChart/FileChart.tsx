@@ -58,6 +58,8 @@ const FileChart: FC<FileChartProps> = ({ files, title }) => {
     borderWidth: 1,
   };
 
+  console.log("FileChart.", files);
+
   return (
     <>
       <small

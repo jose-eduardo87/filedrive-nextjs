@@ -1,6 +1,6 @@
 import nc from "next-connect";
 import file from "models/File";
-import useProtectAPI from "hooks/use-protect-api";
+import { useProtectAPI } from "@/hooks/index";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import uploadS3 from "middlewares/uploadS3";

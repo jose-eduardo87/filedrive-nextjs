@@ -1,7 +1,7 @@
 import nc from "next-connect";
 import file from "models/File";
 import errorHandler from "helpers/errorHandler";
-import useProtectAPI from "hooks/use-protect-api";
+import { useProtectAPI } from "@/hooks/index";
 import { NextApiResponse } from "next";
 import ErrorClass, { ErrorType } from "helpers/Error";
 import { RequestWithFile } from "./post-files";

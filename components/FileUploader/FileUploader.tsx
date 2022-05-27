@@ -1,10 +1,10 @@
-import { FC, ReactNode, CSSProperties, useState, useMemo } from "react";
+import { FC, ReactNode, CSSProperties, useState, useMemo, memo } from "react";
 import { useTranslation } from "next-i18next";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button, PopupMessage } from "@/components/ui";
-import useHttp from "hooks/use-http";
+import { useHttp } from "@/hooks/index";
 import { useTheme } from "store/theme-context";
-import { useStorage } from "store/storage-context";
+import { useFilesInfo } from "store/filesinfo-context";
 import { DragAndDrop, Important, Error, Trash } from "@/components/Icons";
 import { getBaseStyle, roundFileSizeToCorrectUnit } from "helpers/functions";
 import { focusedStyle, acceptStyle, rejectStyle } from "helpers/constants";
@@ -15,7 +15,8 @@ const FileUploader: FC = () => {
   const { t } = useTranslation("fileuploader");
   const { isLoading, error, showError, sendRequest } = useHttp();
   const { isDark } = useTheme();
-  const { driveInformation, setDriveInformation } = useStorage();
+  const { driveInformation, setDriveInformation, setTopFiveBiggestFiles } =
+    useFilesInfo();
   const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
   const [showWarning, setShowWarning] = useState(false);
   const onDropAccepted = (acceptedFiles: FileWithPath[]) => {
@@ -94,16 +95,23 @@ const FileUploader: FC = () => {
     const formData = new FormData();
     uploadedFiles.forEach((file) => formData.append("files", file));
 
-    const response = await sendRequest({
+    // POST request to upload the selected files
+    const responseFiles = await sendRequest({
       url: "/api/files/post-files",
       method: "POST",
       body: formData,
     });
 
-    if (!response) {
+    if (!responseFiles) {
       return;
     }
 
+    // GET request to recalculate the top-five biggest files and update the corresponding chart
+    const { sortedFiles } = await sendRequest({
+      url: "/api/files/top-five-biggest-files",
+    });
+
+    setTopFiveBiggestFiles(sortedFiles);
     setDriveInformation((currentState) => {
       const updatedDriveInformation = {
         freeSpace: currentState.freeSpace - totalSize,
@@ -197,4 +205,4 @@ const FileUploader: FC = () => {
   );
 };
 
-export default FileUploader;
+export default memo(FileUploader);

@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import { prisma } from "@/lib/index";
 import type { Location } from "prisma/prisma-client";
 
 type FileFrontend = {
@@ -11,7 +11,7 @@ type FileFrontend = {
 
 function User() {
   return Object.assign(prisma.user, {
-    // computed field added to the prisma.user object. This is the closest alternative we have to Statics in mongoose
+    // computed field added to the prisma.user object. This is the closest alternative we have to Virtuals and Statics in mongoose
 
     // logs user by finding it by ID.
     async login(id: string) {

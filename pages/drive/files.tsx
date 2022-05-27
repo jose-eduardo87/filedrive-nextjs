@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import {
   GetServerSideProps,
@@ -8,7 +8,7 @@ import {
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { resetServerContext } from "react-beautiful-dnd";
-import user from "models/User";
+import { user } from "@/models/index";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
 import { FileManager } from "@/components/FileManager";
@@ -76,13 +76,24 @@ const Files: NextPage & { LayoutDrive: FC } = ({
   filesInDrive,
   filesInTrash,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [isMounted, setIsMounted] = useState(false);
   const isEnglish = language === "en";
   const { setUserName, setProfileImage } = useUserInfo();
   const { toggleTheme } = useTheme();
 
-  setUserName(name);
-  setProfileImage(image);
-  toggleTheme(isDarkTheme);
+  useEffect(
+    () => {
+      if (!isMounted) {
+        setUserName(name);
+        setProfileImage(image);
+        toggleTheme(isDarkTheme);
+      }
+
+      return () => setIsMounted(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <>
@@ -90,7 +101,7 @@ const Files: NextPage & { LayoutDrive: FC } = ({
         <title>{isEnglish ? "File Manager" : "Gerenciador de Arquivos"}</title>
         <meta
           title="description"
-          content="File Manager. Move your files from the drive to the bin and vice-versa. Delete them permanently or maybe download them. You are on the control."
+          content="File Manager. Move your files from the drive to the bin and vice-versa. Delete files permanently or maybe download them. You are on the control."
         />
       </Head>
       <h1 style={getHeadingStyles()}>

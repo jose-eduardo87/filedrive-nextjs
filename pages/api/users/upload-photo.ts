@@ -1,7 +1,7 @@
 import nc from "next-connect";
-import cloudinary from "lib/cloudinary";
+import { cloudinary } from "@/lib/index";
 import errorHandler from "helpers/errorHandler";
-import useProtectAPI from "hooks/use-protect-api";
+import { useProtectAPI } from "@/hooks/index";
 import { NextApiResponse } from "next";
 import { RequestWithFile } from "pages/api/files/post-files";
 import { ErrorType } from "helpers/Error";

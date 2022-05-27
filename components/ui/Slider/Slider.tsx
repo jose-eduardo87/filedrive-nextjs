@@ -52,7 +52,7 @@ const Slider: FC<SliderProps> = ({ axis, chartType, chartInfo }) => {
       )
     );
   } else {
-    renderChart = chartInfo.map(({ title, type, files }, index) => (
+    renderChart = chartInfo.map(({ title, files }, index) => (
       <div key={index}>
         {<FileChart title={title} files={files!} />}
         <small

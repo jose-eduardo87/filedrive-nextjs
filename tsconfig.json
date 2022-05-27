@@ -16,7 +16,10 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/components/*": ["components/*"]
+      "@/components/*": ["components/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/lib/*": ["lib/*"],
+      "@/models/*": ["models/*"]
     }
   },
   "include": [

@@ -1,6 +1,6 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import S3Client from "lib/S3Client";
+import { S3Client } from "@/lib/index";
 import { RequestWithFile } from "pages/api/files/post-files";
 
 const uploadS3 = multer({

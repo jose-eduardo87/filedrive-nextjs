@@ -4,8 +4,8 @@ import { useTranslation } from "next-i18next";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { FileInBin } from "@/components/File";
 import { Button, PopupMessage } from "@/components/ui";
-import useCheckbox from "hooks/use-checkbox";
-import useHttp from "hooks/use-http";
+import { useCheckbox } from "@/hooks/index";
+import { useHttp } from "@/hooks/index";
 import { useFile } from "store/file-context";
 import {
   Checked,

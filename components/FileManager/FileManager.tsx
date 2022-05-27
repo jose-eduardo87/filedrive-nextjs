@@ -3,7 +3,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import FileProvider from "store/file-context";
 import { Files } from "@/components/Files";
 import { PopupMessage } from "@/components/ui";
-import useHttp from "hooks/use-http";
+import { useHttp } from "@/hooks/index";
 import { Important, Error } from "@/components/Icons";
 import { FileInterface } from "pages/drive/files";
 

@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import Panel from "@/components/Panel";
-import StorageProvider from "store/storage-context";
+import FilesInfoProvider from "store/filesinfo-context";
 import UserInfoProvider from "store/userinfo-context";
 import ThemeProvider from "store/theme-context";
 
@@ -10,7 +10,7 @@ import styles from "../Layout/Layout.module.css";
 
 const LayoutDrive: FC = ({ children }) => {
   return (
-    <StorageProvider>
+    <FilesInfoProvider>
       <UserInfoProvider>
         <ThemeProvider>
           <div className={styles.layout}>
@@ -18,7 +18,7 @@ const LayoutDrive: FC = ({ children }) => {
           </div>
         </ThemeProvider>
       </UserInfoProvider>
-    </StorageProvider>
+    </FilesInfoProvider>
   );
 };
 

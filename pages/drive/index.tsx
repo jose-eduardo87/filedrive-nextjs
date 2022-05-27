@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import {
   GetServerSideProps,
@@ -7,11 +7,10 @@ import {
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import user from "models/User";
-import file from "models/File";
+import { file, user } from "@/models/index";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
-import { useStorage } from "store/storage-context";
+import { useFilesInfo } from "store/filesinfo-context";
 import { FileUploader } from "@/components/FileUploader";
 import { LayoutDrive } from "@/components/common";
 import { Card, Grid, Slider } from "@/components/ui";
@@ -74,16 +73,37 @@ const MainPage: NextPage & {
   driveSpaceInfo,
   trashSpaceInfo,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [isMounted, setIsMounted] = useState(false);
   const isEnglish = language === "en";
   const { toggleTheme } = useTheme();
   const { setUserName, setProfileImage, setLanguage } = useUserInfo();
-  const { driveInformation, setDriveInformation } = useStorage();
+  const {
+    driveInformation,
+    topFiveBiggestFiles,
+    setDriveInformation,
+    setTopFiveBiggestFiles,
+  } = useFilesInfo();
 
-  toggleTheme(isDarkTheme);
-  setUserName(name);
-  setProfileImage(image);
-  setDriveInformation(driveSpaceInfo);
-  setLanguage(language === "ptBR" ? "pt-BR" : "en");
+  // this useEffect will only run when user first sees this page. It will update the states inside the if check. This is especially useful as it avoids
+  // unnecessary re-rendering of page because of state updates.
+  useEffect(
+    () => {
+      if (!isMounted) {
+        toggleTheme(isDarkTheme);
+        setUserName(name);
+        setProfileImage(image);
+        setDriveInformation(driveSpaceInfo);
+        setLanguage(language === "ptBR" ? "pt-BR" : "en");
+        setTopFiveBiggestFiles(sortedFiles);
+      }
+
+      return () => setIsMounted(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  console.log("index");
 
   const sliderStorageChart = [
     {
@@ -102,8 +122,8 @@ const MainPage: NextPage & {
   const sliderFileChart = [
     {
       type: "PolarArea",
-      title: isEnglish ? "Top5 biggest files" : "Top5 maiores arquivos",
-      files: sortedFiles.slice(0, 5),
+      title: isEnglish ? "Top-five biggest files" : "Top-5 maiores arquivos",
+      files: topFiveBiggestFiles.slice(0, 5),
     },
   ];
 

@@ -6,7 +6,7 @@ import { Dropdown, Selector, PopupMessage } from "@/components/ui";
 import { Options } from "@/components/ui/Dropdown/Dropdown";
 import { Error, Important } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
-import useHttp from "hooks/use-http";
+import { useHttp } from "@/hooks/index";
 import { SELECTOR_STYLES } from "helpers/constants";
 
 import styles from "./PreferenceSettings.module.css";

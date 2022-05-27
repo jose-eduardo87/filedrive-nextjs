@@ -7,7 +7,7 @@ import {
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import user from "models/User";
+import { user } from "@/models/index";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
 import { BasicSettings } from "@/components/BasicSettings";
@@ -60,27 +60,19 @@ const Settings: NextPage & {
   const { setUserName, setProfileImage } = useUserInfo();
   const { isDark: isDarkTheme, toggleTheme } = useTheme();
 
-  // this useEffect is required because if user switches theme this page will rerender and
-  // thus running toggleTheme with outdated 'isDark' property coming from props. By letting
-  // toggleTheme to be applied once, we avoid unnecessary updates to isDark property in
-  // theme-context.
-  useEffect(() => {
-    if (!isMounted) {
-      toggleTheme(isDark);
-      setUserName(name);
-      setProfileImage(image);
-    }
+  useEffect(
+    () => {
+      if (!isMounted) {
+        toggleTheme(isDark);
+        setUserName(name);
+        setProfileImage(image);
+      }
 
-    return () => setIsMounted(true);
-  }, [
-    image,
-    isDark,
-    isMounted,
-    name,
-    setProfileImage,
-    setUserName,
-    toggleTheme,
-  ]);
+      return () => setIsMounted(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <>

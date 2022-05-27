@@ -3,8 +3,8 @@ import Head from "next/head";
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Layout } from "@/components/common";
-import { Container } from "@/components/ui";
 import { Welcome } from "@/components/sections";
+import { Container } from "@/components/ui";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
