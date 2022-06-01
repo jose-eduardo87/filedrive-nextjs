@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import file from "models/File";
+import { file } from "@/models/index";
 import { useProtectAPI } from "@/hooks/index";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";

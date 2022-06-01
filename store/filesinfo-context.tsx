@@ -1,5 +1,5 @@
 // this context provides access to drive storage and the top-five biggest files information for all the components inside LayoutDrive.
-// Only created in final stages of building this app, this context is useful as updates the pie and polar charts in the dashboard whenever
+// Only created in final stages of building this app, this context is useful as updates the charts in the dashboard whenever
 // there is a new update.
 
 import {

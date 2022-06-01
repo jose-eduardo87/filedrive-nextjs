@@ -19,7 +19,7 @@ const BasicSettings: FC = () => {
     isLoading: isLoadingPhoto,
     sendRequest: sendPhotoRequest,
   } = useHttp();
-  const { userName, setUserName } = useUserInfo();
+  const { userName, setProfileImage, setUserName } = useUserInfo();
   const {
     value: nameValue,
     onBlur: onNameBlur,
@@ -31,10 +31,6 @@ const BasicSettings: FC = () => {
 
   const getSignature = async () => {
     const response = await sendPhotoRequest({ url: "/api/users/upload-photo" });
-
-    if (!response) {
-      console.log("There was a problem.");
-    }
 
     return response;
   };
@@ -52,17 +48,33 @@ const BasicSettings: FC = () => {
       formData.append("file", inputFile.current.files[0]);
       formData.append("signature", signature);
       formData.append("timestamp", timestamp);
-      formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+      // formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
       formData.append("folder", "profile_pics");
       formData.append("public_id", publicId);
       formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
 
-      await sendPhotoRequest({
+      const uploadToCloudinary = await sendPhotoRequest({
         url: `https://api.cloudinary.com/v1_1/${process.env
           .NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!}/image/upload`,
         method: "POST",
         body: formData,
       });
+
+      if (uploadToCloudinary.secure_url) {
+        // save url in db and then setProfileImage
+        const saveProfileImageToDb = await sendPhotoRequest({
+          url: "/api/users/update-account",
+          method: "PATCH",
+          body: { image: uploadToCloudinary.secure_url },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (saveProfileImageToDb) {
+          setProfileImage(uploadToCloudinary.secure_url);
+        }
+      }
     }
   };
 
@@ -100,14 +112,13 @@ const BasicSettings: FC = () => {
               SVG={<Important fill="#D11A2A" />}
             />
           ))}
-        {showError ||
-          (showPhotoError && (
-            <PopupMessage
-              type="error"
-              message={error! || errorPhotoRequest!}
-              SVG={<Error fill="#7C4343" />}
-            />
-          ))}
+        {(showError || showPhotoError) && (
+          <PopupMessage
+            type="error"
+            message={error! || errorPhotoRequest!}
+            SVG={<Error fill="#7C4343" />}
+          />
+        )}
         <div className={styles.formContainer}>
           <Input
             type="text"

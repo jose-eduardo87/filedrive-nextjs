@@ -2,9 +2,11 @@
 
 import { FC } from "react";
 import Panel from "@/components/Panel";
-import FilesInfoProvider from "store/filesinfo-context";
-import UserInfoProvider from "store/userinfo-context";
-import ThemeProvider from "store/theme-context";
+import {
+  FilesInfoProvider,
+  UserInfoProvider,
+  ThemeProvider,
+} from "@/store/index";
 
 import styles from "../Layout/Layout.module.css";
 

@@ -57,7 +57,7 @@ const Settings: NextPage & {
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isMounted, setIsMounted] = useState(false);
   const isEnglish = language === "en";
-  const { setUserName, setProfileImage } = useUserInfo();
+  const { setUserName, setProfileImage, setLanguage } = useUserInfo();
   const { isDark: isDarkTheme, toggleTheme } = useTheme();
 
   useEffect(
@@ -66,6 +66,7 @@ const Settings: NextPage & {
         toggleTheme(isDark);
         setUserName(name);
         setProfileImage(image);
+        setLanguage(language);
       }
 
       return () => setIsMounted(true);

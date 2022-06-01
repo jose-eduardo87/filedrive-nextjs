@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import user from "models/User";
+import { user } from "@/models/index";
 import errorHandler from "helpers/errorHandler";
 import { useProtectAPI } from "@/hooks/index";
 import { NextApiResponse } from "next";
@@ -12,16 +12,28 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 })
   .use((req, _res, next) => useProtectAPI(req, next))
   .patch(async (req, res, next) => {
-    // currently it only updates user name, but it can later be used to any other type of user update.
-    const { name } = req.body;
+    // endpoint responsible for updating user name and profile image. The profile image is a URL from either Cloudinary or Google
+
+    const allowedFields = ["name", "image"];
+    const fieldComingFromBody = Object.keys(req.body);
+    const forbiddenFields = fieldComingFromBody.filter(
+      (field) => !allowedFields.includes(field)
+    );
+
+    if (forbiddenFields.length > 0) {
+      return next(
+        new ErrorClass(
+          "There were forbidden fields to update. Please make sure that you are uploading your name and profile image only.",
+          403
+        )
+      );
+    }
 
     const updatedUser = await user.update({
       where: {
         id: req.userID,
       },
-      data: {
-        name,
-      },
+      data: req.body,
     });
 
     if (!updatedUser) {

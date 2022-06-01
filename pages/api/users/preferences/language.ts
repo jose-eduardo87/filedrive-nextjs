@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import user from "models/User";
+import { user } from "@/models/index";
 import errorHandler from "helpers/errorHandler";
 import { useProtectAPI } from "@/hooks/index";
 import { NextApiResponse } from "next";

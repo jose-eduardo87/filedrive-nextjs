@@ -84,7 +84,6 @@ const MainPage: NextPage & {
     setTopFiveBiggestFiles,
   } = useFilesInfo();
 
-  console.log("Render.");
   // this useEffect will only run when user first sees this page. It will update the states inside the if check. This is especially useful as it avoids
   // unnecessary re-rendering of page because of state updates.
   useEffect(
@@ -94,7 +93,7 @@ const MainPage: NextPage & {
         setUserName(name);
         setProfileImage(image);
         setDriveInformation(driveSpaceInfo);
-        setLanguage(language === "ptBR" ? "pt-BR" : "en");
+        setLanguage(language === "en" ? "en" : "pt-BR");
         setTopFiveBiggestFiles(sortedFiles);
       }
 

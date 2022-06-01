@@ -1,9 +1,9 @@
 import nc from "next-connect";
-import file from "models/File";
-import errorHandler from "helpers/errorHandler";
+import { file } from "@/models/index";
 import { useProtectAPI } from "@/hooks/index";
 import { NextApiResponse } from "next";
-import ErrorClass, { ErrorType } from "helpers/Error";
+import { ErrorType } from "helpers/Error";
+import errorHandler from "helpers/errorHandler";
 import { RequestWithFile } from "./post-files";
 
 const handler = nc<RequestWithFile, NextApiResponse>({

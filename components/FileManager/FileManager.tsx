@@ -1,6 +1,6 @@
 import { FC, Dispatch, SetStateAction, useState, useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import FileProvider from "store/file-context";
+import { FileProvider } from "@/store/index";
 import { Files } from "@/components/Files";
 import { PopupMessage } from "@/components/ui";
 import { useHttp } from "@/hooks/index";

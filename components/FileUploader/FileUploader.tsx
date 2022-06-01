@@ -112,9 +112,11 @@ const FileUploader: FC = () => {
       url: "/api/files/top-five-biggest-files",
     });
 
-    // due to React 17 and earlier nature, where if you do a state setter within a promise they are actually done piecemeal,
-    // so in this particular case, 'topFiveBiggestFiles' gets updates but not for 'driveInformation'. That's why I used
-    // unstable_batchedUpdates, to force batching updates. Fortunately this is not a problem anymore with React 18.
+    // due to React < 17 nature, if you do a state setter within a promise they are actually done piecemeal.
+    // So in this particular case, 'topFiveBiggestFiles' gets updated but not for 'driveInformation'. That's why I used
+    // unstable_batchedUpdates to force batching updates. Fortunately this is not a problem anymore with React 18. Even though
+    // the name 'unstable' may look a bit concerning to be used in production, Dan Abramov has encouraged the use of this API when
+    // appropriate as seen in https://github.com/facebook/react/issues/16387#issuecomment-521623662
     unstable_batchedUpdates(() => {
       setTopFiveBiggestFiles(sortedFiles);
       setDriveInformation((currentState) => {

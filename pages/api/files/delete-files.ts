@@ -1,6 +1,6 @@
 import nc from "next-connect";
 import { S3Client } from "@/lib/index";
-import file from "models/File";
+import { file } from "@/models/index";
 import errorHandler from "helpers/errorHandler";
 import { useProtectAPI } from "@/hooks/index";
 import ErrorClass, { ErrorType } from "helpers/Error";

@@ -6,6 +6,7 @@ import { Dropdown, Selector, PopupMessage } from "@/components/ui";
 import { Options } from "@/components/ui/Dropdown/Dropdown";
 import { Error, Important } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
+import { useUserInfo } from "@/store/userinfo-context";
 import { useHttp } from "@/hooks/index";
 import { SELECTOR_STYLES } from "helpers/constants";
 
@@ -15,10 +16,11 @@ const PreferenceSettings: FC = () => {
   const router = useRouter();
   const { locale, pathname } = router;
   const isEnglish = locale === "en";
+  const { language } = useUserInfo();
   const [selectedOption, setSelectedOption] = useState<Options>({
-    value: isEnglish ? "en" : "pt-BR",
-    label: isEnglish ? "English" : "Português",
-    disabled: false,
+    value: language === "en" ? "en" : "pt-BR",
+    label: language === "en" ? "English" : "Português",
+    disabled: true,
   });
   const { t } = useTranslation("preferencesettings");
   const { isDark, toggleTheme } = useTheme();
@@ -62,13 +64,15 @@ const PreferenceSettings: FC = () => {
     });
 
     if (response) {
-      router.replace(pathname, pathname, {
-        locale: toggledLanguage.value,
-      });
+      // router.replace(pathname, pathname, {
+      //   locale: toggledLanguage.value,
+      // });
+      router.push(router.asPath, undefined, { locale: toggledLanguage.value });
 
       setSelectedOption(toggledLanguage);
     }
-  }, [isEnglish, pathname, router, sendRequest]);
+    // }, [isEnglish, pathname, router, sendRequest]);
+  }, [isEnglish, router, sendRequest]);
 
   return (
     <div className={styles.root}>
