@@ -1,8 +1,8 @@
 import nc from "next-connect";
-import { S3Client } from "@/lib/index";
 import { file } from "@/models/index";
 import errorHandler from "helpers/errorHandler";
 import { useProtectAPI } from "@/hooks/index";
+import { deleteUserFiles } from "lib/S3Client";
 import ErrorClass, { ErrorType } from "helpers/Error";
 import { NextApiResponse } from "next";
 import { RequestWithFile } from "./post-files";
@@ -21,30 +21,22 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       (file: RegisteredFilesInterface) => file.id
     );
 
-    // delete file(s) on AWS S3
-    const deletedFilesAWS = await S3Client.deleteObjects({
-      Bucket: process.env.AWS_BUCKET!,
-      Delete: { Objects: keysList },
-    }).promise();
+    // delete file(s) on AWS S3, if deletion is successfull, function will
+    await deleteUserFiles(keysList);
 
-    if (deletedFilesAWS.Errors!.length === 0) {
-      // delete file record(s) on database
-      const deletedFilesDB = await file.deleteMany({
-        where: {
-          id: {
-            in: idList,
-          },
+    // delete file record(s) on database
+    const deletedFilesDB = await file.deleteMany({
+      where: {
+        id: {
+          in: idList,
         },
-      });
+      },
+    });
 
-      if (!deletedFilesDB) {
-        return next(
-          new ErrorClass(
-            "There was an internal error deleting the file(s).",
-            500
-          )
-        );
-      }
+    if (!deletedFilesDB) {
+      return next(
+        new ErrorClass("There was an internal error deleting the file(s).", 500)
+      );
     }
 
     return res.status(200).json({ success: true });

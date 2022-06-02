@@ -48,7 +48,7 @@ const BasicSettings: FC = () => {
       formData.append("file", inputFile.current.files[0]);
       formData.append("signature", signature);
       formData.append("timestamp", timestamp);
-      // formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260");
+      formData.append("upload_preset", "ml_default");
       formData.append("folder", "profile_pics");
       formData.append("public_id", publicId);
       formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
