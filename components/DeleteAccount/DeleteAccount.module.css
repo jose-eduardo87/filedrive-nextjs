@@ -1,0 +1,9 @@
+.link {
+    text-align: right;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  
+  .removeLink {
+    color: #ff4646;
+  }

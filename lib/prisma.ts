@@ -14,11 +14,13 @@ if (process.env.NODE_ENV !== "production") {
 
 // MIDDLEWARES:
 
-// performs a soft delete when user deletes account. It changes the request action to 'update' and sets the active property to false
+// performs a soft delete when user deletes account. It changes the request action to 'update' and sets the 'active' property to false
 prisma.$use(async (params, next) => {
   if (params.model === "User" && params.action === "delete") {
     params.action = "update";
     params.args["data"] = { active: false };
+
+    // RODAR O deleteUserFolder AQUI OU DENTRO DO ENDPOINT??? TALVEZ FAÇA MAIS SENTIDO RODAR AQUI...
   }
 
   return next(params);

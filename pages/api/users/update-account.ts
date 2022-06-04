@@ -16,11 +16,11 @@ const handler = nc<RequestWithFile, NextApiResponse>({
 
     const allowedFields = ["name", "image"];
     const fieldComingFromBody = Object.keys(req.body);
-    const forbiddenFields = fieldComingFromBody.filter(
-      (field) => !allowedFields.includes(field)
-    );
+    const hasForbiddenFields =
+      fieldComingFromBody.filter((field) => !allowedFields.includes(field))
+        .length > 0;
 
-    if (forbiddenFields.length > 0) {
+    if (hasForbiddenFields) {
       return next(
         new ErrorClass(
           "There were forbidden fields to update. Please make sure that you are uploading your name and profile image only.",

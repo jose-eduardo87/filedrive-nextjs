@@ -30,7 +30,7 @@ const inputReducer = (state: State, action: Action): State => {
   }
 };
 
-const useInput = (validateField: (arg: string) => {}, inputValue = "") => {
+const useInput = (validateField: (arg: string) => boolean, inputValue = "") => {
   const initialValue = { value: inputValue, isTouched: false };
   const [input, dispatch] = useReducer(inputReducer, initialValue);
 

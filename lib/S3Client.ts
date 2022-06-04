@@ -56,10 +56,12 @@ export const deleteUserFolder = async (directory: string) => {
 
   const deleteParams = {
     Bucket: process.env.AWS_BUCKET!,
-    Delete: {
-      Objects: listedObjects.Contents!.map(({ Key }) => Key),
-    },
+    Delete: { Objects: [] },
   };
+
+  listedObjects.Contents?.forEach(({ Key }) => {
+    deleteParams.Delete.Objects.push({ Key });
+  });
 
   // deleteParams.Delete.Objects = listedObjects.Contents!.map(({ Key }) => Key);
 

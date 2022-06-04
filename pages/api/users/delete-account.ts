@@ -11,6 +11,23 @@ const handler = nc<RequestWithFile, NextApiResponse>({
   onNoMatch: (_req, res) => res.status(404).end("Page not found."),
 })
   .use((req, _res, next) => useProtectAPI(req, next))
-  .delete(async (req, res, next) => {});
+  .delete(async (req, res, next) => {
+    const deletedUser = await user.delete({
+      where: {
+        id: req.userID,
+      },
+    });
+
+    if (!deletedUser) {
+      return next(
+        new ErrorClass(
+          "We could not delete your account. Please try again later.",
+          500
+        )
+      );
+    }
+
+    return res.status(204).json({ success: true });
+  });
 
 export default handler;

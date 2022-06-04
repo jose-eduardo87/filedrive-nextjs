@@ -3,7 +3,7 @@ import { file } from "@/models/index";
 import { useProtectAPI } from "@/hooks/index";
 import errorHandler from "helpers/errorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import { uploadS3 } from "lib/S3Client";
+import { uploadS3 } from "@/lib/index";
 import ErrorClass, { ErrorType } from "helpers/Error";
 
 export interface RequestWithFile extends NextApiRequest {

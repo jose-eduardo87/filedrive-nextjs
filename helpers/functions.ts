@@ -14,6 +14,9 @@ import {
   DOCUMENT_EXTENSION,
 } from "./constants";
 
+export const confirmValidator = (confirmationString: string, name: string) =>
+  name === confirmationString;
+
 export const emailValidator = (email: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 

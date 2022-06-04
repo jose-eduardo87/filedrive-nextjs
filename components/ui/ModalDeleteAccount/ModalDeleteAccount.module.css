@@ -1,0 +1,19 @@
+.root {
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+}
+
+.main {
+    height: 70%;
+    border-top: 1px solid #cecece;
+    border-bottom: 1px solid #cecece;
+    margin-bottom: 1rem;
+}
+
+.buttonsGroup {
+    align-self: right;
+}

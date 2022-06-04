@@ -89,9 +89,7 @@ const BasicSettings: FC = () => {
       url: "/api/users/update-account",
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: {
-        name: nameValue,
-      },
+      body: { name: nameValue },
     });
 
     if (response) {

@@ -2,10 +2,11 @@ import { FC, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { DeleteAccount } from "@/components/DeleteAccount";
 import { Dropdown, Selector, PopupMessage } from "@/components/ui";
 import { Options } from "@/components/ui/Dropdown/Dropdown";
-import { Error, Important } from "@/components/Icons";
 import { useTheme } from "store/theme-context";
+import { Error, Important } from "@/components/Icons";
 import { useUserInfo } from "@/store/userinfo-context";
 import { useHttp } from "@/hooks/index";
 import { SELECTOR_STYLES } from "helpers/constants";
@@ -109,11 +110,7 @@ const PreferenceSettings: FC = () => {
             {t("upgrade-link")}
           </p>
         </Link>
-        <Link passHref href="/drive/upgrade">
-          <p className={`${styles.link} ${styles.removeLink}`}>
-            {t("delete-account")}
-          </p>
-        </Link>
+        <DeleteAccount />
       </div>
     </div>
   );

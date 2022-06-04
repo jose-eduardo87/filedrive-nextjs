@@ -2,7 +2,7 @@ import nc from "next-connect";
 import { file } from "@/models/index";
 import errorHandler from "helpers/errorHandler";
 import { useProtectAPI } from "@/hooks/index";
-import { deleteUserFiles } from "lib/S3Client";
+import { deleteUserFiles } from "@/lib/index";
 import ErrorClass, { ErrorType } from "helpers/Error";
 import { NextApiResponse } from "next";
 import { RequestWithFile } from "./post-files";
@@ -21,7 +21,7 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       (file: RegisteredFilesInterface) => file.id
     );
 
-    // delete file(s) on AWS S3, if deletion is successfull, function will
+    // delete file(s) on AWS S3
     await deleteUserFiles(keysList);
 
     // delete file record(s) on database
