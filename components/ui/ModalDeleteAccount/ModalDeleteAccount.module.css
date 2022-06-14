@@ -1,5 +1,5 @@
 .root {
-    height: 30vh;
+    height: 324px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -15,5 +15,9 @@
 }
 
 .buttonsGroup {
-    align-self: right;
+    width: 35%;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

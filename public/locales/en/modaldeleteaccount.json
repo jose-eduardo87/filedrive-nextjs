@@ -1,0 +1,7 @@
+{
+    "title": "Warning!",
+    "main-message": "In order to delete your account, you must type 'confirm' on the field below.",
+    "message-strong": "Proceed with caution.",
+    "btn-cancel": "Cancel",
+    "btn-confirm": "Confirm"
+}

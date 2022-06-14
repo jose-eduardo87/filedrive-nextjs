@@ -7,6 +7,7 @@ import {
 } from "next";
 import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import prisma from "lib/prisma";
 import { user } from "@/models/index";
 import { useTheme } from "store/theme-context";
 import { useUserInfo } from "store/userinfo-context";
@@ -30,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   const loggedUser = await user.login(session.user.id);
+  console.log(loggedUser);
   const { image, language, name, theme } = loggedUser;
 
   return {
@@ -42,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         "common",
         "basicsettings",
         "preferencesettings",
+        "modaldeleteaccount",
       ])),
     },
   };

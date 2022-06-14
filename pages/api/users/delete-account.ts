@@ -27,7 +27,9 @@ const handler = nc<RequestWithFile, NextApiResponse>({
       );
     }
 
-    return res.status(204).json({ success: true });
+    console.log(deletedUser);
+
+    return res.status(200).json({ success: true });
   });
 
 export default handler;
